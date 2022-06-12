@@ -1,13 +1,13 @@
 from mainapp.models import Direction
 from api_v1.serializers import DirectionSerializer
 from api_v1.services.bitrix24 import requests_bx24
-
+from . import stages
 
 # объект выполнения запросов к Битрикс
 bx24 = requests_bx24.Bitrix24()
 
 
-def create_or_update_directions():
+def create_or_update():
     """ Сохранение всех направлений сделок из BX24 """
     categories_old = get_directions_old()
     categories_new = get_directions_new()
@@ -23,9 +23,13 @@ def create_or_update_directions():
             serializer = DirectionSerializer(exist_category, data=category)
         if serializer.is_valid():
             serializer.save()
-            results.append(serializer.data)
-            continue
-        results.append(serializer.errors)
+            response = serializer.data
+        else:
+            response = serializer.errors
+
+        stage = stages.create_or_update(category["id_bx"])
+        response["stage"] = stage
+        results.append(response)
 
     return results
 

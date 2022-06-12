@@ -23,8 +23,6 @@ class StageSerializer(serializers.ModelSerializer):
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    url = serializers.URLField(read_only=True)
-
     class Meta:
         model = Company
         fields = '__all__'

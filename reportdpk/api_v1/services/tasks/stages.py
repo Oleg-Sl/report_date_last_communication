@@ -31,10 +31,11 @@ def create_or_update(id_direction):
         stage["id_bx"] = stage["ID"]
         stage["abbrev"] = stage["STATUS_ID"]
         stage["name"] = stage["NAME"]
-        stage["won"] = params_stages[stage["STATUS_ID"]]["won"] if params_stages.get(stage["STATUS_ID"]) else None
-        stage["status"] = params_stages[stage["STATUS_ID"]]["status"] if params_stages.get(stage["STATUS_ID"]) else None
         stage["direction"] = stage["CATEGORY_ID"]
-        # results.append(stage)
+        if params_stages.get(stage["STATUS_ID"]):
+            params_stages[stage["STATUS_ID"]]["won"]
+            params_stages[stage["STATUS_ID"]]["status"]
+
         exist_stage = Stage.objects.filter(id_bx=stage["id_bx"]).first()
         if not exist_stage:
             # при создании
