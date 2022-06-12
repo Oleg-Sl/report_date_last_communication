@@ -37,7 +37,7 @@ def get_secret(key):
     return data.get(key)
 
 
-def get_secrets_all(key):
+def get_secrets_all():
     """ Получение секрета BX24 """
     with open(path_secret_file) as secrets_file:
         data = json.load(secrets_file)

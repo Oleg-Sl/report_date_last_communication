@@ -1,7 +1,42 @@
 from rest_framework import views, viewsets, filters, status
 from rest_framework.response import Response
 
-from .serviсes.bitrix24 import tokens as tokens_bx24
+from .services.bitrix24 import tokens as tokens_bx24
+# from .tasks import (
+#     create_or_update_stages,
+#     create_or_update_company,
+# )
+
+# TEMP
+from .services.tasks.create_or_update_directions import create_or_update_directions
+from .services.tasks import stages
+
+
+class DirectionCreateUpdateViewSet(views.APIView):
+    def post(self, request):
+        # application_token = request.data.get("auth[application_token]", None)
+        # if application_token != tokens_bx24.get_secret("application_token"):
+        #     return Response("Unverified event source", status=status.HTTP_400_BAD_REQUEST)
+        result = create_or_update_directions()
+        return Response(result, status=status.HTTP_200_OK)
+        # task = create_or_update_directions.delay(request.data)
+        # return Response("OK", status=status.HTTP_200_OK)
+
+
+class StageCreateUpdateViewSet(views.APIView):
+    def post(self, request):
+        # application_token = request.data.get("auth[application_token]", None)
+        # if application_token != tokens_bx24.get_secret("application_token"):
+        #     return Response("Unverified event source", status=status.HTTP_400_BAD_REQUEST)
+        id_direction = request.data.get("direction", None)
+        if not id_direction:
+            return Response("Not transferred ID direction", status=status.HTTP_400_BAD_REQUEST)
+
+        result = stages.create_or_update(id_direction)
+        return Response(result, status=status.HTTP_200_OK)
+        # task = create_or_update_directions.delay(request.data)
+        # return Response("OK", status=status.HTTP_200_OK)
+
 
 
 class CompanyCreateUpdateViewSet(views.APIView):
@@ -21,7 +56,7 @@ class CompanyCreateUpdateViewSet(views.APIView):
         if event == "ONCRMCOMPANYDELETE":
             pass
 
-        task = calls_task.delay(request.data)
+        task = create_or_update_company.delay(request.data)
         return Response("OK", status=status.HTTP_200_OK)
 
 

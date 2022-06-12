@@ -5,6 +5,11 @@ app_name = 'api_v1'
 
 
 urlpatterns = [
+    path('create-update-direction/', DirectionCreateUpdateViewSet.as_view()),
+    path('create-update-stages/', StageCreateUpdateViewSet.as_view()),
+
+
+
     path(r'create-update-company/', CompanyCreateUpdateViewSet.as_view()),
 
 ]

@@ -21,21 +21,22 @@ class Direction(models.Model):
 
 
 STATUS_DEAL_CHOICES = [
-    ("0", 'Подготовка к работе'),
-    ("1", 'В работе'),
-    ("2", 'Успешна'),
-    ("3", 'Провалена'),
+    ("PREPARATION", 'Подготовка к работе'),
+    ("WORK", 'В работе'),
+    ("SUCCESSFUL", 'Успешна'),
+    ("FAILURE", 'Провалена'),
 ]
 
 
 class Stage(models.Model):
     """ Стадия сделки """
+    id_bx = models.PositiveIntegerField(primary_key=True, verbose_name='ID стадии в BX24', unique=True, db_index=True)
     abbrev = models.CharField(verbose_name='Аббревиатура стадии сделки', unique=True, max_length=35, db_index=True)
     name = models.CharField(verbose_name='Название стадии сделки', max_length=150)
-    direction = models.ForeignKey(Direction, verbose_name='Направление', on_delete=models.CASCADE,
-                                  related_name='stage', db_index=True)
     won = models.BooleanField(verbose_name='Сделка завершена успешно', default=False, db_index=True)
-    status = models.CharField(max_length=1, choices=STATUS_DEAL_CHOICES, default="0", db_index=True)
+    status = models.CharField(max_length=11, choices=STATUS_DEAL_CHOICES, default="0", db_index=True)
+    direction = models.ForeignKey(Direction, verbose_name='Направление', on_delete=models.CASCADE, related_name='stage',
+                                  blank=True, null=True, db_index=True)
 
     def __str__(self):
         return f"{self.abbrev} - {self.name}"
@@ -49,7 +50,7 @@ class Company(models.Model):
     """ Компания """
     id_bx = models.PositiveIntegerField(primary_key=True, verbose_name='ID компании в BX24', unique=True, db_index=True)
     name = models.CharField(verbose_name="Название компании", max_length=300, blank=True, null=True, db_index=True)
-    url = models.URLField(verbose_name='URL компании', max_length=100, unique=True)
+    # url = models.URLField(verbose_name='URL компании', max_length=100, unique=True)
     inn = models.CharField(verbose_name='ИНН компании', max_length=15, blank=True, null=True, db_index=True)
     active = models.BooleanField(verbose_name='Компания активна', default=True, db_index=True)
     date_last_communication = models.DateTimeField(verbose_name='Дата последней коммуникации', blank=True, null=True)

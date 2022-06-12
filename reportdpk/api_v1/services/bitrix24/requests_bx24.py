@@ -49,9 +49,9 @@ class Bitrix24:
             result = dict(error='Error on decode oauth response [%s]' % r.text)
             return result
 
-    def call(self, params):
+    def call(self, method, params):
         try:
-            url = self.api_url % (self.domain, "batch")
+            url = self.api_url % (self.domain, method)
             url += '?auth=' + self.auth_token
             headers = {
                 'Content-Type': 'application/json',
@@ -59,6 +59,7 @@ class Bitrix24:
             r = post(url, data=json.dumps(params), headers=headers, timeout=self.timeout)
             result = json.loads(r.text)
         except ValueError:
+            pass
             result = dict(error='Error on decode api response [%s]' % r.text)
         except exceptions.ReadTimeout:
             result = dict(error='Timeout waiting expired [%s sec]' % str(self.timeout))
@@ -69,10 +70,10 @@ class Bitrix24:
             result_update_token = self.refresh_tokens()
             if result_update_token is not True:
                 return result
-            result = self.call(params)
+            result = self.call(method, params)
         elif 'error' in result and result['error'] in ['QUERY_LIMIT_EXCEEDED', ]:
             time.sleep(2)
-            return self.call(params)
+            return self.call(method, params)
 
         return result
 
