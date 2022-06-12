@@ -7,6 +7,13 @@ from .services.bitrix24 import tokens as tokens_bx24
 #     create_or_update_company,
 # )
 
+from mainapp.models import (
+    Direction,
+    Stage,
+    Company,
+    Deal
+)
+
 # TEMP
 from .services.tasks import directions, stages, company
 
@@ -43,8 +50,7 @@ class CompanyCreateUpdateViewSet(views.APIView):
         # тип события - ONCRMCOMPANYADD, ONCRMCOMPANYUPDATE, ONCRMCOMPANYDELETE
         event = request.data.get("event", "")
         id_company = request.data.get("data[FIELDS][ID]", None)
-        application_token = request.data.get("auth[application_token]", None)
-
+        # application_token = request.data.get("auth[application_token]", None)
         # if application_token != tokens_bx24.get_secret("application_token"):
         #     return Response("Unverified event source", status=status.HTTP_400_BAD_REQUEST)
 
@@ -52,7 +58,8 @@ class CompanyCreateUpdateViewSet(views.APIView):
             return Response("Not transferred ID company", status=status.HTTP_400_BAD_REQUEST)
 
         if event == "ONCRMCOMPANYDELETE":
-            pass
+            result = Company.objects.filter(id_bx=id_company).delete()
+            return Response(result, status=status.HTTP_200_OK)
 
         result = company.create_or_update(id_company)
         return Response(result, status=status.HTTP_200_OK)
