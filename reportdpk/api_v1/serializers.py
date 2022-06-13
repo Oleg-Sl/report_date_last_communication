@@ -27,3 +27,9 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = '__all__'
 
+
+class DealSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Deal
+        fields = '__all__'
+

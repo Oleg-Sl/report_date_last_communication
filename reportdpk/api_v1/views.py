@@ -14,8 +14,8 @@ from mainapp.models import (
     Deal
 )
 
-# TEMP
-from .services.tasks import directions, stages, company
+
+from .services.tasks import directions, stages, company, deal
 
 
 class DirectionCreateUpdateViewSet(views.APIView):
@@ -65,4 +65,23 @@ class CompanyCreateUpdateViewSet(views.APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+class DealCreateUpdateViewSet(views.APIView):
+    """ Контроллер обработки событий BX24: onCrmDealAdd, onCrmDealUpdate, onCrmDealDelete """
+    def post(self, request):
+        # тип события - ONCRMDEALADD, ONCRMDEALUPDATE, ONCRMDEALDELETE
+        event = request.data.get("event", "")
+        id_deal = request.data.get("data[FIELDS][ID]", None)
+        # application_token = request.data.get("auth[application_token]", None)
+        # if application_token != tokens_bx24.get_secret("application_token"):
+        #     return Response("Unverified event source", status=status.HTTP_400_BAD_REQUEST)
+
+        if not id_deal:
+            return Response("Not transferred ID deal", status=status.HTTP_400_BAD_REQUEST)
+
+        if event == "ONCRMDEALDELETE":
+            result = Deal.objects.filter(id_bx=id_deal).delete()
+            return Response(result, status=status.HTTP_200_OK)
+
+        result = deal.create_or_update(id_deal)
+        return Response(result, status=status.HTTP_200_OK)
 
