@@ -15,7 +15,7 @@ from mainapp.models import (
 )
 
 
-from .services.tasks import directions, stages, company, deal
+from .services.tasks import directions, stages, company, deal, calls
 
 
 class DirectionCreateUpdateViewSet(views.APIView):
@@ -84,4 +84,20 @@ class DealCreateUpdateViewSet(views.APIView):
 
         result = deal.create_or_update(id_deal)
         return Response(result, status=status.HTTP_200_OK)
+
+
+class CallsCreateUpdateViewSet(views.APIView):
+    """ Контроллер обработки событий BX24: onVoximplantCallEnd """
+
+    def post(self, request):
+        id_call = request.data.get("data[CALL_ID]", None)
+        # application_token = request.data.get("auth[application_token]", None)
+        # if application_token != tokens_bx24.get_secret("application_token"):
+        #     return Response("Unverified event source", status=status.HTTP_400_BAD_REQUEST)
+        if not id_call:
+            return Response("Not transferred ID call", status=status.HTTP_400_BAD_REQUEST)
+
+        result = calls.create_or_update(id_call)
+        return Response(result, status=status.HTTP_200_OK)
+
 

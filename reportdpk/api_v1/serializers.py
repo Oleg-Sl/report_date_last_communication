@@ -6,7 +6,8 @@ from mainapp.models import (
     Direction,
     Stage,
     Company,
-    Deal
+    Deal,
+    Calls
 )
 
 
@@ -32,4 +33,12 @@ class DealSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deal
         fields = '__all__'
+
+
+class CallSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Calls
+        fields = '__all__'
+
+
 

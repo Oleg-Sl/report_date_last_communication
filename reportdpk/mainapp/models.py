@@ -111,3 +111,28 @@ class Deal(models.Model):
         verbose_name = 'Сделка'
         verbose_name_plural = 'Сделки'
 
+
+STATUS_CALL_TYPE = [
+    ("1", 'Исходящий'),
+    ("2", 'Входящий'),
+    ("3", 'Входящий с перенаправлением'),
+    ("4", 'Обратный звонок'),
+]
+
+
+class Calls(models.Model):
+    id_bx = models.PositiveIntegerField(primary_key=True, verbose_name='ID звонка в BX24', unique=True, db_index=True)
+    call_type = models.CharField(max_length=1, choices=STATUS_CALL_TYPE, blank=True, null=True, db_index=True)
+    duration = models.PositiveIntegerField(verbose_name='Продолжительность звонка')
+    start_date = models.DateTimeField(verbose_name='Время инициализации звонка')
+    activity_id = models.PositiveIntegerField(verbose_name='Идентификатор дела CRM')
+    company = models.ForeignKey(Company, verbose_name='Компания', on_delete=models.CASCADE, related_name='calls',
+                                blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.id_bx}. {self.start_date}"
+
+    class Meta:
+        verbose_name = 'Звонок'
+        verbose_name_plural = 'Звонки'
+
