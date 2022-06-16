@@ -41,4 +41,14 @@ class CallSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class StatisticCompanySerializer(serializers.ModelSerializer):
+    summa_by_company_success = serializers.FloatField()
+    summa_by_company_work = serializers.FloatField()
+    dpk = serializers.DateTimeField()
+    deal = DealSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Company
+        # fields = ("dpk", "summa_by_company_success", "summa_by_company_work", "deal")
+        fields = '__all__'
 

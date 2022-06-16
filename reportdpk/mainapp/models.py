@@ -1,6 +1,14 @@
 from django.db import models
 
 
+DIRECTION_IGNORE_LIST = [21, 23, 27, 41, 45]
+
+
+class DirectionActualManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().exclude(pk__in=DIRECTION_IGNORE_LIST).filter(new=True)
+
+
 class Direction(models.Model):
     """ Направления (СОУТ, Энергоаудит и т.д.)
     Методы: crm.dealcategory.list => [{ID: ..., NAME: ...}, ...];
@@ -11,6 +19,9 @@ class Direction(models.Model):
     name = models.CharField(verbose_name='Название направления', max_length=50)
     new = models.BooleanField(verbose_name='Новое напрвление', default=True, db_index=True)
     general_id_bx = models.IntegerField(verbose_name='ID направления в BX24 (для совместимости со старыми направлениями)')
+
+    objects = models.Manager()
+    direction_actual = DirectionActualManager()
 
     def __str__(self):
         return f"{self.id_bx} - {self.general_id_bx}. {self.name}"
@@ -46,6 +57,26 @@ class Stage(models.Model):
         verbose_name_plural = 'Стадии сделки'
 
 
+class CompanyManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().exclude(id_bx=0)
+
+    def statistic_company(self, directions):
+        return self.annotate(
+            summa_by_company_success=models.Sum(
+                "deal__opportunity",
+                filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+                output_field=models.FloatField()
+            ),
+            summa_by_company_work=models.Sum(
+                "deal__opportunity",
+                filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+                output_field=models.FloatField()
+            ),
+            dpk=models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0))
+        )
+
+
 class Company(models.Model):
     """ Компания """
     id_bx = models.PositiveIntegerField(primary_key=True, verbose_name='ID компании в BX24', unique=True, db_index=True)
@@ -67,12 +98,14 @@ class Company(models.Model):
                                   blank=True, null=True, db_index=True)
     profit = models.DecimalField(verbose_name='Чистая прибыль', max_digits=15, decimal_places=2, default=0,
                                  blank=True, null=True)
-    requisite_region = models.CharField(verbose_name='Реквизит - район', max_length=100,
+    requisite_region = models.CharField(verbose_name='Реквизит - район', max_length=150,
                                         blank=True, null=True, db_index=True)
-    requisites_city = models.CharField(verbose_name='Реквизит - город', max_length=50,
+    requisites_city = models.CharField(verbose_name='Реквизит - город', max_length=750,
                                        blank=True, null=True, db_index=True)
-    requisites_province = models.CharField(verbose_name='Реквизит - область', max_length=50,
+    requisites_province = models.CharField(verbose_name='Реквизит - область', max_length=150,
                                            blank=True, null=True, db_index=True)
+
+    objects = CompanyManager()
 
     def __str__(self):
         return f"{self.id_bx}. {self.name or ' - '}"
@@ -80,6 +113,44 @@ class Company(models.Model):
     class Meta:
         verbose_name = 'Компания'
         verbose_name_plural = 'Компании'
+
+
+class DealManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().exclude(direction__pk__in=DIRECTION_IGNORE_LIST)
+
+    def statistic_company_by_directions(self, companies, directions, lim_date_suspended_deals, lim_date_failed_deals):
+        return self.filter(
+            company__pk__in=companies,
+            direction__pk__in=directions,
+        ).values(
+            "company__pk", "direction"
+        ).annotate(
+            name=models.F("direction__name"),
+            # дата последнего изменения сделки
+            date_last_modify=models.Max("date_modify"),
+            # кол-во сделок в работе
+            count_deals_in_work=models.Count("pk", filter=models.Q(closed=False)),
+            # есть не просроченные сделки в работе
+            actual_deal_work=models.ExpressionWrapper(
+                models.Q(stage__status="WORK") & models.Q(date_modify__gte=lim_date_suspended_deals),
+                output_field=models.BooleanField()
+            ),
+            # есть не просроченные сделки в работе
+            actual_deal_preparation=models.ExpressionWrapper(
+                models.Q(stage__status="PREPARATION") & models.Q(date_modify__gte=lim_date_suspended_deals),
+                output_field=models.BooleanField()
+            ),
+            # есть не просроченные провальные сделки
+            actual_deal_failed=models.ExpressionWrapper(
+                models.Q(stage__status="FAILURE") & models.Q(date_modify__gte=lim_date_failed_deals),
+                output_field=models.BooleanField()
+            ),
+            # сумма стоимостей успешных сделок
+            opportunity_success=models.Sum("opportunity", filter=models.Q(stage__status="SUCCESSFUL")),
+            # сумма стоимостей сделок в работе
+            opportunity_work=models.Sum("opportunity", filter=models.Q(stage__status="WORK")),
+        )
 
 
 class Deal(models.Model):
@@ -103,6 +174,8 @@ class Deal(models.Model):
                                   blank=True, null=True, db_index=True)
     stage = models.ForeignKey(Stage, verbose_name='Стадия', on_delete=models.CASCADE, related_name='deal',
                               blank=True, null=True)
+
+    objects = DealManager()
 
     def __str__(self):
         return f"{self.id_bx}. {self.title or ' - '}"

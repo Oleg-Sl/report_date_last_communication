@@ -19,7 +19,6 @@ def create_or_update(id_company):
         **get_company_requisite_address(id_company)
     }
 
-    # return company
     exist_company = Company.objects.filter(id_bx=company["id_bx"]).first()
     if not exist_company:
         # при создании компании
