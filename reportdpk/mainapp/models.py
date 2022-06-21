@@ -4,7 +4,8 @@ from django.db import models
 from .managers import (
     DirectionActualManager,
     CompanyManager,
-    DealManager
+    DealManager,
+    CompanyQuerySet
 )
 
 
@@ -84,7 +85,7 @@ class Company(models.Model):
     requisites_province = models.CharField(verbose_name='Реквизит - область', max_length=150,
                                            blank=True, null=True, db_index=True)
 
-    objects = CompanyManager()
+    objects = CompanyManager.from_queryset(CompanyQuerySet)()
 
     def __str__(self):
         return f"{self.id_bx}. {self.name or ' - '}"

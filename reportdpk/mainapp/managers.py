@@ -1,19 +1,24 @@
 from django.db import models
-
-
-DIRECTION_IGNORE_LIST = [21, 23, 27, 41, 45]
+from django.conf import settings
 
 
 class DirectionActualManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().exclude(pk__in=DIRECTION_IGNORE_LIST).filter(new=True)
+        return super().get_queryset().exclude(pk__in=settings.DIRECTION_IGNORE_LIST).filter(new=True)
+
+    def count_active_deals(self):
+        return self.annotate(
+            count_active_deal=models.Count(
+                "deal",
+                # filter=models.Q(deal__closed=False)
+            )
+        ).values('count_active_deal', 'id_bx')
+            # .values('count_active_deal', 'id_bx')
+            # annotate(direction=models.F("id_bx"))
 
 
-class CompanyManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().exclude(id_bx=0)
-
-    def statistic_company(self, directions):
+class CompanyQuerySet(models.QuerySet):
+    def statistic_company(self, directions, duration):
         return self.annotate(
             summa_by_company_success=models.Sum(
                 "deal__opportunity",
@@ -25,13 +30,18 @@ class CompanyManager(models.Manager):
                 filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
                 output_field=models.FloatField()
             ),
-            dpk=models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0))
+            dpk=models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration))
         )
+
+
+class CompanyManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().exclude(id_bx=0)
 
 
 class DealManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().exclude(direction__pk__in=DIRECTION_IGNORE_LIST)
+        return super().get_queryset().exclude(direction__pk__in=settings.DIRECTION_IGNORE_LIST)
 
     def statistic_company_by_directions(self, companies, directions, lim_date_suspended_deals, lim_date_failed_deals):
         return self.filter(

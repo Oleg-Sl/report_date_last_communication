@@ -21,5 +21,7 @@ DJANGO_MODULE_STR = get_secret('DJANGO_MODULE_STR')
 
 if DJANGO_MODULE_STR == 'local':
     from .local_settings import *
+    from .params_project import *
 else:
     from .production import *
+    from .params_project import *
