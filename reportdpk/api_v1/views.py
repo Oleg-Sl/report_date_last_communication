@@ -84,7 +84,7 @@ class InstallAppApiView(views.APIView):
             "application_token": request.data.get("APP_SID", ""),
             'client_endpoint': f'https://{request.query_params.get("DOMAIN", "bits24.bitrix24.ru")}/rest/',
         }
-        tokens.save_secrets(data)
+        tokens.save_secrets(request)
         return render(request, 'install.html')
 
 
