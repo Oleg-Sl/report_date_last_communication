@@ -139,7 +139,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'reportdpk/static/'
+STATIC_URL = 'report-static/static/'
 STATIC_ROOT = '/home/devuser/projects/report_date_last_communication/reportdpk/static'
 
 # STATICFILES_DIRS = [
