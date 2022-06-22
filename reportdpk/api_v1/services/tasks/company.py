@@ -75,6 +75,8 @@ def get_company_requisite(id_company):
         }
     )
 
+
+
     if not response_requisite or "result" not in response_requisite or not response_requisite["result"]:
         return {}
 
@@ -90,16 +92,23 @@ def get_company_requisite_address(id_company):
         "crm.address.list",
         {
             "filter": {"ENTITY_ID": id_company, "ENTITY_TYPE_ID": entity_type_id},
-            "select": ["REGION", "CITY", "PROVINCE"]
+            "select": ["ENTITY_ID", "REGION", "CITY", "PROVINCE"]
         }
     )
+
+    # print(f"{response_address=}")
 
     if not response_address or "result" not in response_address or not response_address["result"]:
         return {}
 
+    address_list = [item for item in response_address["result"] if item.get("REGION") or item.get("CITY") or item.get("PROVINCE")]
+
+    if not address_list:
+        return {}
+
     return {
-        "requisite_region": response_address["result"][0].get("REGION", None),
-        "requisites_city": response_address["result"][0].get("CITY", None),
-        "requisites_province": response_address["result"][0].get("PROVINCE", None),
+        "requisite_region": address_list[0].get("REGION", None),
+        "requisites_city": address_list[0].get("CITY", None),
+        "requisites_province": address_list[0].get("PROVINCE", None),
     }
 
