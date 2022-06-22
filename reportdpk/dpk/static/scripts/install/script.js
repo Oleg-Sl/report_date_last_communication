@@ -4,7 +4,7 @@ let URL__CREATE_UPDATE_DEAL = `${DOMAIN}/create-update-deal/`;
 let URL__CREATE_UPDATE_CALLS = `${DOMAIN}/create-update-calls/`;
 
 
-async callMethod(method, params = {}) {
+async function callMethod(method, params = {}) {
     return new Promise((resolve, reject) => {
         let callback = result => {
             if (result.status != 200 || result.error()) {
