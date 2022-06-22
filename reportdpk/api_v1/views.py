@@ -12,6 +12,8 @@ from django.conf import settings
 
 from datetime import datetime, timedelta, timezone
 
+import logging
+
 from .services.bitrix24 import verification_app, tokens
 from .services.converter import converting_list_to_dict
 # from .tasks import (
@@ -42,6 +44,15 @@ from api_v1.serializers import (
 
 
 from .services.tasks import directions, stages, company, deal, calls
+
+
+# логгер входные данные событий от Битрикс
+logger_tasks_access = logging.getLogger('tasks_access')
+logger_tasks_access.setLevel(logging.INFO)
+fh_tasks_access = logging.handlers.TimedRotatingFileHandler('./logs/access.log', when='D', interval=1)
+formatter_tasks_access = logging.Formatter('[%(asctime)s] %(levelname).1s %(message)s')
+fh_tasks_access.setFormatter(formatter_tasks_access)
+logger_tasks_access.addHandler(fh_tasks_access)
 
 
 @api_view(['GET'])
@@ -208,6 +219,8 @@ class CompanyCreateUpdateViewSet(views.APIView):
     """ Контроллер обработки событий BX24: onCrmCompanyAdd, onCrmCompanyUpdate, onCrmCompanyDelete """
     def post(self, request):
         # тип события - ONCRMCOMPANYADD, ONCRMCOMPANYUPDATE, ONCRMCOMPANYDELETE
+        logger_tasks_access.info(request.data)
+
         event = request.data.get("event", "")
         id_company = request.data.get("data[FIELDS][ID]", None)
         application_token = request.data.get("auth[application_token]", None)
@@ -230,6 +243,7 @@ class DealCreateUpdateViewSet(views.APIView):
     """ Контроллер обработки событий BX24: onCrmDealAdd, onCrmDealUpdate, onCrmDealDelete """
     def post(self, request):
         # тип события - ONCRMDEALADD, ONCRMDEALUPDATE, ONCRMDEALDELETE
+        logger_tasks_access.info(request.data)
         event = request.data.get("event", "")
         id_deal = request.data.get("data[FIELDS][ID]", None)
         application_token = request.data.get("auth[application_token]", None)
@@ -250,8 +264,8 @@ class DealCreateUpdateViewSet(views.APIView):
 
 class CallsCreateUpdateViewSet(views.APIView):
     """ Контроллер обработки событий BX24: onVoximplantCallEnd """
-
     def post(self, request):
+        logger_tasks_access.info(request.data)
         id_call = request.data.get("data[CALL_ID]", None)
         application_token = request.data.get("auth[application_token]", None)
 
