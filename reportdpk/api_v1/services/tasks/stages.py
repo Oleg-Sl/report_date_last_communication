@@ -33,8 +33,8 @@ def create_or_update(id_direction):
         stage["name"] = stage["NAME"]
         stage["direction"] = stage["CATEGORY_ID"]
         if params_stages.get(stage["STATUS_ID"]):
-            params_stages[stage["STATUS_ID"]]["won"]
-            params_stages[stage["STATUS_ID"]]["status"]
+            stage["won"] = params_stages[stage["STATUS_ID"]]["won"]
+            stage["status"] = params_stages[stage["STATUS_ID"]]["status"]
 
         exist_stage = Stage.objects.filter(id_bx=stage["id_bx"]).first()
         if not exist_stage:
