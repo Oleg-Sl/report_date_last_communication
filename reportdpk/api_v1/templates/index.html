@@ -1,15 +1,275 @@
 <!DOCTYPE html>
-
-{% load static %}
-
 <html lang="en">
     <head>
-    	{% load static %}
-		<script src="//api.bitrix24.com/api/v1/"></script>
-	</head>
-	<body>
-		<p>INDEX.html</p>
-		<script src="{% static 'scripts/index.js' %}"></script>
-	</body>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        {% load static %}
+        <!-- CSS -->
+        <link rel="stylesheet" href="{% static 'styles/index.css' %}">
+
+        <title>ДПК</title>
+    </head>
+    <body>
+		<div class="container-fluid container-main">		
+			<!-- ФИЛЬТР -->
+			<div class="accordion" id="accordionPanelsStayOpenExample">
+				<div class="accordion-item my-filters">
+					<h2 class="accordion-header" id="panelsStayOpen-headingOne">
+						<button class="accordion-button my-class-accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+							Фильтр
+						</button>
+					</h2>
+					<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+						<div class="accordion-body my-class-accordion-body">   
+							<div class="filtration-unit">
+								<!-- Фильтр "Компании" -->
+								<div class="filter filter-company" id="filterCompany">
+									<label for="" class="filter-label">Компании</label>
+									<div class="filter-container">
+										<div class="filter-field">
+											<span><input type="text" class="filter-input"></span>
+											<!-- <div class="filter-delete-element-input">
+												<i class="bi bi-x-circle-fill"></i>
+											</div> -->
+										</div>
+										<div class="filter-clear">
+											<i class="bi bi-x-circle-fill" title="Очистить"></i>
+										</div>
+									</div>
+									<div class="d-none filter-window-data">
+										<div class="filter-window-data-close">
+											<button type="button" class="btn-close" aria-label="Close"></button>
+										</div>
+										<div class="text-center d-none spinner-load" style="padding-top: 15px;">
+											<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+												<span class="visually-hidden">Загрузка...</span>
+											</div>
+											<div>Загрузка данных</div>
+										</div>
+										<div class="filter-window-data-content">
+											<!-- Карточки компаний -->
+										</div>
+									</div>
+								</div>
+								<!-- Фильтр "Направления сделок" -->
+								<div class="filter filter-direction" id="filterDirection">
+									<label for="" class="filter-label">Направления сделок</label>
+									<div class="filter-container">
+										<div class="filter-field">
+											<span><input type="text" class="filter-input" readonly></span>
+											<!-- <div class="filter-delete-element-input">
+												<i class="bi bi-x-circle-fill"></i>
+											</div> -->
+										</div>
+										<div class="filter-clear">
+											<i class="bi bi-x-circle-fill" title="Очистить"></i>
+										</div>
+									</div>
+									<div class="d-none filter-window-data">
+										<div class="filter-window-data-close">
+											<button type="button" class="btn-close" aria-label="Close"></button>
+										</div>
+										<div class="text-center d-none spinner-load" style="padding-top: 15px;">
+											<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+												<span class="visually-hidden">Загрузка...</span>
+											</div>
+											<div>Загрузка данных</div>
+										</div>
+										<div class="filter-window-data-content filter-window-data-content-one-col">
+											<!-- Карточки -->
+										</div>
+									</div>
+								</div>
+								<!-- Фильтр "Отрасль" -->
+								<div class="filter filter-sector"  id="filterSector">
+									<label for="" class="filter-label">Отрасль</label>
+									<div class="filter-container">
+									  	<div class="filter-field">
+											<span><input type="text" class="filter-input"></span>
+									  	</div>
+									  	<div class="filter-clear">
+											<i class="bi bi-x-circle-fill" title="Очистить"></i>
+										</div>
+									</div>
+									<div class="filter-window">
+										<div class="filter-window-close">
+											<button type="button" class="btn-close" aria-label="Close"></button>
+										</div>
+										<div class="text-center d-none spinner-load" style="padding-top: 15px;">
+											<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+												<span class="visually-hidden">Загрузка...</span>
+											</div>
+											<div>Загрузка данных</div>
+										</div>
+										<div class="filter-window-content-one-col">
+											<!-- Список -->
+										</div>
+									</div>
+								</div>
+								<!-- Фильтр "Регион" -->
+								<div class="filter filter-region"  id="filterRegion">
+									<label for="" class="filter-label">Регион</label>
+									<div class="filter-container">
+									  	<div class="filter-field">
+											<span><input type="text" class="filter-input"></span>
+									  	</div>
+									  	<div class="filter-clear">
+											<i class="bi bi-x-circle-fill" title="Очистить"></i>
+										</div>
+									</div>
+									<div class="filter-window">
+										<div class="filter-window-close">
+											<button type="button" class="btn-close" aria-label="Close"></button>
+										</div>
+										<div class="text-center d-none spinner-load" style="padding-top: 15px;">
+											<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+												<span class="visually-hidden">Загрузка...</span>
+											</div>
+											<div>Загрузка данных</div>
+										</div>
+										<div class="filter-window-content-one-col">
+											<!-- Список -->
+										</div>
+									</div>
+								</div>
+								<!-- Фильтр "Источник" -->
+								<div class="filter filter-source"  id="filterSource">
+									<label for="" class="filter-label">Источник</label>
+									<div class="filter-container">
+									  	<div class="filter-field">
+											<span><input type="text" class="filter-input"></span>
+									  	</div>
+									  	<div class="filter-clear">
+											<i class="bi bi-x-circle-fill" title="Очистить"></i>
+										</div>
+									</div>
+									<div class="filter-window">
+										<div class="filter-window-close">
+											<button type="button" class="btn-close" aria-label="Close"></button>
+										</div>
+										<div class="text-center d-none spinner-load" style="padding-top: 15px;">
+											<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+												<span class="visually-hidden">Загрузка...</span>
+											</div>
+											<div>Загрузка данных</div>
+										</div>
+										<div class="filter-window-content-one-col">
+											<!-- Список -->
+										</div>
+									</div>
+								</div>
+								<!-- Фильтр "Реквизиты - регион" -->
+								<div class="filter filter-requisite-region" id="filterRequisiteRegion">
+									<label for="" class="filter-label">Реквизиты - регион</label>
+									<div class="filter-container">
+										<div class="filter-field">
+											<span><input type="text" class="filter-input"></span>
+										</div>
+										<div class="filter-clear">
+											<i class="bi bi-x-circle-fill" title="Очистить"></i>
+										</div>
+									</div>
+									<div class="filter-window">
+										<div class="filter-window-close">
+											<button type="button" class="btn-close" aria-label="Close"></button>
+										</div>
+										<div class="text-center d-none spinner-load" style="padding-top: 15px;">
+											<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+												<span class="visually-hidden">Загрузка...</span>
+											</div>
+											<div>Загрузка данных</div>
+										</div>
+										<div class="filter-window-content-one-col">
+											<!-- Список -->
+										</div>
+									</div>
+								</div>
+								<!-- Фильтр "Реквищиты - город" -->
+								<div class="filter filter-requisite-city" id="filterRequisiteCity">
+									<label for="" class="filter-label">Реквизиты - город</label>
+									<div class="filter-container">
+										<div class="filter-field">
+											<span><input type="text" class="filter-input"></span>
+										</div>
+										<div class="filter-clear">
+											<i class="bi bi-x-circle-fill" title="Очистить"></i>
+										</div>
+									</div>
+									<div class="filter-window">
+										<div class="filter-window-close">
+											<button type="button" class="btn-close" aria-label="Close"></button>
+										</div>
+										<div class="text-center d-none spinner-load" style="padding-top: 15px;">
+											<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+												<span class="visually-hidden">Загрузка...</span>
+											</div>
+											<div>Загрузка данных</div>
+										</div>
+										<div class="filter-window-content-one-col">
+											<!-- Список -->
+										</div>
+									</div>
+								</div>
+								<!-- Фильтр "Годовой оборот компании" -->
+								<div class="filter-range" id="filterRevenue">
+									<label for="" class="filter-label">Годовой оборот компании</label>
+									<div class="filter-field">
+										<div class="filter-field-min">                    
+											<span><input type="number" min="0" class="filter-field-input filter-field-min-input"></span>
+										</div>
+										<div class="filter-field-separator"> – </div>
+										<div class="filter-field-max">
+											<span><input type="number" min="0" class="filter-field-input filter-field-max-input"></span>
+										</div>
+									</div>
+								</div>
+								<!-- Фильтр "Количество сотрудников в компании" -->
+								<div class="filter-range" id="filterEmployees">
+									<label for="" class="filter-label">Количество сотрудников в компании</label>
+									<div class="filter-field">
+										<div class="filter-field-min">                    
+											<span><input type="number" min="0" class="filter-field-input filter-field-min-input"></span>
+										</div>
+										<div class="filter-field-separator"> – </div>
+										<div class="filter-field-max">
+											<span><input type="number" min="0" class="filter-field-input filter-field-max-input"></span>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> 
+	
+
+			<!-- Спиннер загрузки данных -->
+			<div class="text-center spinner-load-statistic-data">
+				<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+					<span class="visually-hidden">Загрузка...</span>
+				</div>
+				<div>Загрузка данных</div>
+			</div>
+		</div>
+		
+
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+        <!-- Bitrix JS -->
+        <!-- <script src="//api.bitrix24.com/api/v1/"></script> -->
+
+        <!-- JS -->
+<!--        <script src="{% static 'scripts/index.js' %}"></script>-->
+        <script type="module" src="{% static 'scripts/index.js' %}"></script>
+    </body>
 </html>
+
 

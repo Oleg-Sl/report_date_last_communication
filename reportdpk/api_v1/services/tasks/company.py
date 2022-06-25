@@ -75,8 +75,6 @@ def get_company_requisite(id_company):
         }
     )
 
-
-
     if not response_requisite or "result" not in response_requisite or not response_requisite["result"]:
         return {}
 
@@ -95,8 +93,6 @@ def get_company_requisite_address(id_company):
             "select": ["ENTITY_ID", "REGION", "CITY", "PROVINCE"]
         }
     )
-
-    # print(f"{response_address=}")
 
     if not response_address or "result" not in response_address or not response_address["result"]:
         return {}
