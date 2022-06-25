@@ -328,7 +328,7 @@
   top: 100px;
   left: 500px;
   height: 400px;
-  width: 600px;
+  width: 800px;
   border: 1px solid #e1d6d6;
   background: #ffffff;
   z-index: 101;
@@ -762,16 +762,6 @@
   height: 45px;
   -webkit-box-shadow: 0 -2px 4px 0 #c6c9cb;
           box-shadow: 0 -2px 4px 0 #c6c9cb;
-}
-
-.window-user-search .ui-selector-item-box-guest .ui-selector-item .ui-selector-item-title-box-status span {
-  display: block !important;
-  background-color: #ffec91 !important;
-  color: #a26b00 !important;
-}
-
-.window-user-search .ui-selector-item-box-guest .ui-selector-item .ui-selector-item-useravatar {
-  background-image: url("./photo/email-user.svg") !important;
 }
 
 .window-user-search .ui-selector-item-useravatar {
