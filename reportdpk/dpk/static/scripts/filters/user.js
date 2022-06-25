@@ -49,7 +49,7 @@ export default class WindowSearchUser {
         // событие "открытие окна поиска"
         this.btnResponsible.addEventListener("click", async (e) => {
             // this.fieldInput.classList.remove("d-none")
-            this.fieldInput.setAttribute("readonly", false);
+            this.fieldInput.removeAttribute("readonly");
             // this.departChoiceContainer.querySelector("input").classList.remove("d-none")
             this.btnResponsible.classList.remove("btn-search-inactive");
             this.btnDepartment.classList.add("btn-search-inactive");
@@ -151,6 +151,10 @@ export default class WindowSearchUser {
             if (e.target.closest(".filter") !== this.container) {
                 this.hideWindow();
             }
+        })
+        // событие изменение значения фильтра
+        $(this.window).bind("DOMSubtreeModified", (e) => {
+            this.resizeWindow();
         })
 
     }
