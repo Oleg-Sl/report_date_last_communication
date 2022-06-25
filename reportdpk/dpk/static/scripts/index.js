@@ -42,7 +42,8 @@ class App {
 
 
 
-        this.elementFilterResponsible = document.querySelector('.window-user-search');
+        // this.elementFilterResponsible = document.querySelector('.window-user-search');
+        this.elementFilterResponsible = document.querySelector('#filterResponsible');
         this.filterResponsible = new WindowSearchUser(this.elementFilterResponsible, bx24);
 
     }

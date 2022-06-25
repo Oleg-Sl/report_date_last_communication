@@ -1,16 +1,29 @@
-import {templateSelectItemElement, templateUserBoxForSearch, templateDepartContainerBox, templateUserBoxForSelected, templateInputSearchUser} from '../templates/filter.js'
+import {templateSelectItemElement, templateSelectItemElement, templateUserBoxForSearch, templateDepartContainerBox, templateUserBoxForSelected, templateInputSearchUser} from '../templates/filter.js'
 
 
 // Окно ПОИСК ПОЛЬЗОВАТЕЛЯ
 export default class WindowSearchUser {
     constructor(container, bx) {
         this.container = container;
-        // this.bx = new BX();
         this.bx = bx;
-        this.timeAnimate = 100/100;     // скорость анимации разворачивания/сворачивания списка подразделений - мс./пикс.
-        this.departContainer = this.container.querySelector(".container-data-depart");              // контейнер с подразделениями
-        this.departChoiceContainer = this.container.querySelector(".container-data-head-selector"); // контейнер с выбранными
-        this.departSearchInput = this.departChoiceContainer.querySelector("input");                 // контейнер ввода слова для поиска сотрудника
+
+        // поле с выбранными сотрудниками и поиском
+        this.field = this.container.querySelector(".filter-field");
+        // поле поиска сотрудников
+        this.fieldInput = this.field.querySelector(".filter-input");
+        this.fieldSpanInput = this.field.querySelector("span");
+        // кнопка очистки фильтра
+        this.fieldInput = this.container.querySelector(".filter-clear");
+
+        // окно выбора сотрудников (выводится список сотрудников и подразделений)
+        this.window = this.container.querySelector(".window-user-search");
+        
+        
+
+        this.timeAnimate = 1000/100;     // скорость анимации разворачивания/сворачивания списка подразделений - мс./пикс.
+        // this.departContainer = this.container.querySelector(".container-data-depart");              // контейнер с подразделениями
+        // this.departChoiceContainer = this.container.querySelector(".container-data-head-selector"); // контейнер с выбранными
+        // this.departSearchInput = this.departChoiceContainer.querySelector("input");                 // контейнер ввода слова для поиска сотрудника
         
         this.boxResponsible = this.container.querySelector(".container-data-user");                 // окно ПОИСКА
         this.boxDepartment = this.container.querySelector(".container-data-depart");                // окно ПОДРАЗДЕЛЕНИЙ
@@ -24,15 +37,19 @@ export default class WindowSearchUser {
     }
 
     async init() {
-        await this.getDepartments();                                            // получение списка подразделений компаниии
-        this.renderDepartment();                                                // вывод списка подразделений
-        this.initHandler();                                                     // инициализация обработчиков
+        // получение списка подразделений компаниии
+        await this.getDepartments();
+        // вывод списка подразделений
+        this.renderDepartment();
+        // инициализация обработчиков
+        this.initHandler();
     }
 
     initHandler() {
         // событие "открытие окна поиска"
         this.btnResponsible.addEventListener("click", async (event) => {
-            this.departChoiceContainer.querySelector("input").classList.remove("d-none")
+            this.fieldInput.classList.remove("d-none")
+            // this.departChoiceContainer.querySelector("input").classList.remove("d-none")
             this.btnResponsible.classList.remove("btn-search-inactive");
             this.btnDepartment.classList.add("btn-search-inactive");
             this.boxResponsible.classList.remove("d-none");
@@ -41,7 +58,8 @@ export default class WindowSearchUser {
         })
         // событие "открытие окна подразделения"
         this.btnDepartment.addEventListener("click", async (event) => {
-            this.departChoiceContainer.querySelector("input").classList.add("d-none")
+            this.fieldInput.classList.add("d-none");
+            // this.departChoiceContainer.querySelector("input").classList.add("d-none")
             this.btnResponsible.classList.add("btn-search-inactive");
             this.btnDepartment.classList.remove("btn-search-inactive");
             this.boxResponsible.classList.add("d-none");
@@ -49,11 +67,9 @@ export default class WindowSearchUser {
         })
       
         // событие "поиск пользователя"
-        this.departChoiceContainer.addEventListener("input", async (event) => {
-            if (event.target.closest(".search-user-input")) {
-                let val = event.target.value;
-                this.getAndDisplayUsersSearch(val);
-            }
+        this.fieldInput.addEventListener("input", async (event) => {
+            let name = event.target.value;
+            this.getAndDisplayUsersSearch(name);
         })
         // событие "добавление пользователя в выбранные"
         this.container.addEventListener("click", async (event) => {
@@ -69,7 +85,7 @@ export default class WindowSearchUser {
             }
         })
         // событие "клик разворачивание/сворачивание списка вложенных подразделений"
-        this.departContainer.addEventListener("click", async (event) => {
+        this.boxDepartment.addEventListener("click", async (event) => {
             if (event.target.closest(".ui-selector-item-indicator")) {
                 let box = event.target.closest(".ui-selector-item-box");            // блок-контейнер подразделения, по которому произошел клик
                 let boxChildren = box.querySelector(".ui-selector-item-children");  // блок-контейнер с дочерними подразделениями родителя, по которому произошел клик
@@ -109,13 +125,13 @@ export default class WindowSearchUser {
             
         })
 
-        // событие "удалить пользователя из выбранных"
-        this.departChoiceContainer.addEventListener("click", async (event) => {
-            if (event.target.closest(".user-item-remove")) {
-                let boxUser = event.target.closest(".user-item");                       // блок-контейнер пользователя, по которому произошел клик
-                boxUser.remove();
-            }
-        })
+        // // событие "удалить пользователя из выбранных"
+        // this.departChoiceContainer.addEventListener("click", async (event) => {
+        //     if (event.target.closest(".user-item-remove")) {
+        //         let boxUser = event.target.closest(".user-item");                       // блок-контейнер пользователя, по которому произошел клик
+        //         boxUser.remove();
+        //     }
+        // })
         // // событие "скрыть окно выбора пользователей"
         // document.addEventListener("click", async (event) => {
         //     if (!event.target.closest(".window-searchcontact") && !event.target.closest(".user-item-remove")) {
@@ -127,8 +143,7 @@ export default class WindowSearchUser {
 
     showWindow(userConyainer, x, y) {
         this.userConyainer = userConyainer;
-        
-        this.container.classList.remove("d-none");
+        this.window.classList.remove("d-none");
         let left = x - this.container.offsetWidth;
         let top = y + 50;
         this.container.style.left = Math.max(0, left) + "px";
@@ -136,17 +151,17 @@ export default class WindowSearchUser {
     }
 
     hideWindow() {
-        this.container.classList.add("d-none");
+        this.window.classList.add("d-none");
     }
 
     // получение и вывод списка работников в окне поиска
-    async getAndDisplayUsersSearch(value) {
+    async getAndDisplayUsersSearch(name) {
         let contentHTML = "";
         let users = await this.bx.callMethod("user.search", {                             // получение списка пользователей подразделения из Битрикс
-            "FILTER": {"NAME": `${value}%`, "ACTIVE": true}
+            "FILTER": {"NAME": `${name}%`, "ACTIVE": true}
         });
         let usersByLastname = await this.bx.callMethod("user.search", {                             // получение списка пользователей подразделения из Битрикс
-            "FILTER": {"LAST_NAME": `${value}%`, "ACTIVE": true}
+            "FILTER": {"LAST_NAME": `${name}%`, "ACTIVE": true}
         });
         users.concat(usersByLastname);
         // let users = USERS;
@@ -158,56 +173,22 @@ export default class WindowSearchUser {
 
     // добавление пользователя в окно выбранных пользователей
     addChoiceUser(id, lastname, name, usertype) {
-        let contentHTML = "";
-        contentHTML += templateUserBoxForSelected(id, lastname, name, usertype);    // 
-        contentHTML += templateInputSearchUser();                                   //
-        this.departChoiceContainer.innerHTML = contentHTML;                         //
-        this.userConyainer.innerHTML = templateUserForFieldResponsible(lastname, name);             //
-        this.userConyainer.dataset.userId = id;
+        let contentHTML = templateSelectItemElement(id, lastname + name);               // 
+        // contentHTML += templateInputSearchUser();                                   //
+        // this.departChoiceContainer.innerHTML = contentHTML;                         //
+        this.fieldSpanInput.insertAdjacentHTML('beforebegin', contentHTML);
+        // this.userConyainer.innerHTML = templateUserForFieldResponsible(lastname, name);             //
+        // this.userConyainer.dataset.userId = id;
     }
 
 
-    // <<<<<<<===== ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ЭКСТРАНЕТ =====>>>>>>>
-    // возвращает данные из формы "ПРИГЛАШЕНИЕ ПОЛЬЗОВАТЕЛЯ"
-    getDataFormInvite() {
-        let email = this.form.email.value;
-        let lastname = this.form.lastname.value;
-        let name = this.form.name.value;
-        return {
-            LAST_NAME: lastname,
-            NAME: name,
-            EMAIL: email,
-            GROUP_ID: "17"
-        };
-    }
-
-    // добавление пользователя экстранет
-    async addExtranetUser(user) {
-        // добавление пользователя на портал
-        let userId = await this.bx.callMethod("user.add", {                               
-            "NAME": name, "LAST_NAME": lastname, "EMAIL": email, "EXTRANET": "Y", "SONET_GROUP_ID": [group]
-        });
-        // let userId = 49;
-        return {
-            ID: userId,
-            NAME: user.NAME,
-            LAST_NAME: user.LAST_NAME,
-            EMAIL: user.EMAIL,
-            EXTRANET: "Y",
-            SONET_GROUP_ID: [user.GROUP_ID],
-            UDER_TYPE: "extranet"
-        };
-    }
-
-
-    // <<<<<<<===== ПОЛУЧЕНИЕ ДАННЫХ ПРИ ИНИЦИАЛИЗАЦИИ =====>>>>>>>
     // получение и вывод списка работников подразделения
     async getAndDisplayUsersOfdepart(departId, box) {
         let contentHTML = "";
         let users = await this.bx.callMethod("user.get", {                               // получение списка пользователей подразделения из Битрикс
             "ACTIVE": true, "UF_DEPARTMENT": departId, "ADMIN_MODE": true
         });
-        // let users = USERS;
+
         for (let user of users) {
             contentHTML += templateUserBoxForSearch(user.ID, user.LAST_NAME, user.NAME, user.WORK_POSITION, user.USER_TYPE);
         }
@@ -217,7 +198,6 @@ export default class WindowSearchUser {
     // получение списка подразделений компаниии
     async getDepartments() {
         this.departments = await this.bx.callMethod("department.get");          // получение списка подразделений из Битрикс
-        // this.departments = DEPART;
         this.companyStructure = this.getTreeDepartments();                          // структура кмпании
     }
 
@@ -238,14 +218,13 @@ export default class WindowSearchUser {
     }
 
 
-    // <<<<<<<===== ОТРИСОВКА ЭЛЕМЕНТОВ =====>>>>>>>
-    // вывод списка подразделений
+    // вывод иерархической структуры подразделений предприятия
     renderDepartment() {
-        this.boxDepartment.innerHTML = this.getHtmlDepartments(this.companyStructure);
+        this.boxDepartment.innerHTML = this.getHierarchHtmlDepartments(this.companyStructure);
     }
 
-    // получить HTML код подразделений
-    getHtmlDepartments(departments) {
+    // возвращает иерархическую HTML структуру подразделений на основе переданныхиерархических данных
+    getHierarchHtmlDepartments(departments) {
         let contentHTML = '';
         for (let department of departments) {
             let departChildrenHTML = "";
@@ -260,7 +239,6 @@ export default class WindowSearchUser {
 
 
     // <<<<<<<===== АНИМАЦИИ =====>>>>>>>
-    // анимация разворачивания списка подразделений
     animationOpen(element) {
         let anime = element.animate({
             height: `${element.scrollHeight}px`}, this.timeAnimate //* element.scrollHeight
@@ -271,7 +249,6 @@ export default class WindowSearchUser {
         this.animate = anime;
     }
 
-    // анимация сворачивания списка подразделений
     animationClose(element) {
         let height = element.offsetHeight || element.scrollHeight;
         element.style.height = `${height}px`;
