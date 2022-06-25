@@ -68,6 +68,7 @@ export default class WindowSearchUser {
       
         // событие "поиск пользователя"
         this.fieldInput.addEventListener("input", async (event) => {
+            this.showWindow();
             let name = event.target.value;
             this.getAndDisplayUsersSearch(name);
         })
@@ -124,30 +125,37 @@ export default class WindowSearchUser {
             }
             
         })
+        // событие - очистить фильтр
+        this.elemFilterClear.addEventListener('click', (e) => {
+            this.clearFilter();
+        })
 
-        // // событие "удалить пользователя из выбранных"
-        // this.departChoiceContainer.addEventListener("click", async (event) => {
-        //     if (event.target.closest(".user-item-remove")) {
-        //         let boxUser = event.target.closest(".user-item");                       // блок-контейнер пользователя, по которому произошел клик
-        //         boxUser.remove();
-        //     }
-        // })
-        // // событие "скрыть окно выбора пользователей"
-        // document.addEventListener("click", async (event) => {
-        //     if (!event.target.closest(".window-searchcontact") && !event.target.closest(".user-item-remove")) {
-        //         this.hideWindow();
-        //     }
-        // })
+        // событие "удалить пользователя из выбранных"
+        this.field.addEventListener("click", async (event) => {
+            const itemElem = e.target.closest(".filter-item");
+            const btnDelElem = e.target.closest(".filter-item-delete");
+            if (itemElem && btnDelElem) {
+                e.stopPropagation();
+                itemElem.remove();
+            }
+        })
+        // событие "скрыть окно выбора пользователей"
+        document.addEventListener("click", async (event) => {
+            if (e.target.closest(".filter") !== this.container) {
+                this.hideWindow();
+            }
+        })
 
     }
 
-    showWindow(userConyainer, x, y) {
-        this.userConyainer = userConyainer;
+    showWindow() {
+        this.resizeWindow();
+        // this.userConyainer = userConyainer;
         this.window.classList.remove("d-none");
-        let left = x - this.container.offsetWidth;
-        let top = y + 50;
-        this.container.style.left = Math.max(0, left) + "px";
-        this.container.style.top = top + "px";
+        // let left = x - this.container.offsetWidth;
+        // let top = y + 50;
+        // this.container.style.left = Math.max(0, left) + "px";
+        // this.container.style.top = top + "px";
     }
 
     hideWindow() {
@@ -173,12 +181,37 @@ export default class WindowSearchUser {
 
     // добавление пользователя в окно выбранных пользователей
     addChoiceUser(id, lastname, name, usertype) {
-        let contentHTML = templateSelectItemElement(id, lastname + name);               // 
-        // contentHTML += templateInputSearchUser();                                   //
-        // this.departChoiceContainer.innerHTML = contentHTML;                         //
-        this.fieldSpanInput.insertAdjacentHTML('beforebegin', contentHTML);
-        // this.userConyainer.innerHTML = templateUserForFieldResponsible(lastname, name);             //
-        // this.userConyainer.dataset.userId = id;
+        if (this.addUserIsAllowedToFilter(id)) {
+            let contentHTML = templateSelectItemElement(id, lastname + name);
+            this.fieldSpanInput.insertAdjacentHTML('beforebegin', contentHTML);
+        }
+    }
+
+    // проверка выбран элемент или нет
+    addUserIsAllowedToFilter(id_bx) {
+        const selectedItems = this.field.querySelectorAll(".filter-item");
+        for (let item of selectedItems) {
+            if (id_bx == item.dataset.idBx) return;
+        }
+        return true;
+    }
+
+    // очистка фильтра
+    clearFilter() {
+        const selectedItems = this.field.getElementsByClassName("filter-item");
+        while(selectedItems.length > 0) {
+            selectedItems[0].remove();
+        }
+    }
+    
+    resizeWindow() {
+        let size = this.field.getBoundingClientRect();
+        let top = size.bottom;
+        let left = size.left;
+        let width = size.width;
+        this.elemWindow.style.top = top + 12 + "px";
+        this.elemWindow.style.left = left + "px";
+        this.elemWindow.style.width = width + "px";
     }
 
 
@@ -216,7 +249,6 @@ export default class WindowSearchUser {
         }
         return departmentsList;
     }
-
 
     // вывод иерархической структуры подразделений предприятия
     renderDepartment() {
