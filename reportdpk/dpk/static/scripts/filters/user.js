@@ -48,7 +48,8 @@ export default class WindowSearchUser {
     initHandler() {
         // событие "открытие окна поиска"
         this.btnResponsible.addEventListener("click", async (e) => {
-            this.fieldInput.classList.remove("d-none")
+            // this.fieldInput.classList.remove("d-none")
+            this.fieldInput.setAttribute("readonly", false);
             // this.departChoiceContainer.querySelector("input").classList.remove("d-none")
             this.btnResponsible.classList.remove("btn-search-inactive");
             this.btnDepartment.classList.add("btn-search-inactive");
@@ -58,14 +59,20 @@ export default class WindowSearchUser {
         })
         // событие "открытие окна подразделения"
         this.btnDepartment.addEventListener("click", async (e) => {
-            this.fieldInput.classList.add("d-none");
+            // this.fieldInput.classList.add("d-none");
+            this.fieldInput.setAttribute("readonly", true)
             // this.departChoiceContainer.querySelector("input").classList.add("d-none")
             this.btnResponsible.classList.add("btn-search-inactive");
             this.btnDepartment.classList.remove("btn-search-inactive");
             this.boxResponsible.classList.add("d-none");
             this.boxDepartment.classList.remove("d-none");
         })
-      
+
+        this.fieldInput.addEventListener("click", async (e) => {
+            this.showWindow();
+            let name = e.target.value;
+            this.getAndDisplayUsersSearch(name);
+        })
         // событие "поиск пользователя"
         this.fieldInput.addEventListener("input", async (e) => {
             this.showWindow();
@@ -209,9 +216,9 @@ export default class WindowSearchUser {
         let top = size.bottom;
         let left = size.left;
         let width = size.width;
-        this.elemWindow.style.top = top + 12 + "px";
-        this.elemWindow.style.left = left + "px";
-        this.elemWindow.style.width = width + "px";
+        this.window.style.top = top + 12 + "px";
+        this.window.style.left = left + "px";
+        this.window.style.width = width + "px";
     }
 
 
