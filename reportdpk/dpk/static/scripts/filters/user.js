@@ -308,4 +308,15 @@ export default class WindowSearchUser {
         this.animate = anime;
     }
 
+
+    // получить параметры филитрации для выполнения запроса
+    getRequestParameters() {
+        const selectedItems = this.field.getElementsByClassName("filter-item");
+        let ids = [];
+        for (let item of selectedItems) {
+            ids.push(item.dataset.idBx);
+        }
+        return ids;
+
+    }
 }

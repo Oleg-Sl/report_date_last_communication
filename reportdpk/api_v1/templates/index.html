@@ -277,12 +277,148 @@
 									</div>
 								</div>
 
+								<!-- Кол-во компаний на странице, допустимая ДПК, кнопка получить -->
+								<div class="filter-countpage-dlk-buttonget">
+									<div class="page-size-requests">
+										<label>Компаний на странице</label>
+										<div><input type="number" class="form-control"  min="5" max="250" value="50" class="page-size-requests-input"></div>
+									</div>
+									<div class="filter-date-start"> </div>
+									<div class="filter-button-get-data">
+										<label for=""></label>
+										<div>
+											<button type="button" class="btn btn-primary">Получить</button>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div> 
-	
+			<!-- ПАРАМЕТРЫ ЗАПРОСА -->
+			<div class="settings-param-requests">
+				<div class="number-page-requests">
+					<p>Страница</p>
+					<div><input type="number" class="form-control"  min="1" max="" value="1" class="number-page-requests-input"></div>
+					<button type="button" class="btn btn-primary">Перейти</button>
+				</div>
+				<!-- ПАГИНАЦИЯ -->
+				<div class="table-nav my-paginator-table">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-end paginator-content">
+							<!-- Место для вывода элементов пагинатора -->
+						</ul>
+					</nav>
+				</div>
+			</div>
+
+			<!-- ТАБЛИЦА -->
+			<div class="table-responsive-md my-table">
+				<table class="table table-sm">
+					<thead class="align-middle table-light">
+					<tr class="text-center">
+						<th scope="col" rowspan="2" class="col-company header-th-data" data-type="text-long" data-position="1">
+						Компания 
+						<span class="resize-handle"></span>
+						<span class="sort-company-top"><i class="bi bi-caret-up-fill"></i></span>
+						<span class="sort-company-bottom"><i class="bi bi-caret-down-fill"></i></span>
+						</th>
+						<th scope="col" rowspan="2" class="header-th-data" data-type="numeric-long" data-position="2">ИНН <span class="resize-handle"></span></th>
+						<th scope="col" rowspan="2" class="header-th-data" data-type="text-long"  data-position="3">Менеджер <span class="resize-handle"></span></th>
+		
+						<th scope="col" colspan="4" class="header-th-direction">СОУТ <span class="resize-handle"></span></th>
+						<th scope="col" colspan="4" class="header-th-direction">ПК <span class="resize-handle"></span></th>
+						<th scope="col" colspan="4" class="header-th-direction">Обучение <span class="resize-handle"></span></th>
+						<th scope="col" colspan="4" class="header-th-direction">Экология <span class="resize-handle"></span></th>
+			
+						<th scope="col" rowspan="2" class="header-th-data" data-type="numeric-medium" data-position="100">
+						Общая сумма в работе
+						<span class="resize-handle"></span>
+						<span class="sort-opportunity-work-top"><i class="bi bi-caret-up-fill"></i></span>
+						<span class="sort-opportunity-work-bottom"><i class="bi bi-caret-down-fill"></i></span>
+						</th>
+						<th scope="col" rowspan="2" class="header-th-data" data-type="numeric-medium" data-position="101">
+						Общая сумма успешных
+						<span class="resize-handle"></span>
+						<span class="sort-opportunity-sucсess-top"><i class="bi bi-caret-up-fill"></i></span>
+						<span class="sort-opportunity-sucсess-bottom"><i class="bi bi-caret-down-fill"></i></span>
+						</th>
+					</tr>
+					<tr class="text-center">
+						<th scope="col" class="header-th-direction-data" data-type="numeric-short" data-position="4">id сделок <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="5">Сумма в работе <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="6">Сумма успешных <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="text-short" data-position="7">ДПК <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-short" data-position="8">id сделок <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="9">Сумма в работе <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="10">Сумма успешных <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="text-short" data-position="11">ДПК <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-short" data-position="12">id сделок <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="13">Сумма в работе <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="14">Сумма успешных <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="text-short" data-position="15">ДПК <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-short" data-position="16">id сделок <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="17">Сумма в работе <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="18">Сумма успешных <span class="resize-handle"></span></th>
+						<th scope="col" class="header-th-direction-data" data-type="text-short" data-position="19">ДПК <span class="resize-handle"></span></th>
+		
+						<!-- <th scope="col" rowspan="2">Общая сумма в работе</th> -->
+						<!-- <th scope="col" rowspan="2">Общая сумма успешных</th> -->
+					</tr>
+					</thead>
+					<tbody class="my-tbody">
+					<tr>
+						<td class="col-company"><p>Company</p></td>
+						<td>INN</td>
+						<td class="col-responsible">Mark</td>
+						<td class="td-id-list">
+						<ul class="list-unstyled">
+							<li>id 1</li>
+							<li>id 2</li>
+							<li>id 3</li>
+						</ul>
+						</td>
+						<td>Summa work</td>
+						<td>Summa ok</td>
+						<td>11.11.2021</td>
+						<td class="td-id-list">
+						<ul class="list-unstyled">
+							<li>id 1</li>
+							<li>id 2</li>
+							<li>id 3</li>
+						</ul>
+						</td>
+						<td>Summa work</td>
+						<td>Summa ok</td>
+						<td>11.11.2021</td>
+						<td class="td-id-list">
+						<ul class="list-unstyled">
+							<li>id 1</li>
+							<li>id 2</li>
+							<li>id 3</li>
+						</ul>
+						</td>
+						<td>Summa work</td>
+						<td>Summa ok</td>
+						<td>11.11.2021</td>
+						<td class="td-id-list">
+						<ul class="list-unstyled">
+							<li>id 1</li>
+							<li>id 2</li>
+							<li>id 3</li>
+						</ul>
+						</td>
+						<td>Summa work</td>
+						<td>Summa ok</td>
+						<td>11.11.2021</td>
+						<td>All summa work</td>
+						<td>All summa ok</td>
+					</tr>
+				
+					</tbody>
+				</table>
+				</div>
 
 			<!-- Спиннер загрузки данных -->
 			<div class="text-center spinner-load-statistic-data">
