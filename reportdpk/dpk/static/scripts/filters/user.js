@@ -230,7 +230,7 @@ export default class WindowSearchUser {
             let departChildrenHTML = "";
             if (!department) return ""; 
             if (Array.isArray(department.CHILDREN) && department.CHILDREN.length >= 1) {
-                departChildrenHTML += this.getHtmlDepartments(department.CHILDREN);
+                departChildrenHTML += this.getHierarchHtmlDepartments(department.CHILDREN);
             }
             contentHTML += templateDepartContainerBox(department.ID, department.NAME, departChildrenHTML);
         }
