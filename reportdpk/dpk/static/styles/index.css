@@ -342,6 +342,13 @@
   z-index: 101;
 }
 
+.window-user-search .window-searchcontact-container .filter-window-data-close {
+  position: absolute;
+  right: 16px;
+  top: 2px;
+  z-index: 99999;
+}
+
 .window-user-search .window-searchcontact-container .btn-search-responsible, .window-user-search .window-searchcontact-container .btn-search-department, .window-user-search .window-searchcontact-container .btn-search-invite {
   position: absolute;
   left: -37px;

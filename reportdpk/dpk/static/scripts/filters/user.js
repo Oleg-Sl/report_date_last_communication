@@ -25,11 +25,13 @@ export default class WindowSearchUser {
         // this.departChoiceContainer = this.container.querySelector(".container-data-head-selector"); // контейнер с выбранными
         // this.departSearchInput = this.departChoiceContainer.querySelector("input");                 // контейнер ввода слова для поиска сотрудника
         
-        this.boxResponsible = this.container.querySelector(".container-data-user");                 // окно ПОИСКА
-        this.boxDepartment = this.container.querySelector(".container-data-depart");                // окно ПОДРАЗДЕЛЕНИЙ
+        this.boxResponsible = this.window.querySelector(".container-data-user");                    // окно ПОИСКА
+        this.boxDepartment = this.window.querySelector(".container-data-depart");                   // окно ПОДРАЗДЕЛЕНИЙ
 
-        this.btnResponsible = this.container.querySelector(".btn-search-responsible");              // кнопка открыть "окно ПОИСК"
-        this.btnDepartment = this.container.querySelector(".btn-search-department");                // кнопка открыть "окно ОТДЕЛЫ"
+        this.btnResponsible = this.window.querySelector(".btn-search-responsible");                 // кнопка открыть "окно ПОИСК"
+        this.btnDepartment = this.window.querySelector(".btn-search-department");                   // кнопка открыть "окно ОТДЕЛЫ"
+
+        this.btnCloseWindow = this.window.querySelector(".filter-window-data-close button");        // кнопка закрыть окно
 
 
         
@@ -136,7 +138,6 @@ export default class WindowSearchUser {
         this.btnClearFilter.addEventListener('click', (e) => {
             this.clearFilter();
         })
-
         // событие "удалить пользователя из выбранных"
         this.field.addEventListener("click", async (e) => {
             const itemElem = e.target.closest(".filter-item");
@@ -146,6 +147,9 @@ export default class WindowSearchUser {
                 itemElem.remove();
             }
         })
+        this.btnCloseWindow.addEventListener('click', (e) => {
+            this.hideWindow();
+        })
         // событие "скрыть окно выбора пользователей"
         document.addEventListener("click", async (e) => {
             if (e.target.closest(".filter") !== this.container) {
@@ -153,7 +157,7 @@ export default class WindowSearchUser {
             }
         })
         // событие изменение значения фильтра
-        $(this.window).bind("DOMSubtreeModified", (e) => {
+        $(this.field).bind("DOMSubtreeModified", (e) => {
             this.resizeWindow();
         })
 
@@ -220,7 +224,7 @@ export default class WindowSearchUser {
         let top = size.bottom;
         let left = size.left;
         let width = size.width;
-        this.window.style.top = top + 12 + "px";
+        this.window.style.top = top + 2 + "px";
         this.window.style.left = left + "px";
         this.window.style.width = width + "px";
     }
