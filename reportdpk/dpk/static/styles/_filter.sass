@@ -253,3 +253,324 @@ $height-selected-item: 20px
         
 
 
+.window-user-search
+    position: absolute
+    top: 100px
+    left: 500px
+    height: 400px
+    width: 600px
+    border: 1px solid #e1d6d6 
+    background: #ffffff
+    z-index: 101
+
+    .window-searchcontact-container
+        position: relative
+        height: 100%
+        width: 100%
+        background: #ffffff
+        z-index: 101
+
+    .window-searchcontact-container .btn-search-responsible, .window-searchcontact-container .btn-search-department, .window-searchcontact-container .btn-search-invite
+        position: absolute
+        left: -37px
+        top: 25px
+        height: 40px
+        width: 120px
+        background-color: #2fc6f6
+        border-radius: 20px 0 0 20px
+        transition: left 750ms
+        z-index: -99
+        opacity: .99
+        display: grid
+        grid-template-columns: 40px 1fr
+        cursor: pointer
+
+        &:hover
+            left: -120px
+
+        .btn-search-logo
+            margin: 0 auto
+
+        .btn-search-logo i
+            line-height: 40px
+            color: #ffffff
+        
+        .btn-search-desc
+            line-height: 40px
+            color: #ffffff
+            text-transform: uppercase
+            font-size: 14px
+            font-weight: 500
+
+    // .window-searchcontact-container .btn-search-inactive, .window-searchcontact-container .btn-search-department
+    .window-searchcontact-container .btn-search-inactive
+        background:#e4ebed
+        .btn-search-logo i, .btn-search-desc
+            color: #707782
+
+    .window-searchcontact-container .btn-search-department
+        top: 70px
+    
+    .window-searchcontact-container .btn-search-invite
+        top: 115px
+
+    // 
+    .window-searchcontact-container .container-data
+        height: 100%
+        width: 100%
+        background: #ffffff
+        display: flex
+        flex-direction: column
+
+    // поле с выбранным пользователем и поиском
+    .window-searchcontact-container .container-data .container-data-block
+        border-bottom: 1px solid #525c691a
+
+        .container-data-head
+            margin: 15px
+            padding-bottom: 15px
+            border-bottom: 1px solid #525c691a
+            background: #fff
+            border: 1px solid #c6cdd3
+            border-radius: 2px
+            padding: 2px 3px
+            overflow: hidden
+
+        .container-data-head .container-data-head-selector
+            display: flex
+            justify-content: space-between
+            height: 100%
+            width: 100%
+            min-height: 33px
+            overflow-x: hidden
+        
+        .user-item
+            display: grid
+            grid-template-columns: 1fr 25px
+            column-gap: 5px
+            max-width: 200px  
+            background-color: #bcedfc
+            color: #1066bb !important
+            margin: 2px
+
+        .user-item .user-item-content
+            display: grid
+            grid-template-columns: 30px 1fr
+            cursor: pointer
+
+        .user-item .user-item-content .user-item-avatar
+            background-image: url("./photo/default-user.svg")
+            background-repeat: no-repeat
+            background-size: cover
+            height: 21px
+            width: 21px
+            margin: auto
+            border-radius: 50%
+        
+        .user-item .user-item-content .user-item-title
+            margin: auto 0
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+            font: bold 13px/29px "Helvetica Neue",Arial,Helvetica,sans-serif
+
+        .user-item .user-item-remove
+            margin: auto
+            > div
+                width: fit-content
+                height: fit-content
+            button
+                font-size: 10px
+
+        .user-item-guest 
+            background-color: #ffec91
+            .user-item-content .user-item-title
+                color: #a26b00
+            .user-item-content .user-item-avatar
+                background-image: url("./photo/email-user.svg")
+        
+        span
+            flex-grow: 1
+            flex-shrink: 0
+            flex-basis: 0px
+            display: inline-block
+            // padding: 0 0 0 5px
+            min-width: 40px
+
+        input
+                border: 0
+                outline: 0
+                background: #fff
+                color: #555
+                font-size: 13px
+                font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
+                display: inline-block
+                vertical-align: middle
+                position: relative
+                margin: 2px
+                height: 29px
+                box-shadow: none
+
+    // поле поиска пользователей
+    .container-data-user
+        display: flex
+        flex-direction: column
+
+    // поиск по отделам
+    .container-data-depart, .container-data-user
+        padding: 15px 15px 0 15px
+        height: 100%
+        overflow: auto
+        overflow-y: scroll
+        .ui-selector-item
+            display: grid
+            grid-template-columns: 28px 1fr 45px
+            min-height: 44px
+            cursor: pointer
+            align-items: center
+        .ui-selector-item:hover
+        .ui-selector-item .ui-selector-item-avatar
+            display: flex
+            justify-content: center
+            align-content: center
+            width: 28px
+            height: 28px
+            border-radius: 50%
+            background-size: contain
+            background-repeat: no-repeat
+            background-position: center
+            overflow: hidden
+            background: #55d0e0
+            i   
+                display: inline-block
+                color: #ffffff
+        .ui-selector-item-titles
+            display: flex
+            flex-direction: column
+            flex: 1
+            position: relative
+            margin-left: 10px
+        .ui-selector-item-titles .ui-selector-item-supertitle
+            font-size: 9px
+            font-family: "OpenSans-Bold","Helvetica Neue",Helvetica,Arial,sans-serif
+            text-transform: uppercase
+            color: #b1b6bb
+            white-space: nowrap
+            text-overflow: ellipsis
+            overflow: hidden
+        .ui-selector-item-titles .ui-selector-item-title-box
+            display: flex
+            overflow: hidden
+            .ui-selector-item-title-box-title
+                font-size: 14px
+                color: #535c69
+                white-space: nowrap
+                text-overflow: ellipsis
+                overflow: hidden
+            .ui-selector-item-title-box-status
+                display: flex
+                overflow: hidden
+                span
+                    display: none
+                    font-size: 9px
+                    background-color: rgba(47,198,246,0.17)
+                    padding: 4px 8px
+                    margin-left: 7px
+                    border-radius: 10px
+                    color: #23a2ca
+                    overflow: hidden
+                    text-overflow: ellipsis
+                    color: rgb(35, 162, 202)
+                    background-color: rgb(220, 246, 254)
+            .ui-selector-item-title-box-workposition
+                overflow: hidden
+                white-space: nowrap
+                text-overflow: ellipsis
+                font-size: 13px
+                color: #535c6980
+                margin-left: 7px
+        .ui-selector-item-user-link
+            position: absolute
+            top: 0
+            right: 0
+            color: #9b9b9b
+            border-bottom: 1px dashed rgba(155,155,155,0.4)
+            font-size: 13px
+            white-space: nowrap
+        .ui-selector-item-indicator
+            display: flex
+            justify-content: center
+            align-items: center
+            transition: transform 0.200s
+            > div
+                height: fit-content
+        .ui-selector-item-children
+            overflow: hidden
+            height: 0
+            margin-left: 16px
+            padding-left: 16px
+            border-left: 1px solid #ebecee
+        .ui-selector-item-box-open > .ui-selector-item > .ui-selector-item-indicator
+            transform: rotate(180deg)
+        .ui-selector-item-children-heightnull
+            transform: scaleY(1)
+            opacity: 1
+        .ui-selector-item-box .ui-selector-item-guest
+            .ui-selector-item-title-box-status span
+                background-color: #ffec91
+                color: #a26b00
+        .ui-selector-item:hover
+            background: #f7f8f8
+        &::-webkit-scrollbar
+            width: 5px
+            background-color: #ffffff
+        &::-webkit-scrollbar-thumb
+            border-radius: 5px
+            background-color: #9a9b9b
+        &::-webkit-scrollbar-track
+            border-radius: 5px
+            background-color: #f9f9fd
+
+    // форма приглашения пользователя
+    .window-searchcontact-container .container-data .container-data-invite
+        width: 100%
+        .container-data-invite-header
+            font-family: "OpenSans-Regular","Helvetica Neue",Helvetica,Arial,sans-serif
+            font-size: 18px
+            color: #333
+            letter-spacing: 0
+            margin: 5px 15px
+        .container-data-invite-form
+            margin: 5px 15px
+            div
+                width: 100%
+                margin-bottom: 10px
+            div > label
+                margin-bottom: 2px
+        .container-data-invite-btn
+            height: 45px
+            box-shadow: 0 -2px 4px 0 #c6c9cb
+    
+    // изменение контейнера пришлащенного пользователя
+    .ui-selector-item-box-guest
+        .ui-selector-item .ui-selector-item-title-box-status span
+            display: block !important
+            background-color: #ffec91 !important
+            color: #a26b00 !important
+        .ui-selector-item .ui-selector-item-useravatar
+            background-image: url("./photo/email-user.svg") !important
+
+    // аватар пользователя
+    .ui-selector-item-useravatar
+        background-image: url("./photo/default-user.svg")
+        background-repeat: no-repeat
+        background-size: cover
+        width: 28px
+        height: 28px
+        margin: auto
+        border-radius: 50%
+
+
+
+
+

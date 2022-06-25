@@ -55,6 +55,54 @@
 										</div>
 									</div>
 								</div>
+								<!-- Фильтр "Сотрудники" -->
+								<div class="filter filter-responsible" id="filterResponsible">
+									<label for="" class="filter-label">Сотрудники</label>
+									<div class="filter-container">
+										<div class="filter-field">
+											<span><input type="text" class="filter-input"></span>
+											<!-- <div class="filter-delete-element-input">
+												<i class="bi bi-x-circle-fill"></i>
+											</div> -->
+										</div>
+										<div class="filter-clear">
+											<i class="bi bi-x-circle-fill" title="Очистить"></i>
+										</div>
+									</div>
+									<div class="filter-window-data window-user-search">
+										<div class="window-searchcontact-container">
+											<!-- Блоки с данными -->
+											<div class="container-data">
+												<!-- Выбранные сотрудники -->
+												<div class="container-data-block">
+													<div class="container-data-head">
+														<div class="container-data-head-selector">    
+															<span>
+																<input class="form-control form-control-sm search-user-input" type="text" autocomplete="on" placeholder="поиск" aria-label="default input example" id="">
+															</span>
+														</div>
+													</div>
+												</div>
+												<!-- Отфильтрованный список пользователей -->
+												<div class="container-data-user"> </div>
+												<!-- Список сотрудников по подразделениям -->
+												<div class="container-data-depart d-none"> </div>
+											</div>
+											<!-- Кнопка "ПОИСК" -->
+											<div class="btn-search-responsible">
+												<div class="btn-search-logo"><i class="bi bi-search"></i></div>
+												<div class="btn-search-desc">Поиск</div>
+											</div>
+											<!-- Кнопка "ОТДЕЛЫ" -->
+											<div class="btn-search-department btn-search-inactive">
+												<div class="btn-search-logo"><i class="bi bi-people-fill"></i></div>
+												<div class="btn-search-desc">Отделы</div>
+											</div>
+										</div>
+										
+										
+									</div>
+								</div>
 								<!-- Фильтр "Направления сделок" -->
 								<div class="filter filter-direction" id="filterDirection">
 									<label for="" class="filter-label">Направления сделок</label>
@@ -257,7 +305,41 @@
 			</div>
 		</div>
 		
+		<div class="window-user-search">
+			<!-- Блоки с данными -->
+			<div class="container-data">
+				<!-- Выбранные сотрудники -->
+				<div class="container-data-block">
+					<div class="container-data-head">
+						<div class="container-data-head-selector">    
+							<span>
+								<input class="form-control form-control-sm search-user-input" type="text" autocomplete="on" placeholder="поиск" aria-label="default input example" id="">
+							</span>
+						</div>
+					</div>
 
+				</div>
+				<!-- Отфильтрованный список пользователей -->
+				<div class="container-data-user"> </div>
+				<!-- Список сотрудников по подразделениям -->
+				<div class="container-data-depart d-none"> </div>
+			</div>
+			<!-- Кнопка "ПОИСК" -->
+			<div class="btn-search-responsible">
+				<div class="btn-search-logo"><i class="bi bi-search"></i></div>
+				<div class="btn-search-desc">Поиск</div>
+			</div>
+			<!-- Кнопка "ОТДЕЛЫ" -->
+			<div class="btn-search-department btn-search-inactive">
+				<div class="btn-search-logo"><i class="bi bi-people-fill"></i></div>
+				<div class="btn-search-desc">Отделы</div>
+			</div>
+			<!-- Кнопка "ПРИГЛАСИТЬ" -->
+			<div class="btn-search-invite btn-search-inactive">
+				<div class="btn-search-logo"><i class="bi bi-envelope"></i></div>
+				<div class="btn-search-desc">Пригласить</div>
+			</div>
+		</div>
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>

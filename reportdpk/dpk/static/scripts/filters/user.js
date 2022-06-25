@@ -1,5 +1,8 @@
+import {templateSelectItemElement, templateUserBoxForSearch, templateDepartContainerBox, templateUserBoxForSelected, templateInputSearchUser} from '../templates/filter.js'
+
+
 // Окно ПОИСК ПОЛЬЗОВАТЕЛЯ
-class WindowSearchUser {
+export default class WindowSearchUser {
     constructor(container, bx) {
         this.container = container;
         // this.bx = new BX();
@@ -7,7 +10,7 @@ class WindowSearchUser {
         this.timeAnimate = 100/100;     // скорость анимации разворачивания/сворачивания списка подразделений - мс./пикс.
         this.departContainer = this.container.querySelector(".container-data-depart");              // контейнер с подразделениями
         this.departChoiceContainer = this.container.querySelector(".container-data-head-selector"); // контейнер с выбранными
-        this.departSearchInput = this.departChoiceContainer.querySelector("input");                 // контейнер ввода слова для посиска сотрудника
+        this.departSearchInput = this.departChoiceContainer.querySelector("input");                 // контейнер ввода слова для поиска сотрудника
         
         this.boxResponsible = this.container.querySelector(".container-data-user");                 // окно ПОИСКА
         this.boxDepartment = this.container.querySelector(".container-data-depart");                // окно ПОДРАЗДЕЛЕНИЙ
