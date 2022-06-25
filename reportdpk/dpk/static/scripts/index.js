@@ -1,10 +1,11 @@
 import Request from './requests.js';
 import BX from './bx24.js';
+
 import {FilterCompany,} from './filters/filter.js';
+import WindowSearchUser from './filters/user.js';
 import FilterDirection from './filters/direction.js';
 import {FilterSingle, } from './filters/single.js';
 import {FilterRange, } from './filters/range.js';
-import WindowSearchUser from './filters/user.js';
 
 
 class App {
@@ -15,6 +16,9 @@ class App {
         // фильтр - КОМПАНИИ
         this.elementFilterCompany = document.querySelector('#filterCompany');
         this.filterCompany = new FilterCompany(this.elementFilterCompany, this.requests, 'companies');
+        // фильтр - ОТВЕТСТВЕННЫЙ
+        this.elementFilterResponsible = document.querySelector('#filterResponsible');
+        this.filterResponsible = new WindowSearchUser(this.elementFilterResponsible, bx24);
         // фильтр - НАПРАВЛЕНИЯ СДЕЛОК
         this.elementFilterDirection = document.querySelector('#filterDirection');
         this.filterDirection = new FilterDirection(this.elementFilterDirection, this.requests, 'directions');
@@ -40,16 +44,11 @@ class App {
         this.elementFilterEmployees = document.querySelector('#filterEmployees');
         this.filterEmployees = new FilterRange(this.elementFilterEmployees);
 
-
-
-        // this.elementFilterResponsible = document.querySelector('.window-user-search');
-        this.elementFilterResponsible = document.querySelector('#filterResponsible');
-        this.filterResponsible = new WindowSearchUser(this.elementFilterResponsible, bx24);
-
     }
 
     init() {
         this.filterCompany.init();
+        this.filterResponsible.init();
         this.filterDirection.init();
         this.filterSector.init();
         this.filterRegion.init();
@@ -58,7 +57,6 @@ class App {
         this.filterRequisiteCity.init();
         this.filterRevenue.init();
         this.filterEmployees.init();
-        this.filterResponsible.init();
     }
 
 }
@@ -71,8 +69,8 @@ $(document).ready(function() {
         const api = "https://otchet.atonlab.ru/dpk/api/v1/";
         
         // объект - выполнения запросов к серверу приложения
-        let requests = new Request(api);
         let bx24 = new BX();
+        let requests = new Request(api);
         let app = new App(requests, bx24);
         app.init();
     })
