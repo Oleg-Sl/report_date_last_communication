@@ -4,7 +4,7 @@ import {FilterCompany,} from './filters/filter.js';
 import FilterDirection from './filters/direction.js';
 import {FilterSingle, } from './filters/single.js';
 import {FilterRange, } from './filters/range.js';
-import {WindowSearchUser, } from './filters/user.js';
+import WindowSearchUser from './filters/user.js';
 
 
 class App {
