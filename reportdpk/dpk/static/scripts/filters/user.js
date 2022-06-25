@@ -126,7 +126,7 @@ export default class WindowSearchUser {
             
         })
         // событие - очистить фильтр
-        this.elemFilterClear.addEventListener('click', (e) => {
+        this.btnClearFilter.addEventListener('click', (e) => {
             this.clearFilter();
         })
 
