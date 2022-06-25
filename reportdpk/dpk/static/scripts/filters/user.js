@@ -116,12 +116,12 @@ export default class WindowSearchUser {
                 boxUser.remove();
             }
         })
-        // событие "скрыть окно выбора пользователей"
-        document.addEventListener("click", async (event) => {
-            if (!event.target.closest(".window-searchcontact") && !event.target.closest(".user-item-remove")) {
-                this.hideWindow();
-            }
-        })
+        // // событие "скрыть окно выбора пользователей"
+        // document.addEventListener("click", async (event) => {
+        //     if (!event.target.closest(".window-searchcontact") && !event.target.closest(".user-item-remove")) {
+        //         this.hideWindow();
+        //     }
+        // })
 
     }
 
