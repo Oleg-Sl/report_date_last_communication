@@ -47,7 +47,7 @@ export default class WindowSearchUser {
 
     initHandler() {
         // событие "открытие окна поиска"
-        this.btnResponsible.addEventListener("click", async (event) => {
+        this.btnResponsible.addEventListener("click", async (e) => {
             this.fieldInput.classList.remove("d-none")
             // this.departChoiceContainer.querySelector("input").classList.remove("d-none")
             this.btnResponsible.classList.remove("btn-search-inactive");
@@ -57,7 +57,7 @@ export default class WindowSearchUser {
 
         })
         // событие "открытие окна подразделения"
-        this.btnDepartment.addEventListener("click", async (event) => {
+        this.btnDepartment.addEventListener("click", async (e) => {
             this.fieldInput.classList.add("d-none");
             // this.departChoiceContainer.querySelector("input").classList.add("d-none")
             this.btnResponsible.classList.add("btn-search-inactive");
@@ -67,16 +67,16 @@ export default class WindowSearchUser {
         })
       
         // событие "поиск пользователя"
-        this.fieldInput.addEventListener("input", async (event) => {
+        this.fieldInput.addEventListener("input", async (e) => {
             this.showWindow();
-            let name = event.target.value;
+            let name = e.target.value;
             this.getAndDisplayUsersSearch(name);
         })
         // событие "добавление пользователя в выбранные"
-        this.container.addEventListener("click", async (event) => {
-            let boxUser = event.target.closest(".ui-selector-user-box");            // блок-контейнер пользователя, по которому произошел клик
+        this.container.addEventListener("click", async (e) => {
+            let boxUser = e.target.closest(".ui-selector-user-box");            // блок-контейнер пользователя, по которому произошел клик
             // если клик не по кнопке "информация о сотруднике"
-            if (boxUser && !event.target.closest(".ui-selector-item-user-link")) {
+            if (boxUser && !e.target.closest(".ui-selector-item-user-link")) {
                 let userId = boxUser.dataset.userId;
                 let lastname = boxUser.dataset.lastname;
                 let name = boxUser.dataset.name;
@@ -86,9 +86,9 @@ export default class WindowSearchUser {
             }
         })
         // событие "клик разворачивание/сворачивание списка вложенных подразделений"
-        this.boxDepartment.addEventListener("click", async (event) => {
-            if (event.target.closest(".ui-selector-item-indicator")) {
-                let box = event.target.closest(".ui-selector-item-box");            // блок-контейнер подразделения, по которому произошел клик
+        this.boxDepartment.addEventListener("click", async (e) => {
+            if (e.target.closest(".ui-selector-item-indicator")) {
+                let box = e.target.closest(".ui-selector-item-box");            // блок-контейнер подразделения, по которому произошел клик
                 let boxChildren = box.querySelector(".ui-selector-item-children");  // блок-контейнер с дочерними подразделениями родителя, по которому произошел клик
                 let departId = box.dataset.departId;                                // id подразделения
                 let usersDisplay = box.dataset.userDisplay;                         // список работников выведен/не выведен ("true"/"")
@@ -108,16 +108,16 @@ export default class WindowSearchUser {
             }
         })
         // событие "открытие страницы с информацией о сотруднике"
-        this.container.addEventListener("click", async (event) => {
-            if (event.target.classList.contains("ui-selector-item-user-link")) {
-                let boxUser = event.target.closest(".ui-selector-user-box");            // блок-контейнер пользователя, по которому произошел клик
+        this.container.addEventListener("click", async (e) => {
+            if (e.target.classList.contains("ui-selector-item-user-link")) {
+                let boxUser = e.target.closest(".ui-selector-user-box");            // блок-контейнер пользователя, по которому произошел клик
                 let userId = boxUser.dataset.userId; 
                 let path = `/company/personal/user/${userId}/`
                 console.log(path);
                 await this.bx.openPath(path);
             }
-            if (event.target.closest(".user-item-content") && !event.target.classList.contains("user-item-remove")) {
-                let boxUser = event.target.closest(".user-item");                       // блок-контейнер пользователя, по которому произошел клик
+            if (e.target.closest(".user-item-content") && !e.target.classList.contains("user-item-remove")) {
+                let boxUser = e.target.closest(".user-item");                       // блок-контейнер пользователя, по которому произошел клик
                 let userId = boxUser.dataset.userId; 
                 let path = `/company/personal/user/${userId}/`
                 console.log(path);
@@ -131,7 +131,7 @@ export default class WindowSearchUser {
         })
 
         // событие "удалить пользователя из выбранных"
-        this.field.addEventListener("click", async (event) => {
+        this.field.addEventListener("click", async (e) => {
             const itemElem = e.target.closest(".filter-item");
             const btnDelElem = e.target.closest(".filter-item-delete");
             if (itemElem && btnDelElem) {
@@ -140,7 +140,7 @@ export default class WindowSearchUser {
             }
         })
         // событие "скрыть окно выбора пользователей"
-        document.addEventListener("click", async (event) => {
+        document.addEventListener("click", async (e) => {
             if (e.target.closest(".filter") !== this.container) {
                 this.hideWindow();
             }
