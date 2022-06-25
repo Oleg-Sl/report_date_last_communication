@@ -10,10 +10,10 @@ export default class WindowSearchUser {
         // поле с выбранными сотрудниками и поиском
         this.field = this.container.querySelector(".filter-field");
         // поле поиска сотрудников
-        this.fieldInput = this.field.querySelector(".filter-input");
+        this.fieldInput = this.field.querySelector("input");
         this.fieldSpanInput = this.field.querySelector("span");
         // кнопка очистки фильтра
-        this.fieldInput = this.container.querySelector(".filter-clear");
+        this.btnClearFilter = this.container.querySelector(".filter-clear");
 
         // окно выбора сотрудников (выводится список сотрудников и подразделений)
         this.window = this.container.querySelector(".window-user-search");
