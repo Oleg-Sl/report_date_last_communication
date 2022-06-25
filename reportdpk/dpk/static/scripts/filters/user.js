@@ -1,4 +1,4 @@
-import {templateSelectItemElement, templateSelectItemElement, templateUserBoxForSearch, templateDepartContainerBox, templateUserBoxForSelected, templateInputSearchUser} from '../templates/filter.js'
+import {templateSelectItemElement, templateUserBoxForSearch, templateDepartContainerBox, templateUserBoxForSelected, templateInputSearchUser} from '../templates/filter.js'
 
 
 // Окно ПОИСК ПОЛЬЗОВАТЕЛЯ
