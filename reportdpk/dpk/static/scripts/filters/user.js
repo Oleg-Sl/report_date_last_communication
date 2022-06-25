@@ -14,19 +14,11 @@ export default class WindowSearchUser {
         
         this.boxResponsible = this.container.querySelector(".container-data-user");                 // окно ПОИСКА
         this.boxDepartment = this.container.querySelector(".container-data-depart");                // окно ПОДРАЗДЕЛЕНИЙ
-        this.boxInvite = this.container.querySelector(".container-data-invite");                    // окно ПРИГЛАСИТЬ
 
         this.btnResponsible = this.container.querySelector(".btn-search-responsible");              // кнопка открыть "окно ПОИСК"
         this.btnDepartment = this.container.querySelector(".btn-search-department");                // кнопка открыть "окно ОТДЕЛЫ"
-        this.btnInvite = this.container.querySelector(".btn-search-invite");                        // кнопка открыть "окно ПРИГЛАСИТЬ"
-        this.btnInviteUser = this.boxInvite.querySelector(".form-invite-user-btn");                 // кнопка ПРИГЛАСИТЬ ПОЛЬЗОВАТЕЛЯ
 
-        // поля формы "приглашение пользователя"
-        this.form = {
-            email: this.boxInvite.querySelector(".container-data-invite-form-email input"),
-            lastname: this.boxInvite.querySelector(".container-data-invite-form-lastname input"),
-            name: this.boxInvite.querySelector(".container-data-invite-form-name input"),
-        }
+
         
         this.departments = null;
     }
@@ -43,10 +35,8 @@ export default class WindowSearchUser {
             this.departChoiceContainer.querySelector("input").classList.remove("d-none")
             this.btnResponsible.classList.remove("btn-search-inactive");
             this.btnDepartment.classList.add("btn-search-inactive");
-            this.btnInvite.classList.add("btn-search-inactive");
             this.boxResponsible.classList.remove("d-none");
             this.boxDepartment.classList.add("d-none");
-            this.boxInvite.classList.add("d-none");
 
         })
         // событие "открытие окна подразделения"
@@ -54,10 +44,8 @@ export default class WindowSearchUser {
             this.departChoiceContainer.querySelector("input").classList.add("d-none")
             this.btnResponsible.classList.add("btn-search-inactive");
             this.btnDepartment.classList.remove("btn-search-inactive");
-            this.btnInvite.classList.add("btn-search-inactive");
             this.boxResponsible.classList.add("d-none");
             this.boxDepartment.classList.remove("d-none");
-            this.boxInvite.classList.add("d-none"); 
         })
       
         // событие "поиск пользователя"
