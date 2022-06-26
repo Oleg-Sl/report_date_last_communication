@@ -72,7 +72,7 @@ class App {
         this.userCurrent = await this.getCurrentUser();
         this.users = await this.getActiveUsers();
         
-        this.tableStatistic.init(6 * 31, this.userCurrent, );
+        this.tableStatistic.init(6 * 31, this.userCurrent, this.users);
 
         this.initHandler();
     }
