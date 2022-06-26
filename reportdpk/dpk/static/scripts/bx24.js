@@ -84,12 +84,25 @@ export default  class BX {
         });
     }
 
+    async callMethodForLong(method, params = {}) {
+        return new Promise((resolve, reject) => {
+            let callback = result => {
+                if (result.status != 200 || result.error()) {
+                    console.log(`${result.error()} (callMethod ${method}: ${JSON.stringify(params)})`);
+                    return reject("");
+                }
+                return resolve(result.answer);
+            };
+            BX24.callMethod(method, params, callback);
+        });
+    }
+
     // Выполнение длинного пакетного запроса
     async longBatchMethod(method, params) {
-        let response = await this.callMethod(method, params);
-        let result = response.answer.result;        // данные
-        let next = response.answer.next;            // следующий номер элемента для извлечения
-        let total = response.answer.total;          // всего элементов
+        let response = await this.callMethodForLong(method, params);
+        let result = response.result;               // данные
+        let next = response.next;                   // следующий номер элемента для извлечения
+        let total = response.total;                 // всего элементов
         if (next) {
             let requestsList = this.generatingRequests(method, params, next, total);        // формирование списка запросов
             let batchList = this.splittingListRequests(requestsList);                       // разбитие списка запросов на "пачки"
@@ -97,7 +110,10 @@ export default  class BX {
             let count = 0;                          // количество выпоненных BATCH запросов
             for (let batch of batchList) {
                 let res = await this.batchMethod(batch);                                    //
-                result = result.concat(res);
+                // result = result.concat(...res);
+                for (let key in res) {
+                    result = result.concat(res[key]);
+                }
                 count++;
                 console.log(`Выполнено ${count} запросов из ${countBatch}`);
             }

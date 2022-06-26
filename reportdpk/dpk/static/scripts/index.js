@@ -48,7 +48,7 @@ class App {
         // таблица - с статистикой по компаниям
         this.elementTableStatistic = document.querySelector('#tableStatisticData');
         this.loaderTableStatistic = document.querySelector('#loaderTableStatistic');
-        this.tableStatistic = new TableStatistic(this.elementTableStatistic, "", loaderTableStatistic);
+        this.tableStatistic = new TableStatistic(this.elementTableStatistic, loaderTableStatistic);
         
         this.selectedPageNumber = document.querySelector('#selectedPageNumber');
         this.buttonGoToPage = document.querySelector('#buttonGoToPage');
@@ -56,7 +56,8 @@ class App {
     
     }
 
-    init() {
+    async init() {
+        
         this.filterCompany.init();
         this.filterResponsible.init();
         this.filterDirection.init();
@@ -68,7 +69,10 @@ class App {
         this.filterRevenue.init();
         this.filterEmployees.init();
         
-        this.tableStatistic.init(6 * 31);
+        this.userCurrent = await this.getCurrentUser();
+        this.users = await this.getActiveUsers();
+        
+        this.tableStatistic.init(6 * 31, this.userCurrent, );
 
         this.initHandler();
     }
@@ -82,6 +86,23 @@ class App {
             let page = 1
             await this.getStatistic(page);
         })
+    }
+
+    // получить данные текущего пользователя
+    async getCurrentUser() {
+        let userCurrent = await this.bx24.callMethod('user.current', {});
+        return userCurrent;
+    }
+
+    // получить данные список всех пользователей
+    async getActiveUsers() {
+        let usersList = await this.bx24.longBatchMethod('user.get', {"FILTER": {"ACTIVE": true}});
+        let userObj = {};
+        for (let user of usersList) {
+            let userId = user.ID;
+            userObj[userId] = user;
+        }
+        return userObj;
     }
 
     getParamsRequest() {

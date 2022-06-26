@@ -23,7 +23,7 @@ class CharInFilter(filters.BaseInFilter, filters.CharFilter):
 
 class StatisticCompany(filters.FilterSet):
     company = NumberInFilter(field_name='pk', lookup_expr='in')
-    responsible = NumberInFilter(field_name='responsible__pk', lookup_expr='in')
+    responsible = NumberInFilter(field_name='responsible', lookup_expr='in')
 
     sector = filters.CharFilter()
     region = filters.CharFilter()

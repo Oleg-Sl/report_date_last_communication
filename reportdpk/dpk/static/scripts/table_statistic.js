@@ -1,16 +1,18 @@
 export default class TableStatistic {
-    constructor(table, user, loader) {
+    constructor(table, loader) {
         this.table = table;
         // контейнер заголовка таблицы
         this.tableHeader = this.table.querySelector("thead");
         this.tableBody = this.table.querySelector("tbody");
         
-        this.user = user;
+        this.userCurrent = NaN;
         this.loader = loader;
         
     }
 
-    async init(deltaDay) {
+    async init(deltaDay, userCurrent, usersList) {
+        this.userCurrent = userCurrent;
+        this.usersList = usersList;
         this.dateTransitionDealToInactive = this.convertNumberOfDaysInDateObj(deltaDay);
         // обработчик перетаскивания таблицы по нажатию кнопки мыши
         this.handlerDragnDrop();
@@ -365,7 +367,7 @@ export default class TableStatistic {
             let companyName = company.name || "&ndash;";
             let companyInn = company.inn || "&ndash;";
             let companyResponsibleId = company.responsible || "&ndash;";
-            let companyResponsibleTitle = companyResponsibleId;
+            let companyResponsibleTitle = this.usersList[companyResponsibleId].NAME + " " + this.usersList[companyResponsibleId].LAST_NAME;
             let companyDpkDatetimeStr = company.dpk;
             let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetimeStr);
             
@@ -378,7 +380,9 @@ export default class TableStatistic {
 
             contentHTML += `
                 <tr>
-                    <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}'>${companyName}</td>
+                    <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}'>
+                        <p><a href="" data-tooltip="HTML<br>подсказка" target="_blank">${companyName}</a></p>
+                    </td>
                     <td class="col-responsible" data-id-bx='${companyResponsibleId}'>${companyResponsibleTitle}</td>
                     <td class='${dpkCellStyle}'>${companyDpkDateStr}</td>
                     <td>${summaByCompanyWork.toLocaleString()}</td>
