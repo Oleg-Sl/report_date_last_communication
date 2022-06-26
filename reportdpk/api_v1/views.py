@@ -358,8 +358,8 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
 class StatisticCompanyDirectionViewSet(viewsets.GenericViewSet):
     queryset = Company.objects.all()
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_class = statistic_company.StatisticCompany
-    ordering_fields = ["id_bx", "name", "responsible", ]
+    # filterset_class = statistic_company.StatisticCompanyByDirection
+    # ordering_fields = ["id_bx", "name", "responsible", ]
 
     def get_queryset(self, companies_ids, directions_ids, limit_date_suspended_deals, limit_date_failed_deals):
         return Deal.objects.statistic_company_by_directions(
@@ -399,6 +399,8 @@ class StatisticCompanyDirectionViewSet(viewsets.GenericViewSet):
 
 class StatisticDirectionViewSet(viewsets.GenericViewSet):
     queryset = Direction.direction_actual.count_active_deals()
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = statistic_company.StatisticCompany
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())

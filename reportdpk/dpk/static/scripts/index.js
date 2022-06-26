@@ -80,6 +80,7 @@ class App {
 
     getParamsRequest() {
         return {
+            duration: 15,
             company: this.filterCompany.getRequestParameters().join(","),
             responsible: this.filterResponsible.getRequestParameters().join(","),
             direction: this.filterDirection.getRequestParameters().join(","),
@@ -97,8 +98,19 @@ class App {
 
     async getStatistic(page) {
         let paramsRequest = this.getParamsRequest();
+
         console.log("paramsRequest = ", paramsRequest);
-        // this.requests.GET();
+        let companySummary = await this.requests.GET("statistic-company", paramsRequest);
+        let summaryByDirections = await this.requests.GET("statistic-direction", paramsRequest);
+        
+        let companySummaryByDirections = await this.requests.GET("statistic-company-direction", {
+            companies: companySummary.map((obj) => obj.id_bx),
+            directions: paramsRequest.direction
+        });
+        console.log("companySummary = ", companySummary);
+        console.log("summaryByDirections = ", summaryByDirections);
+        console.log("companySummaryByDirections = ", companySummaryByDirections);
+        
     }
 }
 

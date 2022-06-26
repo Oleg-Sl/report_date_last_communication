@@ -38,3 +38,13 @@ class StatisticCompany(filters.FilterSet):
         model = Company
         fields = ["company", "responsible", "sector", "region", "source_company",
                   "requisite_region", "requisites_city", "number_employees", "revenue", ]
+
+
+class StatisticCompanyByDirection(filters.FilterSet):
+    company = NumberInFilter(field_name='pk', lookup_expr='in')
+
+    class Meta:
+        model = Company
+        fields = ["company", ]
+
+
