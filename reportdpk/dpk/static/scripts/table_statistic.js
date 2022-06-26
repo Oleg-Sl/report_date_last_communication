@@ -385,7 +385,7 @@ export default class TableStatistic {
             let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetimeStr);
             
             let dpkCellStyle = "";
-            if (companyDpkDatetimeStr && new Date(companyDpkDatetimeStr) < this.dateTransitionDealToInactive) {
+            if (!companyDpkDatetimeStr || new Date(companyDpkDatetimeStr) < this.dateTransitionDealToInactive) {
                 dpkCellStyle = "dpk-more-six-months";
             }
 
@@ -394,11 +394,10 @@ export default class TableStatistic {
             contentHTML += `
                 <tr>
                     <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}'>
-                        <span class="col-href" data-path="/crm/company/details/${companyIdBx}/">${companyName}</span>
+                        <p><span class="col-href" data-path="/crm/company/details/${companyIdBx}/">${companyName}</span></p>
                     </td>
-                    
                     <td class="col-responsible" data-id-bx='${companyResponsibleId}'>
-                        <span class="col-href" data-path="/company/personal/user/${companyResponsibleId}/">${companyResponsibleTitle}</span>
+                        <p><span class="col-href" data-path="/company/personal/user/${companyResponsibleId}/">${companyResponsibleTitle}</span></p>
                     </td>
                     <td class='${dpkCellStyle}'>${companyDpkDateStr}</td>
                     <td>${summaByCompanyWork.toLocaleString()}</td>
