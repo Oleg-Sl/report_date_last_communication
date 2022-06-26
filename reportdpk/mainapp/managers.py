@@ -52,7 +52,7 @@ class CompanyQuerySet(models.QuerySet):
                         stage__status="WORK"
                     ).aggregate(
                         s=models.Sum('opportunity')
-                    )["s"]
+                    ).values('s')[:1]
                     # .annotate(
                     # .annotate(
                     #     s=models.Sum('opportunity')
