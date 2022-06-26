@@ -104,11 +104,10 @@ class App {
 
     async getStatistic(page) {
         let paramsRequest = this.getParamsRequest();
-
         console.log("paramsRequest = ", paramsRequest);
+
         this.companySummary = await this.requests.GET("statistic-company", paramsRequest);
         this.summaryByDirections = await this.requests.GET("statistic-direction", paramsRequest);
-        
         this.companySummaryByDirections = await this.requests.GET("statistic-company-direction", {
             companies: this.companySummary.result.results.map((obj) => obj.id_bx),
             // directions: paramsRequest.direction
@@ -116,7 +115,7 @@ class App {
         console.log("companySummary = ", this.companySummary);
         console.log("summaryByDirections = ", this.summaryByDirections);
         console.log("companySummaryByDirections = ", this.companySummaryByDirections);
-        this.tableStatistic.renderTable(this.companySummary.result, this.summaryByDirections.result, this.companySummaryByDirections.result);
+        this.tableStatistic.renderTable(this.companySummary.result.results, this.summaryByDirections.result, this.companySummaryByDirections.result);
     }
 }
 
