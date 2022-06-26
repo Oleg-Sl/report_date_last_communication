@@ -60,10 +60,6 @@ class FilterSingle {
         
     }
 
-    getValue() {
-        return this.elemInputValue.value;
-    }
-
     async getAndRenderData(searchValue="") {
         this.resizeWindow();
         this.elemWindow.classList.remove("d-none");
@@ -118,6 +114,9 @@ class FilterSingle {
         this.elemWindow.style.width = width + "px";
     }
 
+    getRequestParameters() {
+        return this.elemInputValue.value;
+    }
 }
 
 export {FilterSingle, };

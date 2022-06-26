@@ -44,6 +44,9 @@ class App {
         this.elementFilterEmployees = document.querySelector('#filterEmployees');
         this.filterEmployees = new FilterRange(this.elementFilterEmployees);
 
+
+        this.buttonGoToPage = document.querySelector('#buttonGoToPage');
+        this.buttonGetStatistic = document.querySelector('#buttonGetStatistic');
     }
 
     init() {
@@ -59,6 +62,39 @@ class App {
         this.filterEmployees.init();
     }
 
+    initHandler() {
+        buttonGoToPage.addEventListener('click', async (e) => {
+            let page = 1
+            await this.getStatistic();
+        })
+        buttonGetStatistic.addEventListener('click', async (e) => {
+            let page = 1
+            await this.getStatistic();
+        })
+    }
+
+    getParamsRequest() {
+        return {
+            company: this.filterCompany.getRequestParameters(),
+            responsible: this.filterResponsible.getRequestParameters(),
+            direction: this.filterDirection.getRequestParameters(),
+            sector: this.filterSector.getRequestParameters(),
+            region: this.filterRegion.getRequestParameters(),
+            source: this.filterSource.getRequestParameters(),
+            requisite_region: this.filterRequisiteRegion.getRequestParameters(),
+            requisites_city: this.filterRequisiteCity.getRequestParameters(),
+            revenue_min: this.filterRevenue.getMinValue(),
+            revenue_max: this.filterRevenue.getMaxValue(),
+            number_employees_min: this.filterEmployees.getMinValue(),
+            number_employees_max: this.filterEmployees.getMaxValue(),
+        }
+    }
+
+    async getStatistic() {
+        let paramsRequest = this.getParamsRequest();
+        print("paramsRequest = ", paramsRequest);
+        // this.requests.GET();
+    }
 }
 
 
