@@ -33,7 +33,7 @@ class CompanyQuerySet(models.QuerySet):
                         direction__in=directions,
                         stage__status="SUCCESSFUL"
                     ).annotate(
-                        s=models.Sum('summa')
+                        s=models.Sum('opportunity')
                     ).values('s')[:1]
                 ),
                 # models.Sum(
