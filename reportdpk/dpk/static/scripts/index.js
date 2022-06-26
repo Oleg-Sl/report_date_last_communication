@@ -140,6 +140,9 @@ class App {
     }
 
     async getStatistic() {
+
+        this.tableStatistic.hideTable();
+
         let paramsRequest = this.getParamsRequest();
         console.log("paramsRequest = ", paramsRequest);
 
@@ -155,6 +158,8 @@ class App {
         console.log("companySummaryByDirections = ", this.companySummaryByDirections);
         this.tableStatistic.renderTable(this.companySummary.result.results, this.summaryByDirections.result, this.companySummaryByDirections.result);
         this.tableStatistic.sortingSelection(this.order);
+
+        this.tableStatistic.showTable();
     }
 
     getPageSize() {

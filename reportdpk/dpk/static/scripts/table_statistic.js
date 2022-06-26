@@ -242,7 +242,7 @@ export default class TableStatistic {
 
 
         this.table.style.gridTemplateColumns = this.arrSizeColumn.join(' ');
-        this.showTable();
+        // this.showTable();
         this.handlerResizeWidthColumn();
     }
 
