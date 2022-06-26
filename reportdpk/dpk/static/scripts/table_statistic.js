@@ -369,6 +369,7 @@ export default class TableStatistic {
             let companyName = company.name || "&ndash;";
             let companyInn = company.inn || "&ndash;";
             let companyResponsibleId = company.responsible || "&ndash;";
+            console.log("companyResponsibleId = ", companyResponsibleId)
             console.log("this.usersList[companyResponsibleId].NAME = ", this.usersList[companyResponsibleId].NAME)
             console.log("this.usersList[companyResponsibleId].LAST_NAME = ", this.usersList[companyResponsibleId].LAST_NAME)
             let companyResponsibleTitle = this.usersList[companyResponsibleId].NAME + " " + this.usersList[companyResponsibleId].LAST_NAME;
