@@ -104,8 +104,8 @@ class App {
         let summaryByDirections = await this.requests.GET("statistic-direction", paramsRequest);
         
         let companySummaryByDirections = await this.requests.GET("statistic-company-direction", {
-            companies: companySummary.map((obj) => obj.id_bx),
-            directions: paramsRequest.direction
+            companies: companySummary.result.results.map((obj) => obj.id_bx),
+            directions: paramsRequest.result.results.direction
         });
         console.log("companySummary = ", companySummary);
         console.log("summaryByDirections = ", summaryByDirections);
