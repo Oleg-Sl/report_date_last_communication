@@ -386,7 +386,7 @@ export default class TableStatistic {
                     <td class="col-responsible" data-id-bx='${companyResponsibleId}'>
                         <p><span class="col-href" data-path="/company/personal/user/${companyResponsibleId}/">${companyResponsibleTitle}</span></p>
                     </td>
-                    <td class='${dpkCellStyle}'>${companyDpkDateStr}</td>
+                    <td class='${dpkCellStyle}'>${companyDpkDateStr || "&ndash;"}</td>
                     <td>${summaByCompanyWork.toLocaleString()}</td>
                     <td>${summaByCompanySuccess.toLocaleString()}</td>
                     ${companyDirectionContent}
@@ -476,7 +476,8 @@ export default class TableStatistic {
 
     // принимает дату в формате ISO и возвращает дату в формате "дд.мм.гггг"
     convertsDatetimeToString(datetime) {
-        if (!datetime) return "&ndash;";
+        if (!datetime) return;
+        if (new Date(datetime) < new Date(2012, 1,1)) return;
         let date = new Date(datetime);
         let options = {
             year: 'numeric',
@@ -488,6 +489,7 @@ export default class TableStatistic {
 
     sortingSelection(orderName) {
         let sortButtons = this.tableBody.querySelectorAll(".sort-button");
+        console.log("sortButtons = ", sortButtons);
         sortButtons.forEach((elem, ind) => {
             let order = elem.dataset.order;
             if (order === orderName) {

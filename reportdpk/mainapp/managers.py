@@ -2,6 +2,9 @@ from django.db import models
 from django.conf import settings
 
 
+import datetime
+
+
 class DirectionActualManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().exclude(pk__in=settings.DIRECTION_IGNORE_LIST).filter(new=True)
@@ -20,17 +23,26 @@ class DirectionActualManager(models.Manager):
 class CompanyQuerySet(models.QuerySet):
     def statistic_company(self, directions, duration):
         return self.annotate(
-            summa_by_company_success=models.Sum(
-                "deal__opportunity",
-                filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
-                output_field=models.FloatField()
+            summa_by_company_success=models.functions.Coalesce(
+                models.Sum(
+                    "deal__opportunity",
+                    filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+                    output_field=models.FloatField()
+                ),
+                0
             ),
-            summa_by_company_work=models.Sum(
-                "deal__opportunity",
-                filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
-                output_field=models.FloatField()
+            summa_by_company_work=models.functions.Coalesce(
+                models.Sum(
+                    "deal__opportunity",
+                    filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+                    output_field=models.FloatField()
+                ),
+                0
             ),
-            dpk=models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration))
+            dpk=models.functions.Coalesce(
+                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration)),
+                datetime.date(2000, 1,1)
+            )
         )
 
 
