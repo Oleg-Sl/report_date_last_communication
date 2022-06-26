@@ -42,6 +42,7 @@ class CompanyQuerySet(models.QuerySet):
                 #     output_field=models.FloatField()
                 # ),
                 models.Value(0),
+                output_field=models.FloatField()
             ),
             summa_by_company_work=models.functions.Coalesce(
                 models.Sum(
