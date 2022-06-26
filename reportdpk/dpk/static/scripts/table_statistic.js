@@ -400,8 +400,8 @@ export default class TableStatistic {
         for (let dirIdBx in directions) {
             let valueCellAmountDealsInWork = "0";
             let styleCellAmountDealsInWork = "";
-            let amountOfDealsInWork = 0;
-            let amountOfSuccessfulDeals = 0;
+            let amountOfDealsInWork = "0";
+            let amountOfSuccessfulDeals = "0";
             let status = 0;
 
             
@@ -409,7 +409,7 @@ export default class TableStatistic {
             if (this.companySummaryByDirection[companyIdBx] && this.companySummaryByDirection[companyIdBx][dirIdBx]) {
                 let companyDataByDir = this.companySummaryByDirection[companyIdBx][dirIdBx];
                 amountOfDealsInWork = companyDataByDir.opportunity_work || "0";
-                amountOfSuccessfulDeals = companyDataByDir.opportunity_success;
+                amountOfSuccessfulDeals = companyDataByDir.opportunity_success || "0";
                 // если есть проваленные сделки
                 if (companyDataByDir.actual_deal_failed) {
                     styleCellAmountDealsInWork = "cell-background-red";
