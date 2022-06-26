@@ -36,6 +36,5 @@ class StatisticCompany(filters.FilterSet):
 
     class Meta:
         model = Company
-        fields = ["date", "summa_by_company", "company", "responsible", "number_employees", "revenue", "industry_id",
-                  "region", "sector", "source_company",
-                  "summa_by_company_work", "summa_by_company_success"]
+        fields = ["company", "responsible", "sector", "region", "source_company",
+                  "requisite_region", "requisites_city", "number_employees", "revenue", ]
