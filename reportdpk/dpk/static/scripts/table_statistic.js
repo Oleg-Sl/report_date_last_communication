@@ -379,7 +379,7 @@ export default class TableStatistic {
 
             contentHTML += `
                 <tr>
-                    <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}'>${nameCompany}</td>
+                    <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}'>${companyName}</td>
                     <td class="col-responsible" data-id-bx='${companyResponsibleId}'>${companyResponsibleTitle}</td>
                     <td class='${dpkCellStyle}'>${companyDpkDateStr}</td>
                     <td>${summaByCompanyWork.toLocaleString()}</td>
