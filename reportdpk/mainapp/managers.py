@@ -4,12 +4,7 @@ from django.conf import settings
 
 import datetime
 
-from .models import (
-    Direction,
-    Stage,
-    Company,
-    Deal
-)
+from .models import Deal
 
 
 class DirectionActualManager(models.Manager):
