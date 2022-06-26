@@ -60,6 +60,8 @@ class App {
         this.filterRequisiteCity.init();
         this.filterRevenue.init();
         this.filterEmployees.init();
+        
+        this.initHandler();
     }
 
     initHandler() {
