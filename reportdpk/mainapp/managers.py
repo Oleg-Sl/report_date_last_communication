@@ -4,7 +4,7 @@ from django.conf import settings
 
 import datetime
 
-from .models import Deal as Dea
+# from .models import Deal as Dea
 
 
 class DirectionActualManager(models.Manager):
