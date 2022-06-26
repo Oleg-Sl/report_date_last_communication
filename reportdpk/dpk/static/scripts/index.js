@@ -80,6 +80,7 @@ class App {
         this.tableStatistic.init(6 * 31, this.userCurrent, this.users);
 
         this.initHandler();
+        await this.getStatistic();
     }
 
     initHandler() {
