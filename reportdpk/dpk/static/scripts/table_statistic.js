@@ -10,7 +10,8 @@ export default class TableStatistic {
         
     }
 
-    async init() {
+    async init(deltaDay) {
+        this.dateTransitionDealToInactive = this.convertNumberOfDaysInDateObj(deltaDay);
         // обработчик перетаскивания таблицы по нажатию кнопки мыши
         this.handlerDragnDrop();
         // обработчик изменения ширины столбцов таблицы мышью
@@ -221,13 +222,17 @@ export default class TableStatistic {
         let contentHeadHTML = this.renderTableHeaderToHTML();
         this.tableHeader.innerHTML = contentHeadHTML;
 
+        let contentBodyHTML = this.renderTableBodyToHTML();
+        this.tableBody.innerHTML = contentBodyHTML;
+
+
         this.table.style.gridTemplateColumns = this.arrSizeColumn.join(' ');
         this.showTable();
-        // this.handlerResizeWidthColumn();
+        this.handlerResizeWidthColumn();
     }
 
     // создание заголовка таблицы
-    renderTableHeaderToHTML(data) {
+    renderTableHeaderToHTML() {
         let directions = this.directionSummary;
 
         let startColumnWithDirData = 6;     // столбец с которого начинаются данные по направлениям
@@ -350,163 +355,113 @@ export default class TableStatistic {
     }
 
     // добавление данных в таблицу
-    async renderTableBodyToHTML(data, dpk=NaN) {
-        /* Подготовка контента и вставка его в таблицу */
-        this.content = "";
-        // `
-        //     <tr>
-        //         ${this.renderActiveDealRow(data)}
-        //     </tr>
-        // `;
-        for (let company of data) {
-            let companyDirectionContent = this.renderColumnDirectionHTML(company.direction, company.id_bx, company.name);
-            let responsibleHTML = company.responsible_lastname ? `<a href=${company.responsible_url} target="_blank">${company.responsible_lastname} ${company.responsible_name || ''}</a>` : '&ndash;';
+    async renderTableBodyToHTML() {
+        let contentHTML = "";
+        let companies = this.companySummary;
+
+        for (let company of companies) {
+            let summaByCompanySuccess = company.summa_by_company_success || 0;
+            let summaByCompanyWork = company.summa_by_company_work || 0;
+            let companyIdBx = company.id_bx;
+            let companyName = company.name || "&ndash;";
+            let companyInn = company.inn || "&ndash;";
+            let companyResponsibleId = company.responsible || "&ndash;";
+            let companyResponsibleTitle = companyResponsibleId;
+            let companyDpkDatetimeStr = company.dpk;
+            let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetime);
             
-            let limitDate = new Date(dpk);
-            let objDate = new Date(company.date_last_communication);
-            const minDate = new Date(2000, 1);
-            let insertDate = objDate > minDate ? objDate : NaN;
-            let date = this.formatDate(insertDate);
-            // let date = this.formatDate(company.date_last_communication);
-            let dpkCellStyle = objDate > limitDate ? "" : "dpk-more-six-months"
+            let dpkCellStyle = "";
+            if (companyDpkDatetimeStr && new Date(companyDpkDatetimeStr) < this.dateTransitionDealToInactive) {
+                dpkCellStyle = "dpk-more-six-months";
+            }
 
-            this.content += `
+            let companyDirectionContent = this.renderTableBodyColDirToHTML(companyIdBx);
+
+            contentHTML += `
                 <tr>
-                    <td class="col-company" data-name='${company.name}' data-url='${company.url}' data-inn='${company.inn || ""}' data-id='${company.id_bx || ""}'>
-                        <p><a href=${company.url} data-tooltip="HTML<br>подсказка" target="_blank">${company.name}</a></p>
-                    </td>
-
-                    <!-- <td>${company.inn || '&ndash;'}</td> -->
-                    
-                    <td class="col-responsible" data-name='${company.responsible_name || ""}' 
-                                                data-lastname='${company.responsible_lastname}' 
-                                                data-url='${company.responsible_url}'
-                                                data-id='${company.responsible_id}'>
-                        ${responsibleHTML}
-                    </td>
-                    
-                    <td class='${dpkCellStyle}'>${date}</td>
-                    
-                    <td>${company.summa_by_company_work.toLocaleString()}</td>
-                    
-                    <td>${company.summa_by_company_success.toLocaleString()}</td>
-                    
+                    <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}'>${nameCompany}</td>
+                    <td class="col-responsible" data-id-bx='${companyResponsibleId}'>${companyResponsibleTitle}</td>
+                    <td class='${dpkCellStyle}'>${companyDpkDateStr}</td>
+                    <td>${summaByCompanyWork.toLocaleString()}</td>
+                    <td>${summaByCompanySuccess.toLocaleString()}</td>
                     ${companyDirectionContent}
                 </tr>
             `;
-            // class='directory-column-border-right'
+
         }
-        this.tableBody.innerHTML = await this.content;                // Вставляем контент в таблицу
+        return contentHTML;
     }
 
-    // отрисовка строки с автивными сделками
-    renderActiveDealRow(data) {
-        let n = 6;                  // столбец с которого начинаются данные по направлениям
-        let count = 2;              // столбцов в направлении
-        let contentHtml = `
-            <td class="col-company count-active-deal" style="grid-column: $1/2;">
-        
-            </td>
-            <td scope="col" colspan="${n}" class="count-active-deal" style="grid-column: 2/${n};">
-                <div>Активные сделки на странице</div>
-            </td>
-        `;
-        let directions = data[0].direction;
-        for (let index in directions) {
-            let idDirBx = directions[index]["id_bx"]
-            let keyActDealByDir = "dir_" + idDirBx;
-            contentHtml += `
-                <td scope="col" colspan="${count}" class="count-active-deal directory-column-border-left-border-left" style="grid-column: ${n}/${n + count};">
-                    <div>${data[0][keyActDealByDir]}</div>
-                </td>
-            `;
-            n += count;
-        }
-        return contentHtml;
-        // style="grid-column: ${n}/${n + 3}; grid-row: 1/2"
-    }
+    // принимает список направлений компании и возвращает их HTML код для вставки в таблицу (столбцы с данными по направлениям)
+    renderTableBodyColDirToHTML(companyIdBx) {
+        let directions = this.directionSummary;
+        let contentHTML = "";
 
-    // сумма сделок по одному направлению на одной странице
-    getcountActiveDeal(data, index) {
-        let count = 0;
-        for (let company of data) {
-            count += +company.direction[index]["count_deals"];
-        }
-        return count;
-    }
+        for (let dirIdBx in directions) {
+            let valueCellAmountDealsInWork = "0";
+            let styleCellAmountDealsInWork = "";
+            let amountOfDealsInWork = 0;
+            let amountOfSuccessfulDeals = 0;
+            let status = 0;
 
-    // принимает список направлений и возвращает их HTML код для вставки 
-    // в таблицу (столбцы с данными по направлениям)
-    renderColumnDirectionHTML(directions, id_company, name_company) {
-        let contentDirection = '';
-        for (let direction of directions) {
-            let status = direction.status_summa_by_direction_work;
-            // const allowedCreateDeals = status === "0" || status === 0 ? true : false;
-            let fieldSummaWork = status;
-            let styleCell = "";
-            if (status === "2" || status === 2) {
-                fieldSummaWork = direction.summa_by_direction_work.toLocaleString();
+            
+
+            if (this.companySummaryByDirection[companyIdBx] && this.companySummaryByDirection[companyIdBx][dirIdBx]) {
+                let companyDataByDir = this.companySummaryByDirection[companyIdBx][dirIdBx];
+                amountOfDealsInWork = companyDataByDir.opportunity_work || "0";
+                amountOfSuccessfulDeals = companyDataByDir.opportunity_success;
+                // если есть проваленные сделки
+                if (companyDataByDir.actual_deal_failed) {
+                    styleCellAmountDealsInWork = "cell-background-red";
+                    valueCellAmountDealsInWork = "1";
+                }
+                // если есть сделки на подготовке к работе
+                if (companyDataByDir.actual_deal_preparation) {
+                    styleCellAmountDealsInWork = "";
+                    valueCellAmountDealsInWork = "1";
+                }
+                // если есть сделки в работе
+                if (companyDataByDir.actual_deal_work) {
+                    styleCellAmountDealsInWork = "";
+                    valueCellAmountDealsInWork = amountOfDealsInWork.toLocaleString();
+                }
+                contentHTML += `
+                    <td class='cell-add-deal directory-column-border-left ${styleCellAmountDealsInWork}' 
+                        data-company-id-bx='${companyIdBx}' 
+                        data-direction-id-bx='${dirIdBx}'
+                        data-category-id-bx='43'
+                        data-stage-id-bx='C43:NEW'
+                        data-allowed_add_deals=${status}
+                    >
+                        ${valueCellAmountDealsInWork}
+                    </td>
+                    <td class='cell-add-deal'
+                        data-company-id-bx='${companyIdBx}' 
+                        data-direction-id-bx='${dirIdBx}'
+                        data-category-id-bx='43'
+                        data-stage-id-bx='C43:NEW'
+                        data-allowed_add_deals=${status}
+                    >
+                        ${amountOfSuccessfulDeals.toLocaleString()}
+                    </td>
+                `;
             }
-            if (status === "3" || status === 3) {
-                fieldSummaWork = 1;
-                styleCell = "cell-background-red";
-            }
-
-            contentDirection += `
-                <td class='cell-add-deal directory-column-border-left ${styleCell}' 
-                    data-id_company='${id_company}' 
-                    data-name_company='${name_company}' 
-                    data-id_direction='${direction.id_bx}'
-                    data-name_direction='${direction.name}'
-                    data-id_category='43'
-                    data-id_stage='C43:NEW'
-                    data-allowed_add_deals=${status}
-                >
-                    ${fieldSummaWork}
-                </td>
-                <td class='cell-add-deal'
-                    data-id_company='${id_company}'
-                    data-name_company='${name_company}'  
-                    data-id_direction='${direction.id_bx}'
-                    data-name_direction='${direction.name}'
-                    data-id_category='43'
-                    data-id_stage='C43:NEW'
-                    data-allowed_add_deals=${status}
-                >
-                    ${direction.summa_by_direction_success.toLocaleString()}
-                </td>
-            `;
-            // <td>${direction.count_deals}</td>
         }
-        return contentDirection;
+
+        return contentHTML;
     }
 
-    // принимает список сделок и возвращает их HTML код для вставки в таблицу
-    renderColumnDealsHTML(deals) {
-        let contentDeals = '';
-        for (let deal of deals) {
-            contentDeals += `
-                <li data-id=${deal.id_bx} 
-                    data-url=${deal.url} 
-                    data-name=${deal.title} 
-                    data-datecreate=${deal.date_create} 
-                    data-dateclosed=${deal.date_closed} 
-                    data-datecommunication=${deal.date_last_communication} 
-                    data-opportunity=${deal.opportunity} 
-                    data-amount=${deal.amount_paid} 
-                    data-closed=${deal.closed}>
-                    <a href=${deal.url}>${deal.id_bx}</a>
-                </li>`;
-        }
-        return contentDeals;
+    convertNumberOfDaysInDateObj(numberDays) {
+        let dateOffsetInMilliseconds = (24 * 60 * 60 * 1000) * numberDays;
+        let actualDate = new Date();
+        actualDate.setTime(actualDate.getTime() - dateOffsetInMilliseconds);
+        return actualDate;
     }
 
     // принимает дату в формате ISO и возвращает дату в формате "дд.мм.гггг"
-    formatDate(d) {
-        if (!d) {
-            return "&ndash;";
-        }
-        let date = new Date(d);
+    convertsDatetimeToString(datetime) {
+        if (!datetime) return "&ndash;";
+        let date = new Date(datetime);
         let options = {
             year: 'numeric',
             month: 'numeric',
@@ -514,6 +469,13 @@ export default class TableStatistic {
         };
         return date.toLocaleString("ru", options);
     }
+
+    
+
+
+
+
+
 
     // обработчик событий наведения мыши на пользователя или компанию
     eventHoverElementsTable() {

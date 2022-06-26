@@ -60,7 +60,7 @@ class DealManager(models.Manager):
                 models.Q(stage__status="WORK") & models.Q(date_modify__gte=lim_date_suspended_deals),
                 output_field=models.BooleanField()
             ),
-            # есть не просроченные сделки в работе
+            # есть не просроченные сделки на подготовке к работе
             actual_deal_preparation=models.ExpressionWrapper(
                 models.Q(stage__status="PREPARATION") & models.Q(date_modify__gte=lim_date_suspended_deals),
                 output_field=models.BooleanField()

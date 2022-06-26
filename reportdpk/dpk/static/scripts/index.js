@@ -47,7 +47,8 @@ class App {
 
         // таблица - с статистикой по компаниям
         this.elementTableStatistic = document.querySelector('#tableStatisticData');
-        this.tableStatistic = new TableStatistic(this.elementTableStatistic);
+        this.loaderTableStatistic = document.querySelector('#loaderTableStatistic');
+        this.tableStatistic = new TableStatistic(this.elementTableStatistic, "", loaderTableStatistic);
         
         this.selectedPageNumber = document.querySelector('#selectedPageNumber');
         this.buttonGoToPage = document.querySelector('#buttonGoToPage');
@@ -67,7 +68,7 @@ class App {
         this.filterRevenue.init();
         this.filterEmployees.init();
         
-        this.tableStatistic.init();
+        this.tableStatistic.init(6 * 31);
 
         this.initHandler();
     }
