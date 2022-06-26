@@ -394,11 +394,11 @@ export default class TableStatistic {
             contentHTML += `
                 <tr>
                     <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}'>
-                        <p><a href="" data-path="/crm/company/details/${companyIdBx}/" data-tooltip="HTML<br>подсказка">${companyName}</a></p>
+                        <p><a href="/" data-path="/crm/company/details/${companyIdBx}/" data-tooltip="HTML<br>подсказка">${companyName}</a></p>
                     </td>
                     
                     <td class="col-responsible" data-id-bx='${companyResponsibleId}'>
-                        <a href="" data-path="/company/personal/user/${companyResponsibleId}/">${companyResponsibleTitle}</a>
+                        <a href="/" data-path="/company/personal/user/${companyResponsibleId}/">${companyResponsibleTitle}</a>
                     </td>
                     <td class='${dpkCellStyle}'>${companyDpkDateStr}</td>
                     <td>${summaByCompanyWork.toLocaleString()}</td>

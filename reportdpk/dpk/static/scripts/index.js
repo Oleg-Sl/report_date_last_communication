@@ -48,7 +48,7 @@ class App {
         // таблица - с статистикой по компаниям
         this.elementTableStatistic = document.querySelector('#tableStatisticData');
         this.loaderTableStatistic = document.querySelector('#loaderTableStatistic');
-        this.tableStatistic = new TableStatistic(this.elementTableStatistic, loaderTableStatistic);
+        this.tableStatistic = new TableStatistic(this.elementTableStatistic, loaderTableStatistic, this.bx24);
         
         this.selectedPageNumber = document.querySelector('#selectedPageNumber');
         this.buttonGoToPage = document.querySelector('#buttonGoToPage');
