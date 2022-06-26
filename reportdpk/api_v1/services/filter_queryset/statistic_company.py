@@ -1,0 +1,41 @@
+from django_filters import rest_framework as filters
+
+
+from mainapp.models import (
+    Direction,
+    Stage,
+    Company,
+    Deal
+)
+
+
+class CompanyIdFilter(filters.RangeFilter, filters.DateFilter):
+    pass
+
+
+class NumberInFilter(filters.BaseInFilter, filters.NumberFilter):
+    pass
+
+
+class CharInFilter(filters.BaseInFilter, filters.CharFilter):
+    pass
+
+
+class StatisticCompany(filters.FilterSet):
+    company = NumberInFilter(field_name='pk', lookup_expr='in')
+    responsible = NumberInFilter(field_name='responsible__pk', lookup_expr='in')
+
+    sector = filters.CharFilter()
+    region = filters.CharFilter()
+    source_company = filters.CharFilter()
+    requisite_region = filters.CharFilter()
+    requisites_city = filters.CharFilter()
+
+    revenue = filters.RangeFilter()
+    number_employees = filters.RangeFilter()
+
+    class Meta:
+        model = Company
+        fields = ["date", "summa_by_company", "company", "responsible", "number_employees", "revenue", "industry_id",
+                  "region", "sector", "source_company",
+                  "summa_by_company_work", "summa_by_company_success"]

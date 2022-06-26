@@ -45,7 +45,7 @@ from api_v1.serializers import (
 
 
 from .services.tasks import directions, stages, company, deal, calls
-
+from .services.filter_queryset import statistic_company
 
 # логгер входные данные событий от Битрикс
 logger_tasks_access = logging.getLogger('tasks_access')
@@ -326,6 +326,9 @@ class StatisticDirectionViewSet2(views.APIView):
 class StatisticCompanyViewSet(viewsets.GenericViewSet):
     queryset = Company.objects.all()
     serializer_class = StatisticCompanySerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = statistic_company.StatisticCompany
+    ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
 
     def get_queryset(self):
         duration = self.request.query_params.get("duration", "0")
@@ -354,6 +357,9 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
 
 class StatisticCompanyDirectionViewSet(viewsets.GenericViewSet):
     queryset = Company.objects.all()
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = statistic_company.StatisticCompany
+    ordering_fields = ["id_bx", "name", "responsible", ]
 
     def get_queryset(self, companies_ids, directions_ids, limit_date_suspended_deals, limit_date_failed_deals):
         return Deal.objects.statistic_company_by_directions(

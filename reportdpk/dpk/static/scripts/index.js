@@ -44,9 +44,12 @@ class App {
         this.elementFilterEmployees = document.querySelector('#filterEmployees');
         this.filterEmployees = new FilterRange(this.elementFilterEmployees);
 
-
+        // 
+        
+        this.selectedPageNumber = document.querySelector('#selectedPageNumber');
         this.buttonGoToPage = document.querySelector('#buttonGoToPage');
         this.buttonGetStatistic = document.querySelector('#buttonGetStatistic');
+    
     }
 
     init() {
@@ -66,20 +69,20 @@ class App {
 
     initHandler() {
         buttonGoToPage.addEventListener('click', async (e) => {
-            let page = 1
-            await this.getStatistic();
+            let page = parseInt(this.selectedPageNumber.value);
+            await this.getStatistic(page);
         })
         buttonGetStatistic.addEventListener('click', async (e) => {
             let page = 1
-            await this.getStatistic();
+            await this.getStatistic(page);
         })
     }
 
     getParamsRequest() {
         return {
-            company: this.filterCompany.getRequestParameters(),
-            responsible: this.filterResponsible.getRequestParameters(),
-            direction: this.filterDirection.getRequestParameters(),
+            company: this.filterCompany.getRequestParameters().join(","),
+            responsible: this.filterResponsible.getRequestParameters().join(","),
+            direction: this.filterDirection.getRequestParameters().join(","),
             sector: this.filterSector.getRequestParameters(),
             region: this.filterRegion.getRequestParameters(),
             source: this.filterSource.getRequestParameters(),
@@ -92,7 +95,7 @@ class App {
         }
     }
 
-    async getStatistic() {
+    async getStatistic(page) {
         let paramsRequest = this.getParamsRequest();
         console.log("paramsRequest = ", paramsRequest);
         // this.requests.GET();
