@@ -107,9 +107,9 @@ class App {
             companies: this.companySummary.result.results.map((obj) => obj.id_bx),
             // directions: paramsRequest.direction
         });
-        console.log("companySummary = ", companySummary);
-        console.log("summaryByDirections = ", summaryByDirections);
-        console.log("companySummaryByDirections = ", companySummaryByDirections);
+        console.log("companySummary = ", this.companySummary);
+        console.log("summaryByDirections = ", this.summaryByDirections);
+        console.log("companySummaryByDirections = ", this.companySummaryByDirections);
         
     }
 }
