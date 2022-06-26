@@ -401,9 +401,7 @@ export default class TableStatistic {
             let styleCellAmountDealsInWork = "";
             let amountOfDealsInWork = "0";
             let amountOfSuccessfulDeals = "0";
-            let status = 0;
-
-            
+            let isAllowedToCreateDeals = 1;
 
             if (this.companySummaryByDirection[companyIdBx] && this.companySummaryByDirection[companyIdBx][dirIdBx]) {
                 let companyDataByDir = this.companySummaryByDirection[companyIdBx][dirIdBx];
@@ -413,38 +411,42 @@ export default class TableStatistic {
                 if (companyDataByDir.actual_deal_failed) {
                     styleCellAmountDealsInWork = "cell-background-red";
                     valueCellAmountDealsInWork = "1";
+                    isAllowedToCreateDeals = 0;
                 }
                 // если есть сделки на подготовке к работе
                 if (companyDataByDir.actual_deal_preparation) {
                     styleCellAmountDealsInWork = "";
                     valueCellAmountDealsInWork = "1";
+                    isAllowedToCreateDeals = 0;
                 }
                 // если есть сделки в работе
                 if (companyDataByDir.actual_deal_work) {
                     styleCellAmountDealsInWork = "";
                     valueCellAmountDealsInWork = amountOfDealsInWork.toLocaleString();
+                    isAllowedToCreateDeals = 0;
                 }
-                contentHTML += `
-                    <td class='cell-add-deal directory-column-border-left ${styleCellAmountDealsInWork}' 
-                        data-company-id-bx='${companyIdBx}' 
-                        data-direction-id-bx='${dirIdBx}'
-                        data-category-id-bx='43'
-                        data-stage-id-bx='C43:NEW'
-                        data-allowed_add_deals=${status}
-                    >
-                        ${valueCellAmountDealsInWork}
-                    </td>
-                    <td class='cell-add-deal'
-                        data-company-id-bx='${companyIdBx}' 
-                        data-direction-id-bx='${dirIdBx}'
-                        data-category-id-bx='43'
-                        data-stage-id-bx='C43:NEW'
-                        data-allowed_add_deals=${status}
-                    >
-                        ${amountOfSuccessfulDeals.toLocaleString()}
-                    </td>
-                `;
             }
+            
+            contentHTML += `
+                <td class='cell-add-deal directory-column-border-left ${styleCellAmountDealsInWork}' 
+                    data-company-id-bx='${companyIdBx}' 
+                    data-direction-id-bx='${dirIdBx}'
+                    data-category-id-bx='43'
+                    data-stage-id-bx='C43:NEW'
+                    data-allowed_add_deals=${isAllowedToCreateDeals}
+                >
+                    ${valueCellAmountDealsInWork}
+                </td>
+                <td class='cell-add-deal'
+                    data-company-id-bx='${companyIdBx}' 
+                    data-direction-id-bx='${dirIdBx}'
+                    data-category-id-bx='43'
+                    data-stage-id-bx='C43:NEW'
+                    data-allowed_add_deals=${isAllowedToCreateDeals}
+                >
+                    ${amountOfSuccessfulDeals.toLocaleString()}
+                </td>
+            `;
         }
 
         return contentHTML;
