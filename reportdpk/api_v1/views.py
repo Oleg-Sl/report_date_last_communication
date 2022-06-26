@@ -7,6 +7,7 @@ from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 
 from django.conf import settings
 
@@ -121,7 +122,7 @@ class DirectionViewSet(viewsets.ModelViewSet):
     queryset = Direction.objects.filter(new=True)
     serializer_class = DirectionSerializer
     http_method_names = ['get', 'options']
-    # filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     # filterset_class = service.DirectionDataFilter
     # permission_classes = [IsAuthenticated]
 

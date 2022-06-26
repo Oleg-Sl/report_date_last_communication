@@ -68,7 +68,6 @@ $(document).ready(function() {
         // const api = "http://127.0.0.1:8000/dpk/api/v1/";
         const api = "https://otchet.atonlab.ru/dpk/api/v1/";
         
-        // объект - выполнения запросов к серверу приложения
         let bx24 = new BX();
         let requests = new Request(api);
         let app = new App(requests, bx24);
