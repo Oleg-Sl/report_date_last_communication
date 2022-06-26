@@ -13,6 +13,8 @@ export default class TableStatistic {
     async init(deltaDay, userCurrent, usersList) {
         this.userCurrent = userCurrent;
         this.usersList = usersList;
+        console.log("this.usersList = ", this.usersList);
+
         this.dateTransitionDealToInactive = this.convertNumberOfDaysInDateObj(deltaDay);
         // обработчик перетаскивания таблицы по нажатию кнопки мыши
         this.handlerDragnDrop();
@@ -367,6 +369,8 @@ export default class TableStatistic {
             let companyName = company.name || "&ndash;";
             let companyInn = company.inn || "&ndash;";
             let companyResponsibleId = company.responsible || "&ndash;";
+            console.log("this.usersList[companyResponsibleId].NAME = ", this.usersList[companyResponsibleId].NAME)
+            console.log("this.usersList[companyResponsibleId].LAST_NAME = ", this.usersList[companyResponsibleId].LAST_NAME)
             let companyResponsibleTitle = this.usersList[companyResponsibleId].NAME + " " + this.usersList[companyResponsibleId].LAST_NAME;
             let companyDpkDatetimeStr = company.dpk;
             let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetimeStr);
