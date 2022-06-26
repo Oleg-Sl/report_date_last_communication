@@ -29,7 +29,7 @@ class CompanyQuerySet(models.QuerySet):
                     filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
                     output_field=models.FloatField()
                 ),
-                0
+                0.0
             ),
             summa_by_company_work=models.functions.Coalesce(
                 models.Sum(
@@ -37,11 +37,11 @@ class CompanyQuerySet(models.QuerySet):
                     filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
                     output_field=models.FloatField()
                 ),
-                0
+                0.0
             ),
             dpk=models.functions.Coalesce(
                 models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration)),
-                datetime.date(2000, 1,1)
+                datetime.date(2000, 1, 1)
             )
         )
 
