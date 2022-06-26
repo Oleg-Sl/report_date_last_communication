@@ -488,7 +488,7 @@ export default class TableStatistic {
 
     sortingSelection(orderName) {
         let sortButtons = this.tableBody.querySelectorAll(".sort-button");
-        sortButtons.forEach((el, ind) => {
+        sortButtons.forEach((elem, ind) => {
             let order = elem.dataset.order;
             if (order === orderName) {
                 elem.style.color = "#a996ff";
