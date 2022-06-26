@@ -12,7 +12,7 @@ class DirectionActualManager(models.Manager):
                 "deal",
                 filter=models.Q(deal__closed=False)
             )
-        ).values('count_active_deal', 'id_bx')
+        ).values('count_active_deal', 'id_bx', 'name')
             # .values('count_active_deal', 'id_bx')
             # annotate(direction=models.F("id_bx"))
 

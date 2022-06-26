@@ -48,3 +48,9 @@ class StatisticCompanyByDirection(filters.FilterSet):
         fields = ["company", ]
 
 
+class StatisticByDirection(filters.FilterSet):
+    direction = NumberInFilter(field_name='pk', lookup_expr='in')
+
+    class Meta:
+        model = Direction
+        fields = ["direction", ]

@@ -399,8 +399,8 @@ class StatisticCompanyDirectionViewSet(viewsets.GenericViewSet):
 
 class StatisticDirectionViewSet(viewsets.GenericViewSet):
     queryset = Direction.direction_actual.count_active_deals()
-    # filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    # filterset_class = statistic_company.StatisticCompany
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = statistic_company.StatisticByDirection
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
