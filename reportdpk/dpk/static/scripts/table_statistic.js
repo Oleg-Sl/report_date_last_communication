@@ -368,7 +368,7 @@ export default class TableStatistic {
             let companyResponsibleId = company.responsible || "&ndash;";
             let companyResponsibleTitle = companyResponsibleId;
             let companyDpkDatetimeStr = company.dpk;
-            let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetime);
+            let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetimeStr);
             
             let dpkCellStyle = "";
             if (companyDpkDatetimeStr && new Date(companyDpkDatetimeStr) < this.dateTransitionDealToInactive) {
