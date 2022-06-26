@@ -1,6 +1,8 @@
 export default class TableStatistic {
-    constructor(table, loader) {
+    constructor(table, loader, bx) {
         this.table = table;
+        this.bx = bx;
+
         // контейнер заголовка таблицы
         this.tableHeader = this.table.querySelector("thead");
         this.tableBody = this.table.querySelector("tbody");
@@ -13,8 +15,6 @@ export default class TableStatistic {
     async init(deltaDay, userCurrent, usersList) {
         this.userCurrent = userCurrent;
         this.usersList = usersList;
-        console.log("this.usersList = ", this.usersList);
-
         this.dateTransitionDealToInactive = this.convertNumberOfDaysInDateObj(deltaDay);
         // обработчик перетаскивания таблицы по нажатию кнопки мыши
         this.handlerDragnDrop();
@@ -22,6 +22,8 @@ export default class TableStatistic {
         this.handlerResizeWidthColumn();
         // инициализация обработчиков событий таблицы: вертикальны скролл страницы, горизантальный скролл таблицы
         this.initHandlerScroll();
+        this.initHandler();
+
         // // обработчик событий наведения на пользователя или компанию
         // this.eventHoverElementsTable();
 
@@ -37,6 +39,15 @@ export default class TableStatistic {
         this.loader.classList.remove("d-none");
     }
 
+    initHandler() {
+        this.tableBody.addEventListener("click", async (e) => {
+            let path = e.target.dataset.path;
+            if (path) {
+                await this.bx.openPath(path);
+            }
+        })
+    }
+    
     // инициализация событий таблицы: вертикальны скролл страницы, горизантальный скролл таблицы
     initHandlerScroll() {
         // обработчик вертикального скролла страницы - залипание первой строки таблицы
@@ -379,13 +390,16 @@ export default class TableStatistic {
             }
 
             let companyDirectionContent = this.renderTableBodyColDirToHTML(companyIdBx);
-
+            // `/company/personal/user/${userId}/`
             contentHTML += `
                 <tr>
                     <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}'>
-                        <p><a href="" data-tooltip="HTML<br>подсказка" target="_blank">${companyName}</a></p>
+                        <p><a href="" data-path="/crm/company/details/${companyIdBx}/" data-tooltip="HTML<br>подсказка">${companyName}</a></p>
                     </td>
-                    <td class="col-responsible" data-id-bx='${companyResponsibleId}'>${companyResponsibleTitle}</td>
+                    
+                    <td class="col-responsible" data-id-bx='${companyResponsibleId}'>
+                        <a href="" data-path="/company/personal/user/${companyResponsibleId}/">${companyResponsibleTitle}</a>
+                    </td>
                     <td class='${dpkCellStyle}'>${companyDpkDateStr}</td>
                     <td>${summaByCompanyWork.toLocaleString()}</td>
                     <td>${summaByCompanySuccess.toLocaleString()}</td>

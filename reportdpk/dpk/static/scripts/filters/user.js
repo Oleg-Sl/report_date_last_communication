@@ -121,14 +121,14 @@ export default class WindowSearchUser {
             if (e.target.classList.contains("ui-selector-item-user-link")) {
                 let boxUser = e.target.closest(".ui-selector-user-box");            // блок-контейнер пользователя, по которому произошел клик
                 let userId = boxUser.dataset.userId; 
-                let path = `/company/personal/user/${userId}/`
+                let path = `/company/personal/user/${userId}/`;
                 console.log(path);
                 await this.bx.openPath(path);
             }
             if (e.target.closest(".user-item-content") && !e.target.classList.contains("user-item-remove")) {
                 let boxUser = e.target.closest(".user-item");                       // блок-контейнер пользователя, по которому произошел клик
                 let userId = boxUser.dataset.userId; 
-                let path = `/company/personal/user/${userId}/`
+                let path = `/company/personal/user/${userId}/`;
                 console.log(path);
                 await this.bx.openPath(path); 
             }
