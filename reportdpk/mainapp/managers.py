@@ -24,22 +24,23 @@ class DirectionActualManager(models.Manager):
 
 class CompanyQuerySet(models.QuerySet):
     def statistic_company(self, directions, duration):
+        from .models import Deal
         return self.annotate(
             summa_by_company_success=models.functions.Coalesce(
-                # models.Subquery(
-                #     Deal.objects.filter(
-                #         company=models.OuterRef('pk'),
-                #         direction__in=directions,
-                #         stage__status="SUCCESSFUL"
-                #     ).annotate(
-                #         s=models.Sum('summa')
-                #     ).values('s')[:1]
-                # ),
-                models.Sum(
-                    "deal__opportunity",
-                    filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
-                    output_field=models.FloatField()
+                models.Subquery(
+                    Deal.objects.filter(
+                        company=models.OuterRef('pk'),
+                        direction__in=directions,
+                        stage__status="SUCCESSFUL"
+                    ).annotate(
+                        s=models.Sum('summa')
+                    ).values('s')[:1]
                 ),
+                # models.Sum(
+                #     "deal__opportunity",
+                #     filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+                #     output_field=models.FloatField()
+                # ),
                 0.0
             ),
             summa_by_company_work=models.functions.Coalesce(
@@ -68,7 +69,6 @@ class DealManager(models.Manager):
         return super().get_queryset().exclude(direction__pk__in=settings.DIRECTION_IGNORE_LIST)
 
     def statistic_company_by_directions(self, companies, directions, lim_date_suspended_deals, lim_date_failed_deals):
-        from .models import Deal as Dea
         return self.filter(
             company__pk__in=companies,
             # direction__pk__in=directions,
