@@ -1055,10 +1055,6 @@
   padding: 0;
 }
 
-.my-table {
-  display: none;
-}
-
 table {
   -webkit-transition: opacity 1.5s ease, -webkit-transform 1.5s ease;
   transition: opacity 1.5s ease, -webkit-transform 1.5s ease;

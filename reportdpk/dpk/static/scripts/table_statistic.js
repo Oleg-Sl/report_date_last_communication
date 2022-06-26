@@ -1,11 +1,13 @@
-class Table {
-    constructor(table, user) {
+export default class TableStatistic {
+    constructor(table, user, loader) {
         this.table = table;
         // контейнер заголовка таблицы
         this.tableHeader = this.table.querySelector("thead");
         this.tableBody = this.table.querySelector("tbody");
         
         this.user = user;
+        this.loader = loader;
+        
     }
 
     async init() {
@@ -20,33 +22,18 @@ class Table {
 
     }
 
-    // сделать таблицу видимой
-    visibleTable() {
-        document.getElementsByClassName("my-table")[0].style.display = "block";
-        document.getElementsByClassName("spinner-load-statistic-data")[0].style.display = "none";
+    showTable() {
+        this.table.classList.remove("d-none");
+        this.loader.classList.add("d-none");
     }
 
-    // сделать таблицу невидимой
-    invisibleTable() {
-        document.getElementsByClassName("my-table")[0].style.display = "none";
-        document.getElementsByClassName("spinner-load-statistic-data")[0].style.display = "block";
+    hideTable() {
+        this.table.classList.add("d-none");
+        this.loader.classList.remove("d-none");
     }
 
     // инициализация событий таблицы: вертикальны скролл страницы, горизантальный скролл таблицы
     initHandlerScroll() {
-        // // обработчик вертикального скролла страницы - залипание первой строки таблицы
-        // $(document).on('scroll', (event) => {
-        //     let elem = document.getElementsByTagName("table")[0];
-        //     let offsetTop = $(document).scrollTop();
-        //     if (elem.offsetTop < offsetTop) {
-        //         $('th').css({
-        //             "top": offsetTop - elem.offsetTop
-        //         })
-        //     }
-        //     else {
-        //         $('th').css({"top": 0})
-        //     }
-        // })
         // обработчик вертикального скролла страницы - залипание первой строки таблицы
         document.addEventListener("scroll", (e) => requestAnimationFrame(() => {
             let elem = document.getElementsByTagName("table")[0];
@@ -106,10 +93,6 @@ class Table {
                 if (offset > maxScrollWidth) {
                     offset = maxScrollWidth;
                 }
-                // console.log("scrollStart.X = ", scrollStart.X);
-                // console.log("event.pageX = ", event.pageX);
-                // console.log("cursorStart.X = ", cursorStart.X);
-                // console.log("offset = ", offset);
                 elem.scrollLeft = offset;
             }
             // установка обработчика перемещения мыши
@@ -230,59 +213,63 @@ class Table {
         });
     }
 
+    renderTable(companySummary, directionSummary, companySummaryByDirection) {
+        this.companySummary = companySummary; 
+        this.directionSummary = directionSummary;
+        this.companySummaryByDirection = companySummaryByDirection;
+
+        let contentHeadHTML = this.renderTableHead();
+        this.tableHeader.innerHTML = contentHeadHTML;
+
+        this.table.style.gridTemplateColumns = arrSizeColumn.join(' ');
+        this.showTable();
+        // this.handlerResizeWidthColumn();
+    }
+
     // создание заголовка таблицы
     renderTableHeaderToHTML(data) {
-        let directions = data.direction;
+        let directions = this.directionSummary;
 
-        let headerRowOne = "";
-        let headerRowTwo = "";
-        let headerRowTree = "";
-        let n = 6;                  // столбец с которого начинаются данные по направлениям
-        let count = 2;              // столбцов в направлении
-        let arrSizeColumn = ["minmax(150px, 2.5fr)", "minmax(120px, 1.5fr)", "minmax(100px, 1.5fr)"];
-        arrSizeColumn.push("minmax(95px, 1.2fr)");
-        arrSizeColumn.push("minmax(95px, 1.2fr)");
-        // arrSizeColumn.push("minmax(95px, 1.2fr)"); // NEW
-
-        headerRowTree += `
-            <th class="col-company header-count-active-deal" style="grid-column: $1/2;">
+        let startColumnWithDirData = 6;     // столбец с которого начинаются данные по направлениям
+        let numberColumnsInDir = 2;         // столбцов данных в одном направлении
+        // масссив с шириной колонок
+        this.arrSizeColumn = ["minmax(150px, 2.5fr)", "minmax(120px, 1.5fr)", "minmax(100px, 1.5fr)", "minmax(95px, 1.2fr)", "minmax(95px, 1.2fr)"];
         
-            </th>
-            <th scope="col" colspan="${n}" class="header-count-active-deal" style="grid-column: 2/${n};">
+        let firstRowHTML = "";
+        let secondRowHTML = "";
+        let thirdRowHTML = `
+            <th class="col-company header-count-active-deal" style="grid-column: $1/2;"></th>
+            <th scope="col" colspan="${startColumnWithDirData}" class="header-count-active-deal" style="grid-column: 2/${startColumnWithDirData};">
                 <div>Активные сделки</div>
             </th>
         `;
-        
-        for (let direction of directions) {
-            headerRowOne += `
-                <th scope="col" colspan="${count}" class="header-th-direction" style="grid-column: ${n}/${n + count}; grid-row: 1/2">
-                    <div>${direction.name}</div>
+
+        for(let dirId of directions) {
+            let dirName = directions[dirId].name;
+            let numberActiveDealInDir = directions[dirId].count_active_deal;
+            firstRowHTML += `
+                <th scope="col" colspan="${numberColumnsInDir}" class="header-th-direction" style="grid-column: ${startColumnWithDirData}/${startColumnWithDirData + numberColumnsInDir}; grid-row: 1/2">
+                    <div>${dirName}</div>
                     <span class="resize-handle"></span>
                 </th>
             `;
-            // <th scope="col" class="header-th-direction-data" data-type="numeric-short" data-position="${n}">id сделок <span class="resize-handle"></span></th>
-            headerRowTwo += `
-                <th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="${n + 1}">Сумма в работе <span class="resize-handle"></span></th>
-                <th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="${n + 2}">Сумма успешных <span class="resize-handle"></span></th>
+            secondRowHTML += `
+                <th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="${startColumnWithDirData + 1}">Сумма в работе <span class="resize-handle"></span></th>
+                <th scope="col" class="header-th-direction-data" data-type="numeric-medium" data-position="${startColumnWithDirData + 2}">Сумма успешных <span class="resize-handle"></span></th>
             `;
-            
-            let idDirBx = direction["id_bx"]
-            let keyActDealByDir = "dir_" + idDirBx;
-            headerRowTree += `
-                <th scope="col" colspan="${count}" class="header-count-active-deal directory-column-border-left-border-left" style="grid-column: ${n}/${n + count};">
-                    <div>${data[keyActDealByDir]}</div>
+            thirdRowHTML += `
+                <th scope="col" colspan="${numberColumnsInDir}" class="header-count-active-deal directory-column-border-left-border-left" style="grid-column: ${startColumnWithDirData}/${startColumnWithDirData + numberColumnsInDir};">
+                    <div>${numberActiveDealInDir}</div>
                 </th>
             `;
 
-            n += count;
-            // arrSizeColumn.push("minmax(60px, 1.0fr)");
-            arrSizeColumn.push("minmax(90px, 1.2fr)");
-            arrSizeColumn.push("minmax(90px, 1.2fr)");
-            // arrSizeColumn.push("minmax(90px, 1.2fr)");
-            // arrSizeColumn.push("minmax(85px, 1.0fr)");
+            startColumnWithDirData += numberColumnsInDir;
+
+            this.arrSizeColumn.push("minmax(90px, 1.2fr)");
+            this.arrSizeColumn.push("minmax(90px, 1.2fr)");
         }
 
-        let contentHeader =`
+        let contentHTML =`
             <tr class="text-center">
                 <th scope="col" rowspan="2" class="col-company header-th-data header-th-sort-data" data-type="text-long" data-position="1">
                     Компания
@@ -349,20 +336,16 @@ class Table {
                     </span>
                 </th>
 
-                ${headerRowOne}
+                ${firstRowHTML}
             </tr>
             <tr class="text-center">
-                ${headerRowTwo}
+                ${secondRowHTML}
             </tr>
             <tr class="text-center">
-                ${headerRowTree}
+                ${thirdRowHTML}
             </tr>
         `;
-        this.tableHeader.innerHTML = contentHeader;
-        
-
-        this.table.style.gridTemplateColumns = arrSizeColumn.join(' ');
-        this.handlerResizeWidthColumn();
+        return contentHTML       
     }
 
     // добавление данных в таблицу

@@ -1,5 +1,6 @@
 import Request from './requests.js';
 import BX from './bx24.js';
+import TableStatistic from './table_statistic.js';
 
 import {FilterCompany,} from './filters/filter.js';
 import WindowSearchUser from './filters/user.js';
@@ -44,7 +45,9 @@ class App {
         this.elementFilterEmployees = document.querySelector('#filterEmployees');
         this.filterEmployees = new FilterRange(this.elementFilterEmployees);
 
-        // 
+        // таблица - с статистикой по компаниям
+        this.elementTableStatistic = document.querySelector('#tableStatisticData');
+        this.tableStatistic = new TableStatistic(this.elementTableStatistic);
         
         this.selectedPageNumber = document.querySelector('#selectedPageNumber');
         this.buttonGoToPage = document.querySelector('#buttonGoToPage');
@@ -64,6 +67,8 @@ class App {
         this.filterRevenue.init();
         this.filterEmployees.init();
         
+        this.tableStatistic.init();
+
         this.initHandler();
     }
 
@@ -110,7 +115,7 @@ class App {
         console.log("companySummary = ", this.companySummary);
         console.log("summaryByDirections = ", this.summaryByDirections);
         console.log("companySummaryByDirections = ", this.companySummaryByDirections);
-        
+        this.tableStatistic.renderTable(this.companySummary, this.summaryByDirections, this.companySummaryByDirections);
     }
 }
 
