@@ -244,7 +244,7 @@ export default class TableStatistic {
             </th>
         `;
 
-        for(let dirId of directions) {
+        for(let dirId in directions) {
             let dirName = directions[dirId].name;
             let numberActiveDealInDir = directions[dirId].count_active_deal;
             firstRowHTML += `
