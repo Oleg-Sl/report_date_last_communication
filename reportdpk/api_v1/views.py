@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.pagination import PageNumberPagination
 
 from django.conf import settings
 
@@ -54,6 +55,11 @@ fh_tasks_access = logging.handlers.TimedRotatingFileHandler('./logs/access.log',
 formatter_tasks_access = logging.Formatter('[%(asctime)s] %(levelname).1s %(message)s')
 fh_tasks_access.setFormatter(formatter_tasks_access)
 logger_tasks_access.addHandler(fh_tasks_access)
+
+
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size = 50
+    page_size_query_param = 'page_size'
 
 
 @api_view(['GET'])
@@ -326,6 +332,7 @@ class StatisticDirectionViewSet2(views.APIView):
 class StatisticCompanyViewSet(viewsets.GenericViewSet):
     queryset = Company.objects.all()
     serializer_class = StatisticCompanySerializer
+    pagination_class = CustomPageNumberPagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = statistic_company.StatisticCompany
     ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]

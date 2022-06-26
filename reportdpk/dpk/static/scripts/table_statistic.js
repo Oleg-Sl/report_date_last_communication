@@ -377,14 +377,14 @@ export default class TableStatistic {
             }
 
             let companyDirectionContent = this.renderTableBodyColDirToHTML(companyIdBx);
-            // `/company/personal/user/${userId}/`
+
             contentHTML += `
                 <tr>
-                    <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}'>
-                        <p><span class="col-href" data-path="/crm/company/details/${companyIdBx}/">${companyName}</span></p>
+                    <td class="col-company" data-name='${companyName}' data-inn='${companyInn}' data-id-bx='${companyIdBx}' >
+                        <p><span class="col-href" data-path="/crm/company/details/${companyIdBx}/" title="${companyName.replace('"', '\'')}">${companyName}</span></p>
                     </td>
                     <td class="col-responsible" data-id-bx='${companyResponsibleId}'>
-                        <p><span class="col-href" data-path="/company/personal/user/${companyResponsibleId}/">${companyResponsibleTitle}</span></p>
+                        <p><span class="col-href" data-path="/company/personal/user/${companyResponsibleId}/" title="${companyResponsibleTitle}">${companyResponsibleTitle}</span></p>
                     </td>
                     <td class='${dpkCellStyle}'>${companyDpkDateStr || "&ndash;"}</td>
                     <td>${summaByCompanyWork.toLocaleString()}</td>

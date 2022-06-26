@@ -121,6 +121,7 @@ class App {
         return {
             ordering: this.order,
             page: this.page,
+            pafe_size: this.getPageSize(),
             duration: 15,
             company: this.filterCompany.getRequestParameters().join(","),
             responsible: this.filterResponsible.getRequestParameters().join(","),
@@ -153,6 +154,10 @@ class App {
         console.log("companySummaryByDirections = ", this.companySummaryByDirections);
         this.tableStatistic.renderTable(this.companySummary.result.results, this.summaryByDirections.result, this.companySummaryByDirections.result);
         this.tableStatistic.sortingSelection(this.order);
+    }
+
+    getPageSize() {
+        return this.selectedPageNumber.value;
     }
 
     
