@@ -79,7 +79,7 @@ class FilterSingle {
 
     // получение списка данных
     async getData(searchValue="") {
-        const response = await this.requests.GET(this.path, {"search": searchValue});
+        const response = await this.requests.GET_LONG(this.path, {"search": searchValue});
         if (!response.error) {
             return response.result
         }
