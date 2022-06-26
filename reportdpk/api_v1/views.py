@@ -339,7 +339,7 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
 
     def get_queryset(self):
         duration = self.request.query_params.get("duration", "0")
-        direction = Direction.direction_actual.values('pk')
+        direction = Direction.direction_actual.all() #.values('pk')
         return super().get_queryset().statistic_company(direction, duration)
 
     def list(self, request, *args, **kwargs):
