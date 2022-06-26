@@ -86,6 +86,7 @@ class DealManager(models.Manager):
         return super().get_queryset().exclude(direction__pk__in=settings.DIRECTION_IGNORE_LIST)
 
     def statistic_company_by_directions(self, companies, directions, lim_date_suspended_deals, lim_date_failed_deals):
+        from .models import Deal
         return self.filter(
             company__pk__in=companies,
             # direction__pk__in=directions,
@@ -115,6 +116,20 @@ class DealManager(models.Manager):
             # сумма стоимостей успешных сделок
             opportunity_success=models.Sum("opportunity", filter=models.Q(stage__status="SUCCESSFUL")),
             # сумма стоимостей сделок в работе
-            opportunity_work=models.Sum("opportunity", filter=models.Q(stage__status="WORK")),
+            opportunity_work=models.Subquery(
+                    Deal.objects.filter(
+                        company=models.OuterRef('company__pk'),
+                        direction=models.OuterRef('direction__pk'),
+                        stage__status="WORK"
+                    )
+                    # .aggregate(
+                    #     s=models.Sum('opportunity')
+                    # ).values('s')[:1]
+                    # .annotate(
+                    .annotate(
+                        s=models.Sum('opportunity')
+                    ).values('s')[:1]
+                ),
+            # models.Sum("opportunity", filter=models.Q(stage__status="WORK")),
         )
 
