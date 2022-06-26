@@ -63,6 +63,7 @@ class CompanyManager(models.Manager):
 
 
 class DealManager(models.Manager):
+    from .models import Deal as Dea
     def get_queryset(self):
         return super().get_queryset().exclude(direction__pk__in=settings.DIRECTION_IGNORE_LIST)
 
