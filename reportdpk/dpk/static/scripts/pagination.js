@@ -11,26 +11,13 @@ export default class Paginator {
             if (e.target.tagNmae === "A") {
                 let page = parseInt(e.target.dataset.page);
             }
-            let page = event.target.dataset.page;
-            if (page) {
-                // устанавливаем требуемую страницу для получения данных
-                this.page = +page;
-                // получение данных статистики и вывод их в таблицу
-                this.getData();
-            }
+
         });
-        this.paginatorContent.onclick = (event) => {
-            let page = event.target.dataset.page;
-            if (page) {
-                // устанавливаем требуемую страницу для получения данных
-                this.page = +page;
-                // получение данных статистики и вывод их в таблицу
-                this.getData();
-            }
-        };
     }
 
-
+    highlightPageNumber(page) {
+        
+    }
 
 }
 
