@@ -45,8 +45,8 @@ class DealManager(models.Manager):
 
     def statistic_company_by_directions(self, companies, directions, lim_date_suspended_deals, lim_date_failed_deals):
         return self.filter(
-            company__pk__in=companies,
-            direction__pk__in=directions,
+            # company__pk__in=companies,
+            # direction__pk__in=directions,
         ).values(
             "company__pk", "direction"
         ).annotate(

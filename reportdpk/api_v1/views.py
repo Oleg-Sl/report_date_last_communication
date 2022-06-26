@@ -144,7 +144,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
 class SectorCompanyViewSet(viewsets.ModelViewSet):
-    queryset = Company.objects.filter(sector__isnull=False).values("sector")#.distinct("sector")
+    queryset = Company.objects.filter(sector__isnull=False).values("sector").distinct("sector")
     serializer_class = SectorCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^sector", ]
@@ -153,7 +153,7 @@ class SectorCompanyViewSet(viewsets.ModelViewSet):
 
 
 class RegionCompanyViewSet(viewsets.ModelViewSet):
-    queryset = Company.objects.filter(region__isnull=False).values("region")#.distinct("region")
+    queryset = Company.objects.filter(region__isnull=False).values("region").distinct("region")
     serializer_class = RegionCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^region", ]
@@ -162,7 +162,7 @@ class RegionCompanyViewSet(viewsets.ModelViewSet):
 
 
 class SourceCompanyViewSet(viewsets.ModelViewSet):
-    queryset = Company.objects.filter(source__isnull=False).values("source")#.distinct("source")
+    queryset = Company.objects.filter(source__isnull=False).values("source").distinct("source")
     serializer_class = SourceCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^source", ]
@@ -171,7 +171,7 @@ class SourceCompanyViewSet(viewsets.ModelViewSet):
 
 
 class RequisitesRegionCompanyViewSet(viewsets.ModelViewSet):
-    queryset = Company.objects.filter(requisite_region__isnull=False).values("requisite_region")#.distinct("source")
+    queryset = Company.objects.filter(requisite_region__isnull=False).values("requisite_region").distinct("source")
     serializer_class = RequisitesRegionCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^requisite_region", ]
@@ -180,7 +180,7 @@ class RequisitesRegionCompanyViewSet(viewsets.ModelViewSet):
 
 
 class RequisitesCityCompanyViewSet(viewsets.ModelViewSet):
-    queryset = Company.objects.filter(requisites_city__isnull=False).values("requisites_city")#.distinct("source")
+    queryset = Company.objects.filter(requisites_city__isnull=False).values("requisites_city").distinct("source")
     serializer_class = RequisitesCityCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^requisites_city", ]
@@ -356,8 +356,8 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
 
 
 class StatisticCompanyDirectionViewSet(viewsets.GenericViewSet):
-    queryset = Company.objects.all()
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    # queryset = Company.objects.all()
+    # filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     # filterset_class = statistic_company.StatisticCompanyByDirection
     # ordering_fields = ["id_bx", "name", "responsible", ]
 
@@ -406,6 +406,5 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
         queryset = self.filter_queryset(self.get_queryset())
         response = converting_list_to_dict(queryset, "id_bx")
         return Response(response, status=status.HTTP_200_OK)
-
 
 
