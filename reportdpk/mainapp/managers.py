@@ -5,12 +5,12 @@ from django.conf import settings
 import datetime
 
 
-# from mainapp.models import (
-#     Direction,
-#     Stage,
-#     Company,
-#     Deal
-# )
+from mainapp.models import (
+    Direction,
+    Stage,
+    Company,
+    Deal
+)
 
 
 class DirectionActualManager(models.Manager):
