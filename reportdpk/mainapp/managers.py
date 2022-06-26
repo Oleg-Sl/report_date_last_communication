@@ -51,8 +51,9 @@ class CompanyQuerySet(models.QuerySet):
                         direction__in=directions,
                         stage__status="WORK"
                     ).aggregate(
-                        sum=models.Sum('opportunity')
-                    )["sum"]
+                        s=models.Sum('opportunity')
+                    )["s"]
+                    # .annotate(
                     # .annotate(
                     #     s=models.Sum('opportunity')
                     # ).values('s')[:1]
