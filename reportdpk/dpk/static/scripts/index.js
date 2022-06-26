@@ -94,7 +94,7 @@ class App {
 
     async getStatistic() {
         let paramsRequest = this.getParamsRequest();
-        print("paramsRequest = ", paramsRequest);
+        console.log("paramsRequest = ", paramsRequest);
         // this.requests.GET();
     }
 }
