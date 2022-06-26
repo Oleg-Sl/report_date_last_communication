@@ -50,9 +50,12 @@ class CompanyQuerySet(models.QuerySet):
                         company=models.OuterRef('pk'),
                         direction__in=directions,
                         stage__status="WORK"
-                    ).annotate(
-                        s=models.Sum('opportunity')
-                    ).values('s')[:1]
+                    ).aggregate(
+                        sum=models.Sum('opportunity')
+                    )["sum"]
+                    # .annotate(
+                    #     s=models.Sum('opportunity')
+                    # ).values('s')[:1]
                 ),
                 models.Value(0),
                 output_field=models.FloatField()
