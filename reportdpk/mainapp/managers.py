@@ -41,7 +41,7 @@ class CompanyQuerySet(models.QuerySet):
                 #     filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
                 #     output_field=models.FloatField()
                 # ),
-                0.0
+                models.Value(0),
             ),
             summa_by_company_work=models.functions.Coalesce(
                 models.Sum(
