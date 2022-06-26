@@ -115,7 +115,7 @@ class App {
         console.log("companySummary = ", this.companySummary);
         console.log("summaryByDirections = ", this.summaryByDirections);
         console.log("companySummaryByDirections = ", this.companySummaryByDirections);
-        this.tableStatistic.renderTable(this.companySummary, this.summaryByDirections, this.companySummaryByDirections);
+        this.tableStatistic.renderTable(this.companySummary.result, this.summaryByDirections.result, this.companySummaryByDirections.result);
     }
 }
 

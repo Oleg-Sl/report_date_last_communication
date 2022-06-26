@@ -221,7 +221,7 @@ export default class TableStatistic {
         let contentHeadHTML = this.renderTableHeaderToHTML();
         this.tableHeader.innerHTML = contentHeadHTML;
 
-        this.table.style.gridTemplateColumns = arrSizeColumn.join(' ');
+        this.table.style.gridTemplateColumns = this.arrSizeColumn.join(' ');
         this.showTable();
         // this.handlerResizeWidthColumn();
     }
@@ -247,6 +247,7 @@ export default class TableStatistic {
         for(let dirId in directions) {
             let dirName = directions[dirId].name;
             let numberActiveDealInDir = directions[dirId].count_active_deal;
+            console.log(dirId);
             firstRowHTML += `
                 <th scope="col" colspan="${numberColumnsInDir}" class="header-th-direction" style="grid-column: ${startColumnWithDirData}/${startColumnWithDirData + numberColumnsInDir}; grid-row: 1/2">
                     <div>${dirName}</div>
