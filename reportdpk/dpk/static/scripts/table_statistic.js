@@ -500,7 +500,7 @@ export default class TableStatistic {
 
 
 
-}
+
 
     
 
