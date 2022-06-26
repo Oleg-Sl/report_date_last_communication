@@ -328,7 +328,7 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
     serializer_class = StatisticCompanySerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = statistic_company.StatisticCompany
-    ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
+    # ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
 
     def get_queryset(self):
         duration = self.request.query_params.get("duration", "0")
