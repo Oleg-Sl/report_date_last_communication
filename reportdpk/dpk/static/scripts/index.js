@@ -54,6 +54,9 @@ class App {
         this.buttonGoToPage = document.querySelector('#buttonGoToPage');
         this.buttonGetStatistic = document.querySelector('#buttonGetStatistic');
     
+
+        this.page = 1;
+        this.order = "name";
     }
 
     async init() {
@@ -79,13 +82,21 @@ class App {
 
     initHandler() {
         buttonGoToPage.addEventListener('click', async (e) => {
-            let page = parseInt(this.selectedPageNumber.value);
-            await this.getStatistic(page);
-        })
+            this.page = parseInt(this.selectedPageNumber.value);
+            await this.getStatistic();
+        });
         buttonGetStatistic.addEventListener('click', async (e) => {
-            let page = 1
-            await this.getStatistic(page);
+            this.page = 1
+            await this.getStatistic();
+        });
+        this.elementTableStatistic.addEventListener('click', async (e) => {
+            if (e.target.tagName === "I" && $(".header-th-sort-data").has(e.target).length !== 0) {
+                this.order = e.target.dataset.order;
+                await this.getStatistic();
+            } 
         })
+
+
     }
 
     // получить данные текущего пользователя
@@ -105,9 +116,11 @@ class App {
         }
         return userObj;
     }
-
+    // возвращает параметры запроса статистики
     getParamsRequest() {
         return {
+            ordering: this.order,
+            page: this.page,
             duration: 15,
             company: this.filterCompany.getRequestParameters().join(","),
             responsible: this.filterResponsible.getRequestParameters().join(","),
@@ -124,7 +137,7 @@ class App {
         }
     }
 
-    async getStatistic(page) {
+    async getStatistic() {
         let paramsRequest = this.getParamsRequest();
         console.log("paramsRequest = ", paramsRequest);
 
@@ -132,13 +145,15 @@ class App {
         this.summaryByDirections = await this.requests.GET("statistic-direction", paramsRequest);
         this.companySummaryByDirections = await this.requests.GET("statistic-company-direction", {
             companies: this.companySummary.result.results.map((obj) => obj.id_bx),
-            // directions: paramsRequest.direction
         });
         console.log("companySummary = ", this.companySummary);
         console.log("summaryByDirections = ", this.summaryByDirections);
         console.log("companySummaryByDirections = ", this.companySummaryByDirections);
         this.tableStatistic.renderTable(this.companySummary.result.results, this.summaryByDirections.result, this.companySummaryByDirections.result);
+        this.tableStatistic.sortingSelection(this.order);
     }
+
+    
 }
 
 

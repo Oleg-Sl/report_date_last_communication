@@ -301,24 +301,14 @@ export default class TableStatistic {
                         <i data-order="-name" class="bi bi-caret-down-fill sort-button" id="sorting-company-desc"></i>
                     </span>
                 </th>
-                <!-- <th scope="col" rowspan="2" class="header-th-data header-th-sort-data" data-type="numeric-short" data-position="2">
-                    ИНН 
-                    <span class="resize-handle"></span>
-                    <span class="sort-inn-top">
-                        <i data-order="inn" class="bi bi-caret-up-fill sort-button" id="sorting-inn-asc"></i>
-                    </span>
-                    <span class="sort-inn-bottom">
-                        <i data-order="-inn" class="bi bi-caret-down-fill sort-button" id="sorting-inn-asc"></i>
-                    </span>    
-                </th> -->
                 <th scope="col" rowspan="2" class="header-th-data header-th-sort-data" data-type="text-long"  data-position="3">
                     Менеджер 
                     <span class="resize-handle"></span>
                     <span class="sort-responsible-top">
-                        <i data-order="lastname" class="bi bi-caret-up-fill sort-button" id="sorting-responsible-asc"></i>
+                        <i data-order="responsible" class="bi bi-caret-up-fill sort-button" id="sorting-responsible-asc"></i>
                     </span>
                     <span class="sort-responsible-bottom">
-                        <i data-order="-lastname" class="bi bi-caret-down-fill sort-button" id="sorting-responsible-asc"></i>
+                        <i data-order="-responsible" class="bi bi-caret-down-fill sort-button" id="sorting-responsible-asc"></i>
                     </span>
                 </th>
                 
@@ -326,15 +316,12 @@ export default class TableStatistic {
                     ДПК
                     <span class="resize-handle"></span>
                     <span class="sort-dpk-top">
-                        <i data-order="date_last_communication" class="bi bi-caret-up-fill sort-button" id="sorting-date_last_communication-asc"></i>
+                        <i data-order="dpk" class="bi bi-caret-up-fill sort-button" id="sorting-date_last_communication-asc"></i>
                     </span>
                     <span class="sort-dpk-bottom">
-                        <i data-order="-date_last_communication" class="bi bi-caret-down-fill sort-button" id="sorting-date_last_communication-asc"></i>
+                        <i data-order="-dpk" class="bi bi-caret-down-fill sort-button" id="sorting-date_last_communication-asc"></i>
                     </span>
                 </th>
-
-                
-
                 <th scope="col" rowspan="2" class="header-th-data header-th-sort-data" data-type="numeric-long" data-position="5">
                     Общая сумма в работе
                     <span class="resize-handle"></span>
@@ -499,102 +486,25 @@ export default class TableStatistic {
         return date.toLocaleString("ru", options);
     }
 
-    
-
-
-
-
-
-
-    // обработчик событий наведения мыши на пользователя или компанию
-    eventHoverElementsTable() {
-        $("table").on('mouseover', (event) => {
-            let colCompany = $(".col-company");
-            if (event.target.tagName == "A" && colCompany.has(event.target).length !== 0) {
-                let elemHeight = $(".prompt-full-company-data").height();
-                let elemA = event.target.getBoundingClientRect();
-                let x = elemA.left + elemA.width + 10;
-                let y = elemA.top + 55 / 2 - elemHeight / 2 + $(document).scrollTop();
-                let td = colCompany.has(event.target)[0];
-                let obj = {
-                    "name": td.dataset.name,
-                    "inn": td.dataset.inn,
-                    "id": td.dataset.id,
-                };
-
-                this.displayPromptCompany(obj, x, y);
-                $(event.target).on('mouseout', (event) => {
-                    console.log("mouseout");
-                    $(".prompt-full-company-data").css({
-                        "display": "none",
-                    })
-                })
-            } 
-        })
-
-        // $("table").on('mouseover', (event) => {
-        //     let colCompany = $(".col-responsible");
-        //     if (event.target.tagName == "A" && colCompany.has(event.target).length !== 0) {
-        //         let elemHeight = $(".prompt-full-responsible-data").height();
-        //         let elemA = event.target.getBoundingClientRect();
-        //         let x = elemA.left + elemA.width + 10;
-        //         let y = elemA.top + 55 / 2 - elemHeight / 2 + $(document).scrollTop();
-        //         let td = colCompany.has(event.target)[0];
-        //         let obj = {
-        //             "name": td.dataset.name,
-        //             "lastname": td.dataset.lastname,
-        //             "photo": td.dataset.photo,
-        //             "url": td.dataset.url,
-        //             "profession": td.dataset.profession,
-        //             "id": td.dataset.id,
-        //         };
-
-        //         this.displayPromptResponsible(obj, x, y);
-        //         $(event.target).on('mouseout', (event) => {
-        //             console.log("mouseout");
-        //             $(".prompt-full-responsible-data").css({
-        //                 "display": "none",
-        //             })
-        //         })
-        //     } 
-        // })
-    }
-    
-    // вывод каточки с данными компании
-    displayPromptCompany(obj, x, y) {
-        $(".prompt-data-company-name").text(obj.name);
-        $(".prompt-data-company-inn span").text(obj.inn);
-        $(".prompt-data-company-id-bx span").text(obj.id);
-
-        $(".prompt-full-company-data").css({
-            "display": "block",
-            "position": "absolute",
-            "left": x,
-            "top": y
+    sortingSelection(orderName) {
+        let sortButtons = this.tableBody.querySelectorAll(".sort-button");
+        sortButtons.forEach((el, ind) => {
+            let order = elem.dataset.order;
+            if (order === orderName) {
+                elem.style.color = "#a996ff";
+            } else {
+                elem.style.color = "#fff";
+            }
         })
     }
 
-    // вывод карточки с данными пользователя
-    displayPromptResponsible(obj, x, y) {
-        // console.log("displayPromptResponsible = ", obj);
-        $(".prompt-data-responsible-photo img").attr("src", obj.photo);
-        $(".prompt-data-responsible-name").text(`${obj.lastname} ${obj.name}`);
-        $(".prompt-data-responsible-profession span").text(obj.profession);
-        $(".prompt-data-responsible-id span").text(obj.id);
 
-        $(".prompt-full-responsible-data").css({
-            "display": "flex",
-            "position": "absolute",
-            "left": x,
-            "top": y
-        })
-    }
-  
-    date2str(d) 
-    {
-        return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+03:00';
-    };
+
+}
+
     
+
+
     // обработчик события создания сделки по двойному клику
     async eventAddDeal(data) {
         data['responsible'] = this.user;
@@ -684,11 +594,4 @@ export default class TableStatistic {
         )
     }
 
-    // получить ID текущего пользователя
-    getCurrentUser() {
-        BX24.callMethod('user.current', {}, (res) => {
-            // console.log("user >>> ", res.data().ID);
-            this.user = res.data().ID;
-        });
-    }
 }

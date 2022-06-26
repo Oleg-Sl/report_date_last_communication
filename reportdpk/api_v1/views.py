@@ -171,7 +171,7 @@ class SourceCompanyViewSet(viewsets.ModelViewSet):
 
 
 class RequisitesRegionCompanyViewSet(viewsets.ModelViewSet):
-    queryset = Company.objects.filter(requisite_region__isnull=False).values("requisite_region").distinct("source")
+    queryset = Company.objects.filter(requisite_region__isnull=False).values("requisite_region").distinct("requisite_region")
     serializer_class = RequisitesRegionCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^requisite_region", ]
@@ -180,7 +180,7 @@ class RequisitesRegionCompanyViewSet(viewsets.ModelViewSet):
 
 
 class RequisitesCityCompanyViewSet(viewsets.ModelViewSet):
-    queryset = Company.objects.filter(requisites_city__isnull=False).values("requisites_city").distinct("source")
+    queryset = Company.objects.filter(requisites_city__isnull=False).values("requisites_city").distinct("requisites_city")
     serializer_class = RequisitesCityCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^requisites_city", ]
