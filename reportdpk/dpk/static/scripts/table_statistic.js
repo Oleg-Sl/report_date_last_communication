@@ -252,7 +252,6 @@ export default class TableStatistic {
         for(let dirId in directions) {
             let dirName = directions[dirId].name;
             let numberActiveDealInDir = directions[dirId].count_active_deal;
-            console.log(dirId);
             firstRowHTML += `
                 <th scope="col" colspan="${numberColumnsInDir}" class="header-th-direction" style="grid-column: ${startColumnWithDirData}/${startColumnWithDirData + numberColumnsInDir}; grid-row: 1/2">
                     <div>${dirName}</div>
@@ -355,7 +354,7 @@ export default class TableStatistic {
     }
 
     // добавление данных в таблицу
-    async renderTableBodyToHTML() {
+    renderTableBodyToHTML() {
         let contentHTML = "";
         let companies = this.companySummary;
 
