@@ -49,7 +49,9 @@ export default class Request {
             urlGet.searchParams.set(key, params[key]);
         }
 
-        while (true) {
+        let i = 3
+        while (i > 0) {
+            i -= 1
             // let token = await this.auth.getAccessToken();
             let options = {
                 // headers: {Authorization: `Bearer ${token}`}
