@@ -369,10 +369,7 @@ export default class TableStatistic {
             let companyName = company.name || "&ndash;";
             let companyInn = company.inn || "&ndash;";
             let companyResponsibleId = company.responsible || "&ndash;";
-            console.log("companyResponsibleId = ", companyResponsibleId)
-            console.log("this.usersList[companyResponsibleId].NAME = ", this.usersList[companyResponsibleId].NAME)
-            console.log("this.usersList[companyResponsibleId].LAST_NAME = ", this.usersList[companyResponsibleId].LAST_NAME)
-            let companyResponsibleTitle = this.usersList[companyResponsibleId].NAME + " " + this.usersList[companyResponsibleId].LAST_NAME;
+            let companyResponsibleTitle = this.getUserTitleByIBx(companyResponsibleId);
             let companyDpkDatetimeStr = company.dpk;
             let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetimeStr);
             
@@ -459,6 +456,15 @@ export default class TableStatistic {
         }
 
         return contentHTML;
+    }
+
+    getUserTitleByIBx(id_bx) {
+        let userObj = this.usersList[id_bx];
+        if (userObj) {
+            return `${this.usersList[companyResponsibleId].NAME || ""} ${this.usersList[companyResponsibleId].LAST_NAME || ""}`;
+        }
+
+        return id_bx;
     }
 
     convertNumberOfDaysInDateObj(numberDays) {

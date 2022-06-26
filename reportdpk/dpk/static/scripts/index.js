@@ -96,7 +96,8 @@ class App {
 
     // получить данные список всех пользователей
     async getActiveUsers() {
-        let usersList = await this.bx24.longBatchMethod('user.get', {"FILTER": {"ACTIVE": true}});
+        // "FILTER": {"ACTIVE": true}
+        let usersList = await this.bx24.longBatchMethod('user.get', {});
         let userObj = {};
         for (let user of usersList) {
             let userId = user.ID;
