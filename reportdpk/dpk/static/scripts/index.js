@@ -50,6 +50,7 @@ class App {
         this.loaderTableStatistic = document.querySelector('#loaderTableStatistic');
         this.tableStatistic = new TableStatistic(this.elementTableStatistic, loaderTableStatistic, this.bx24);
         
+        this.selectedPageSize = document.querySelector('#selectedPageSize');
         this.selectedPageNumber = document.querySelector('#selectedPageNumber');
         this.buttonGoToPage = document.querySelector('#buttonGoToPage');
         this.buttonGetStatistic = document.querySelector('#buttonGetStatistic');
@@ -157,7 +158,7 @@ class App {
     }
 
     getPageSize() {
-        return this.selectedPageNumber.value;
+        return this.selectedPageSize.value;
     }
 
     
