@@ -458,10 +458,10 @@ export default class TableStatistic {
         return contentHTML;
     }
 
-    getUserTitleByIBx(id_bx) {
-        let userObj = this.usersList[id_bx];
+    getUserTitleByIBx(userId) {
+        let userObj = this.usersList[userId];
         if (userObj) {
-            return `${this.usersList[companyResponsibleId].NAME || ""} ${this.usersList[companyResponsibleId].LAST_NAME || ""}`;
+            return `${this.usersList[userId].NAME || ""} ${this.usersList[userId].LAST_NAME || ""}`;
         }
 
         return id_bx;
