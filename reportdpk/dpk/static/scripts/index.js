@@ -52,10 +52,11 @@ class App {
         
         this.selectedPageSize = document.querySelector('#selectedPageSize');
         this.selectedPageNumber = document.querySelector('#selectedPageNumber');
+        this.elemMinDurationForCalcDpk = document.querySelector('#minDurationForCalcDpk');
         this.buttonGoToPage = document.querySelector('#buttonGoToPage');
         this.buttonGetStatistic = document.querySelector('#buttonGetStatistic');
     
-
+        
         this.page = 1;
         this.order = "name";
     }
@@ -123,7 +124,7 @@ class App {
             ordering: this.order,
             page: this.page,
             page_size: this.getPageSize(),
-            duration: 15,
+            duration: this.getMinDurationForCalcDpk(),
             company: this.filterCompany.getRequestParameters().join(","),
             responsible: this.filterResponsible.getRequestParameters().join(","),
             direction: this.filterDirection.getRequestParameters().join(","),
@@ -166,6 +167,9 @@ class App {
         return this.selectedPageSize.value;
     }
 
+    getMinDurationForCalcDpk() {
+        return this.elemMinDurationForCalcDpk.value;
+    }
     
 }
 
