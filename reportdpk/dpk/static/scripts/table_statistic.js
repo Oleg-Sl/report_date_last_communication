@@ -218,7 +218,7 @@ export default class TableStatistic {
         this.directionSummary = directionSummary;
         this.companySummaryByDirection = companySummaryByDirection;
 
-        let contentHeadHTML = this.renderTableHead();
+        let contentHeadHTML = this.renderTableHeaderToHTML();
         this.tableHeader.innerHTML = contentHeadHTML;
 
         this.table.style.gridTemplateColumns = arrSizeColumn.join(' ');
