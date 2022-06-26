@@ -121,7 +121,7 @@ class App {
         return {
             ordering: this.order,
             page: this.page,
-            pafe_size: this.getPageSize(),
+            page_size: this.getPageSize(),
             duration: 15,
             company: this.filterCompany.getRequestParameters().join(","),
             responsible: this.filterResponsible.getRequestParameters().join(","),
