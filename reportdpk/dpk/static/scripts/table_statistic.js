@@ -488,9 +488,8 @@ export default class TableStatistic {
     }
 
     sortingSelection(orderName) {
-        let sortButtons = this.tableBody.querySelectorAll(".sort-button");
-        console.log("sortButtons = ", sortButtons);
-        sortButtons.forEach((elem, ind) => {
+        let sortButtons = this.tableHeader.querySelectorAll(".sort-button");
+        sortButtons.forEach((elem) => {
             let order = elem.dataset.order;
             if (order === orderName) {
                 elem.style.color = "#a996ff";
