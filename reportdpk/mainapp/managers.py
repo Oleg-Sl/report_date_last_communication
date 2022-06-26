@@ -4,8 +4,7 @@ from django.conf import settings
 
 import datetime
 
-
-from mainapp.models import (
+from .models import (
     Direction,
     Stage,
     Company,
