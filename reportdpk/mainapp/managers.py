@@ -32,20 +32,20 @@ class CompanyQuerySet(models.QuerySet):
     def statistic_company(self, directions, duration):
         return self.annotate(
             summa_by_company_success=models.functions.Coalesce(
-                models.Subquery(
-                    Deal.objects.filter(
-                        company=models.OuterRef('pk'),
-                        direction__in=directions,
-                        stage__status="SUCCESSFUL"
-                    ).annotate(
-                        s=models.Sum('summa')
-                    ).values('s')[:1]
-                ),
-                # models.Sum(
-                #     "deal__opportunity",
-                #     filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
-                #     output_field=models.FloatField()
+                # models.Subquery(
+                #     Deal.objects.filter(
+                #         company=models.OuterRef('pk'),
+                #         direction__in=directions,
+                #         stage__status="SUCCESSFUL"
+                #     ).annotate(
+                #         s=models.Sum('summa')
+                #     ).values('s')[:1]
                 # ),
+                models.Sum(
+                    "deal__opportunity",
+                    filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+                    output_field=models.FloatField()
+                ),
                 0.0
             ),
             summa_by_company_work=models.functions.Coalesce(
