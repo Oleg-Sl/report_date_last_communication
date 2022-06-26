@@ -45,12 +45,23 @@ class CompanyQuerySet(models.QuerySet):
                 output_field=models.FloatField()
             ),
             summa_by_company_work=models.functions.Coalesce(
-                models.Sum(
-                    "deal__opportunity",
-                    filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
-                    output_field=models.FloatField()
+                models.Subquery(
+                    Deal.objects.filter(
+                        company=models.OuterRef('pk'),
+                        direction__in=directions,
+                        stage__status="WORK"
+                    ).annotate(
+                        s=models.Sum('opportunity')
+                    ).values('s')[:1]
                 ),
-                0.0
+                models.Value(0),
+                output_field=models.FloatField()
+                # models.Sum(
+                #     "deal__opportunity",
+                #     filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+                #     output_field=models.FloatField()
+                # ),
+                # 0.0
             ),
             dpk=models.functions.Coalesce(
                 models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration)),
