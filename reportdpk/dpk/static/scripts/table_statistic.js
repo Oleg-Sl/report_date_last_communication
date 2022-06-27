@@ -72,7 +72,7 @@ export default class TableStatistic {
                 } else {
                     // если клик по ячейкм сумма успешных
                     data.target2 = e.target.previousElementSibling;
-                    data.element_sum_of_work = data.target2;
+                    data.elementSumOWork = data.target2;
                 }
 
                 const status = e.target.dataset.allowed_add_deals;
@@ -81,7 +81,7 @@ export default class TableStatistic {
                     if (res) {
                         data['target1'].dataset.allowed_add_deals = 1;
                         data['target2'].dataset.allowed_add_deals = 1;
-                        data['element_sum_of_work'].innerHTML = "1";
+                        data['elementSumOWork'].innerHTML = "1";
                     }
                 }
 
