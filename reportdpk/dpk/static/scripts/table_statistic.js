@@ -77,16 +77,13 @@ export default class TableStatistic {
 
                 const status = e.target.dataset.allowed_add_deals;
                 if (status === 0 || status === "0") {
-                    this.eventAddDeal(data);
+                    let res = this.createDeal.create(data);
+                    if (res) {
+                        data['target1'].dataset.allowed_add_deals = 1;
+                        data['target2'].dataset.allowed_add_deals = 1;
+                        data['element_sum_of_work'].innerHTML = "1";
+                    }
                 }
-
-                let res = this.createDeal.create(data);
-                if (res) {
-                    data['target1'].dataset.allowed_add_deals = 1;
-                    data['target2'].dataset.allowed_add_deals = 1;
-                    data['element_sum_of_work'].innerHTML = "1";
-                }
-                
 
             }
         })
