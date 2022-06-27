@@ -8,11 +8,14 @@ import FilterDirection from './filters/direction.js';
 import {FilterSingle, } from './filters/single.js';
 import {FilterRange, } from './filters/range.js';
 
+import CreateDeal from './create_deal_in_bx24.js';
+
 
 class App {
-    constructor(requests, bx24) {
+    constructor(requests, bx24, createDeal) {
         this.requests = requests;
         this.bx24 = bx24;
+        this.createDeal = createDeal;
         
         // фильтр - КОМПАНИИ
         this.elementFilterCompany = document.querySelector('#filterCompany');
@@ -48,7 +51,7 @@ class App {
         // таблица - с статистикой по компаниям
         this.elementTableStatistic = document.querySelector('#tableStatisticData');
         this.loaderTableStatistic = document.querySelector('#loaderTableStatistic');
-        this.tableStatistic = new TableStatistic(this.elementTableStatistic, loaderTableStatistic, this.bx24);
+        this.tableStatistic = new TableStatistic(this.elementTableStatistic, loaderTableStatistic, this.bx24, this.createDeal);
         
         this.selectedPageSize = document.querySelector('#selectedPageSize');
         this.selectedPageNumber = document.querySelector('#selectedPageNumber');
@@ -183,7 +186,8 @@ $(document).ready(function() {
         
         let bx24 = new BX();
         let requests = new Request(api);
-        let app = new App(requests, bx24);
+        let createDeal = new CreateDeal(bx24);
+        let app = new App(requests, bx24, createDeal);
         app.init();
     })
 });

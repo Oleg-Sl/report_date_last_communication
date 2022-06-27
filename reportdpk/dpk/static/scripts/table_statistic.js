@@ -1,7 +1,8 @@
 export default class TableStatistic {
-    constructor(table, loader, bx) {
+    constructor(table, loader, bx, createDeal) {
         this.table = table;
         this.bx = bx;
+        this.createDeal = createDeal;
 
         // контейнер заголовка таблицы
         this.tableHeader = this.table.querySelector("thead");
@@ -40,10 +41,53 @@ export default class TableStatistic {
     }
 
     initHandler() {
+        // клик по компании или пользователю
         this.tableBody.addEventListener("click", async (e) => {
             let path = e.target.dataset.path;
             if (path) {
                 await this.bx.openPath(path);
+            }
+        })
+        // двойной клик на создание сделки
+        this.tableBody.addEventListener('dblclick', async (e) => {
+            const cellStatus = e.target.classList.contains("cell-add-deal");
+            if (cellStatus) {
+                let data = {};
+                data.companyId = e.target.dataset.companyIdBx;
+                data.categoryId = e.target.dataset.categoryIdBx;
+                data.stageId = e.target.dataset.stageIdBx;
+                data.directionCommaId = e.target.dataset.directionIdBx;
+                data.responsibleId = this.userCurrent.ID;
+
+                data.nameCompany = e.target.dataset.nameCompany;
+                data.nameDirection = e.target.dataset.nameDirection;
+                
+                data.target1 = e.target;
+                data.elementSumOWork = data.target1;
+
+                const statusCellLeft = e.target.classList.contains("directory-column-border-left");
+                if (statusCellLeft) {
+                    // если клик по ячейкм сумма в работе
+                    data.target2 = e.target.nextElementSibling;
+                } else {
+                    // если клик по ячейкм сумма успешных
+                    data.target2 = e.target.previousElementSibling;
+                    data.element_sum_of_work = data.target2;
+                }
+
+                const status = e.target.dataset.allowed_add_deals;
+                if (status === 0 || status === "0") {
+                    this.eventAddDeal(data);
+                }
+
+                let res = this.createDeal.create(data);
+                if (res) {
+                    data['target1'].dataset.allowed_add_deals = 1;
+                    data['target2'].dataset.allowed_add_deals = 1;
+                    data['element_sum_of_work'].innerHTML = "1";
+                }
+                
+
             }
         })
     }
@@ -376,7 +420,7 @@ export default class TableStatistic {
                 dpkCellStyle = "dpk-more-six-months";
             }
 
-            let companyDirectionContent = this.renderTableBodyColDirToHTML(companyIdBx);
+            let companyDirectionContent = this.renderTableBodyColDirToHTML(companyIdBx, companyName);
 
             contentHTML += `
                 <tr>
@@ -398,7 +442,7 @@ export default class TableStatistic {
     }
 
     // принимает список направлений компании и возвращает их HTML код для вставки в таблицу (столбцы с данными по направлениям)
-    renderTableBodyColDirToHTML(companyIdBx) {
+    renderTableBodyColDirToHTML(companyIdBx, companyName) {
         let directions = this.directionSummary;
         let contentHTML = "";
 
@@ -408,6 +452,7 @@ export default class TableStatistic {
             let amountOfDealsInWork = "0";
             let amountOfSuccessfulDeals = "0";
             let isAllowedToCreateDeals = 1;
+            let dirName = directions[dirIdBx].name;
 
             if (this.companySummaryByDirection[companyIdBx] && this.companySummaryByDirection[companyIdBx][dirIdBx]) {
                 let companyDataByDir = this.companySummaryByDirection[companyIdBx][dirIdBx];
@@ -417,13 +462,13 @@ export default class TableStatistic {
                 if (companyDataByDir.actual_deal_failed) {
                     styleCellAmountDealsInWork = "cell-background-red";
                     valueCellAmountDealsInWork = "1";
-                    isAllowedToCreateDeals = 0;
+                    isAllowedToCreateDeals = 1;
                 }
                 // если есть сделки на подготовке к работе
                 if (companyDataByDir.actual_deal_preparation) {
                     styleCellAmountDealsInWork = "";
                     valueCellAmountDealsInWork = "1";
-                    isAllowedToCreateDeals = 0;
+                    isAllowedToCreateDeals = 1;
                 }
                 // если есть сделки в работе
                 if (companyDataByDir.actual_deal_work) {
@@ -440,6 +485,8 @@ export default class TableStatistic {
                     data-category-id-bx='43'
                     data-stage-id-bx='C43:NEW'
                     data-allowed_add_deals=${isAllowedToCreateDeals}
+                    data-name-company=${companyName}
+                    data-name-direction=${dirName}
                 >
                     ${valueCellAmountDealsInWork}
                 </td>
@@ -449,6 +496,8 @@ export default class TableStatistic {
                     data-category-id-bx='43'
                     data-stage-id-bx='C43:NEW'
                     data-allowed_add_deals=${isAllowedToCreateDeals}
+                    data-name-company=${companyName}
+                    data-name-direction=${dirName}
                 >
                     ${amountOfSuccessfulDeals.toLocaleString()}
                 </td>
@@ -500,99 +549,5 @@ export default class TableStatistic {
     }
 
 
-
-
-
-    
-
-
-    // обработчик события создания сделки по двойному клику
-    async eventAddDeal(data) {
-        data['responsible'] = this.user;
-        data['begindate'] = new Date();
-        let isAddDeal = confirm(`Создать сделку в компании ${data['name_company']} по направлению ${data['name_direction']}?`);
-        if (isAddDeal) {
-            BX24.callMethod(
-                'crm.company.contact.items.get',
-                {id: data['company']},
-                (result) => {
-                    let response = result.data();
-                    console.log("response deal = ", response);
-                    if (response) {
-                        data["items"] = response;
-                        this.addDeal(data);
-                    }
-                }
-            )
-        }
-    }
-
-    // создание сделки в Битрикс
-    addDeal(data) {
-        // console.log("data999 = ", data);
-        /* создание сделки в Bitrix */
-        BX24.callMethod(
-            'crm.deal.add', 
-            {
-                fields:
-                    { 
-                        "STAGE_ID": data['stage'],
-                        "COMPANY_ID": data['company'],
-                        "OPENED": "Y",
-                        "ASSIGNED_BY_ID": data['responsible'],
-                        "CATEGORY_ID": data['category'],
-                        "UF_CRM_1610523951": data['direction'],
-                    },
-                params: { "REGISTER_SONET_EVENT": "Y" }	
-            },
-            (result)=> {
-                let dealId = result.data();
-                console.log("response deal = ", dealId);
-                if (dealId && data["items"].length) {
-                    BX24.callMethod(
-                        'crm.deal.contact.items.set',
-                        {
-                            id: dealId,
-                            items: data["items"]
-                        },
-                        (result) => {
-                            let response = result.data();
-                            console.log("response contact = ", response);
-                            if (response) {
-                                BX24.openPath(
-                                    `/crm/deal/details/${dealId}/`,
-                                    function(result)
-                                    {
-                                        console.log(result);
-                                    }
-                                );
-            
-                                data['target1'].dataset.allowed_add_deals = 1;
-                                data['target2'].dataset.allowed_add_deals = 1;
-                                data['element_sum_of_work'].innerHTML = "1";
-                                return;
-                            }
-                        }
-                    )
-                } else if(dealId && !data["items"].length) {
-                    BX24.openPath(
-                        `/crm/deal/details/${dealId}/`,
-                        function(result)
-                        {
-                            console.log(result);
-                        }
-                    );
-
-                    data['target1'].dataset.allowed_add_deals = 1;
-                    data['target2'].dataset.allowed_add_deals = 1;
-                    data['element_sum_of_work'].innerHTML = "1";
-                    return;
-                } else {
-                    alert("Не удалось создать сделку!");
-                }
-                
-            }
-        )
-    }
-
 }
+
