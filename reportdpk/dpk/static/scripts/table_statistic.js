@@ -448,7 +448,7 @@ export default class TableStatistic {
             let styleCellAmountDealsInWork = "";
             let amountOfDealsInWork = "0";
             let amountOfSuccessfulDeals = "0";
-            let isAllowedToCreateDeals = 1;
+            let isAllowedToCreateDeals = 0;
             let dirName = directions[dirIdBx].name;
 
             if (this.companySummaryByDirection[companyIdBx] && this.companySummaryByDirection[companyIdBx][dirIdBx]) {
@@ -471,7 +471,7 @@ export default class TableStatistic {
                 if (companyDataByDir.actual_deal_work) {
                     styleCellAmountDealsInWork = "";
                     valueCellAmountDealsInWork = amountOfDealsInWork.toLocaleString();
-                    isAllowedToCreateDeals = 0;
+                    isAllowedToCreateDeals = 1;
                 }
             }
             
