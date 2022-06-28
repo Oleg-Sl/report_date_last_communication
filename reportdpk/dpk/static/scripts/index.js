@@ -53,12 +53,20 @@ class App {
         this.loaderTableStatistic = document.querySelector('#loaderTableStatistic');
         this.tableStatistic = new TableStatistic(this.elementTableStatistic, loaderTableStatistic, this.bx24, this.createDeal);
         
+        // 
         this.selectedPageSize = document.querySelector('#selectedPageSize');
         this.selectedPageNumber = document.querySelector('#selectedPageNumber');
         this.elemMinDurationForCalcDpk = document.querySelector('#minDurationForCalcDpk');
+        
+        // 
         this.buttonGoToPage = document.querySelector('#buttonGoToPage');
         this.buttonGetStatistic = document.querySelector('#buttonGetStatistic');
     
+        // Пагинатор
+        this.elemPaginator = document.querySelector('.my-paginator-table');
+        this.paginator = new TableStatistic(this.elemPaginator);
+        
+        
         
         this.page = 1;
         this.order = "name";
@@ -92,7 +100,7 @@ class App {
             await this.getStatistic();
         });
         buttonGetStatistic.addEventListener('click', async (e) => {
-            this.page = 1
+            this.page = 1;
             await this.getStatistic();
         });
         this.elementTableStatistic.addEventListener('click', async (e) => {
@@ -101,7 +109,15 @@ class App {
                 await this.getStatistic();
             } 
         })
-
+        // событие клика по элементам пагинатору
+        this.elemPaginator.addEventListener('click', async (e) => {
+            let page = e.target.dataset.page;
+            if (page) {
+                this.page = page;
+                await this.getStatistic();
+            }
+        })
+      
 
     }
 
@@ -145,7 +161,6 @@ class App {
     }
 
     async getStatistic() {
-
         this.tableStatistic.hideTable();
 
         let paramsRequest = this.getParamsRequest();
@@ -165,6 +180,7 @@ class App {
         this.tableStatistic.sortingSelection(this.order);
 
         this.tableStatistic.showTable();
+        this.paginator.render(this.page, this.companySummary.result.count);
     }
 
     getPageSize() {
