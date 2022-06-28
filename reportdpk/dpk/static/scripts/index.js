@@ -9,6 +9,7 @@ import {FilterSingle, } from './filters/single.js';
 import {FilterRange, } from './filters/range.js';
 
 import CreateDeal from './create_deal_in_bx24.js';
+import Paginator from './pagination.js';
 
 
 class App {
@@ -64,7 +65,7 @@ class App {
     
         // Пагинатор
         this.elemPaginator = document.querySelector('.my-paginator-table');
-        this.paginator = new TableStatistic(this.elemPaginator);
+        this.paginator = new Paginator(this.elemPaginator);
         
         
         
