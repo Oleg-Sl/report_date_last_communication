@@ -181,7 +181,9 @@ class App {
         this.tableStatistic.sortingSelection(this.order);
 
         this.tableStatistic.showTable();
-        this.paginator.render(this.page, this.companySummary.result.count);
+
+        let countPage = Math.ceil(this.companySummary.result.count / paramsRequest.page_size);
+        this.paginator.render(this.page, countPage);
     }
 
     getPageSize() {
