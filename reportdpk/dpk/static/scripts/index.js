@@ -183,7 +183,7 @@ class App {
         this.tableStatistic.showTable();
 
         let countPage = Math.ceil(this.companySummary.result.count / paramsRequest.page_size);
-        this.paginator.render(this.page, countPage);
+        this.paginator.render(+this.page, +countPage);
     }
 
     getPageSize() {
