@@ -1,7 +1,7 @@
 export default class Paginator {
     constructor(paginatorElement) {
         this.paginatorElement = paginatorElement;                                           // контейнер пагинатора
-        this.app = app;
+        // this.app = app;
         this.containerUl = this.paginatorElement.querySelector("ul");       // контейнер с элементами пагинатора
         this.init();
     }
