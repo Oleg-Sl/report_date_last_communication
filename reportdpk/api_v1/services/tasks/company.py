@@ -45,10 +45,10 @@ def get_company_data(id_company):
 
     if not response_company or "result" not in response_company or not response_company["result"]:
         return
-
     return {
         "id_bx": response_company["result"].get("ID", None) or None,
         "name": response_company["result"].get("TITLE", None) or None,
+        "date_created": response_company["result"].get("DATE_CREATE", None) or None,
         "responsible": response_company["result"].get("ASSIGNED_BY_ID", None) or None,
         "industry": response_company["result"].get("INDUSTRY", None) or None,
         "sector": response_company["result"].get("UF_CRM_1640828035", None) or None,

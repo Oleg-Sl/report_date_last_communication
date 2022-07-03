@@ -63,6 +63,7 @@ class Company(models.Model):
     name = models.CharField(verbose_name="Название компании", max_length=300, blank=True, null=True, db_index=True)
     inn = models.CharField(verbose_name='ИНН компании', max_length=15, blank=True, null=True, db_index=True)
     date_last_communication = models.DateTimeField(verbose_name='Дата последней коммуникации', blank=True, null=True)
+    date_created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True)
     responsible = models.PositiveIntegerField(verbose_name='ID ответственого в BX24',
                                               blank=True, null=True, db_index=True)
     industry = models.CharField(verbose_name='Сфера деятельности', max_length=25, blank=True, null=True, db_index=True)
