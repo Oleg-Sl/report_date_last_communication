@@ -44,8 +44,16 @@ from api_v1.serializers import (
 
 )
 
+from .tasks import (
+    directions_create_or_update,
+    stages_create_or_update,
+    company_create_or_update,
+    deal_create_or_update,
+    calls_create_or_update
+)
 
-from .services.tasks import directions, stages, company, deal, calls
+
+# from .services.tasks import directions, stages, company, deal, calls
 from .services.filter_queryset import statistic_company
 
 # логгер входные данные событий от Битрикс
@@ -201,7 +209,7 @@ class DirectionCreateUpdateViewSet(views.APIView):
         if not verification_app.verification(application_token):
             return Response("Unverified event source", status=status.HTTP_400_BAD_REQUEST)
 
-        result = directions.create_or_update()
+        result = directions_create_or_update.delay()
         return Response(result, status=status.HTTP_200_OK)
 
 
@@ -216,7 +224,7 @@ class StageCreateUpdateViewSet(views.APIView):
         if not id_direction:
             return Response("Not transferred ID direction", status=status.HTTP_400_BAD_REQUEST)
 
-        result = stages.create_or_update(id_direction)
+        result = stages_create_or_update.delay(id_direction)
         return Response(result, status=status.HTTP_200_OK)
         # task = create_or_update_directions.delay(request.data)
         # return Response("OK", status=status.HTTP_200_OK)
@@ -242,7 +250,7 @@ class CompanyCreateUpdateViewSet(views.APIView):
             result = Company.objects.filter(id_bx=id_company).delete()
             return Response(result, status=status.HTTP_200_OK)
 
-        result = company.create_or_update(id_company)
+        result = company_create_or_update.delay(id_company)
         return Response(result, status=status.HTTP_200_OK)
 
 
@@ -265,7 +273,7 @@ class DealCreateUpdateViewSet(views.APIView):
             result = Deal.objects.filter(id_bx=id_deal).delete()
             return Response(result, status=status.HTTP_200_OK)
 
-        result = deal.create_or_update(id_deal)
+        result = deal_create_or_update.delay(id_deal)
         return Response(result, status=status.HTTP_200_OK)
 
 
@@ -282,51 +290,8 @@ class CallsCreateUpdateViewSet(views.APIView):
         if not id_call:
             return Response("Not transferred ID call", status=status.HTTP_400_BAD_REQUEST)
 
-        result = calls.create_or_update(id_call)
+        result = calls_create_or_update.delay(id_call)
         return Response(result, status=status.HTTP_200_OK)
-
-
-class StatisticCompanyViewSet2(views.APIView):
-    def post(self, request):
-        directions_actual = Direction.direction_actual.values('pk')
-        queryset = Company.objects.statistic_company(directions_actual)
-
-        response = StatisticCompanySerializer(queryset, many=True).data
-
-        return Response(response, status=status.HTTP_200_OK)
-
-
-class StatisticDirectionViewSet2(views.APIView):
-
-    def post(self, request):
-        companies_ids = request.data.get("companies", [])
-        directions_ids = request.data.get("directions", [])
-        delta_days_for_suspended_deals = request.data.get("days_for_suspended_deals", settings.DEFAULT_DELTA_DEYS_SUSPENDED_DEALS)
-        delta_days_for_failed_deals = request.data.get("days_for_failed_deals", settings.DEFAULT_DELTA_DEYS_FAILED_DEALS)
-
-        if not isinstance(companies_ids, list) or not isinstance(directions_ids, list):
-            return Response(
-                'The "companies" and "directions" variables should be a list',
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        if not isinstance(delta_days_for_suspended_deals, int) or not isinstance(delta_days_for_failed_deals, int):
-            return Response(
-                'The "days_for_suspended_deals" and "days_for_failed_deals" variables must be a number',
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        limit_date_suspended_deals = datetime.now(timezone.utc) - timedelta(days=delta_days_for_suspended_deals)
-        limit_date_failed_deals = datetime.now(timezone.utc) - timedelta(days=delta_days_for_failed_deals)
-
-        queryset = Deal.objects.statistic_company_by_directions(
-            [el for el in companies_ids if isinstance(el, int) or el.isdigit()],
-            [el for el in directions_ids if isinstance(el, int) or el.isdigit()],
-            limit_date_suspended_deals,
-            limit_date_failed_deals
-        )
-        response = converting_list_to_dict(queryset, "company__pk", "direction")
-        return Response(response, status=status.HTTP_200_OK)
 
 
 class StatisticCompanyViewSet(viewsets.GenericViewSet):
