@@ -15,21 +15,15 @@ class Auth {
     async init() {
         // получение сохраненных токенов доступа и обновления
         await this.storageGetTokens();
-        console.log("ЧТЕНИЕ ТОКЕНОВ");
         // пользователь не зарегистрирован
         if (!this.access || !this.refresh) {
-            console.log("СОЗДАЕМ ЛОГИН И ПАРОЛЬ");
             // Получение пароля логина для регистрации пользователя
             let username = await this.storageGetUsername();
             let password = await this.storageGetPassword();
-            console.log("username = ", username);
-            console.log("password = ", password);
             // регистрация пользователя
             let userRegistration = await this.serverRegistrationUser(username, password);
-            console.log("userRegistration = ", userRegistration);
             // создание токенов доступа и обновления
             let tokens = await this.serverCreateToken(username, password);
-            console.log("tokens = ", tokens);
             // сохранениние созданных токенов в хранилище
             let resSaveTokens = await this.storageSaveTokens(tokens.access, tokens.refresh);
         }
