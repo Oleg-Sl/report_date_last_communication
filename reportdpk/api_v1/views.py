@@ -3,6 +3,7 @@ from rest_framework import views, viewsets, filters, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -100,6 +101,8 @@ def api_root(request, format=None):
 
 # Обработчик установки приложения
 class InstallAppApiView(views.APIView):
+    permission_classes = [AllowAny]
+
     @xframe_options_exempt
     def post(self, request):
         data = {
@@ -116,6 +119,8 @@ class InstallAppApiView(views.APIView):
 
 # Обработчик удаления приложения
 class UninstallAppApiView(views.APIView):
+    permission_classes = [AllowAny]
+
     @xframe_options_exempt
     def post(self, request):
         return Response(status.HTTP_200_OK)
@@ -123,6 +128,8 @@ class UninstallAppApiView(views.APIView):
 
 # Обработчик установленного приложения
 class IndexApiView(views.APIView):
+    permission_classes = [AllowAny]
+
     @xframe_options_exempt
     def post(self, request):
         return render(request, 'index.html')
@@ -135,16 +142,17 @@ class IndexApiView(views.APIView):
 class DirectionViewSet(viewsets.ModelViewSet):
     queryset = Direction.objects.filter(new=True)
     serializer_class = DirectionSerializer
+    permission_classes = [AllowAny]
     http_method_names = ['get', 'options']
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     # filterset_class = service.DirectionDataFilter
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 
 class StageViewSet(viewsets.ModelViewSet):
     queryset = Stage.objects.all()
     serializer_class = StageSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'options']
 
 
@@ -153,7 +161,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
     serializer_class = CompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^id_bx", "name", "^inn"]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'options']
 
 
@@ -162,7 +170,7 @@ class SectorCompanyViewSet(viewsets.ModelViewSet):
     serializer_class = SectorCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^sector", ]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'options']
 
 
@@ -171,7 +179,7 @@ class RegionCompanyViewSet(viewsets.ModelViewSet):
     serializer_class = RegionCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^region", ]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'options']
 
 
@@ -180,7 +188,7 @@ class SourceCompanyViewSet(viewsets.ModelViewSet):
     serializer_class = SourceCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^source", ]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'options']
 
 
@@ -189,7 +197,7 @@ class RequisitesRegionCompanyViewSet(viewsets.ModelViewSet):
     serializer_class = RequisitesRegionCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^requisite_region", ]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'options']
 
 
@@ -198,11 +206,13 @@ class RequisitesCityCompanyViewSet(viewsets.ModelViewSet):
     serializer_class = RequisitesCityCompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^requisites_city", ]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'options']
 
 
 class DirectionCreateUpdateViewSet(views.APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         application_token = request.data.get("auth[application_token]", None)
 
@@ -214,6 +224,8 @@ class DirectionCreateUpdateViewSet(views.APIView):
 
 
 class StageCreateUpdateViewSet(views.APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         application_token = request.data.get("auth[application_token]", None)
         id_direction = request.data.get("direction", None)
@@ -226,11 +238,11 @@ class StageCreateUpdateViewSet(views.APIView):
 
         result = stages_create_or_update.delay(id_direction)
         return Response(result, status=status.HTTP_200_OK)
-        # task = create_or_update_directions.delay(request.data)
-        # return Response("OK", status=status.HTTP_200_OK)
 
 
 class CompanyCreateUpdateViewSet(views.APIView):
+    permission_classes = [AllowAny]
+
     """ Контроллер обработки событий BX24: onCrmCompanyAdd, onCrmCompanyUpdate, onCrmCompanyDelete """
     def post(self, request):
         # тип события - ONCRMCOMPANYADD, ONCRMCOMPANYUPDATE, ONCRMCOMPANYDELETE
@@ -255,6 +267,8 @@ class CompanyCreateUpdateViewSet(views.APIView):
 
 
 class DealCreateUpdateViewSet(views.APIView):
+    permission_classes = [AllowAny]
+
     """ Контроллер обработки событий BX24: onCrmDealAdd, onCrmDealUpdate, onCrmDealDelete """
     def post(self, request):
         # тип события - ONCRMDEALADD, ONCRMDEALUPDATE, ONCRMDEALDELETE
@@ -278,6 +292,8 @@ class DealCreateUpdateViewSet(views.APIView):
 
 
 class CallsCreateUpdateViewSet(views.APIView):
+    permission_classes = [AllowAny]
+
     """ Контроллер обработки событий BX24: onVoximplantCallEnd """
     def post(self, request):
         logger_tasks_access.info(request.data)
@@ -301,6 +317,7 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = statistic_company.StatisticCompany
     ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         duration = self.request.query_params.get("duration", "0")
@@ -328,6 +345,7 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
 
 
 class StatisticCompanyDirectionViewSet(viewsets.GenericViewSet):
+    permission_classes = [IsAuthenticated]
     # queryset = Company.objects.all()
     # filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     # filterset_class = statistic_company.StatisticCompanyByDirection
@@ -373,6 +391,7 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
     queryset = Direction.direction_actual.count_active_deals()
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = statistic_company.StatisticByDirection
+    permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
