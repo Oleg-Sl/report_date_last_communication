@@ -22,5 +22,8 @@ urlpatterns = [
     path('dpk/admin/', admin.site.urls),
     path('dpk/api/v1/', include('api_v1.urls', namespace='api_v1')),
     # path('api/v1/', include('api_v1.urls', namespace='api_v1')),
+
+    path('dpk/auth/', include('djoser.urls')),
+    path('dpk/auth/', include('djoser.urls.jwt')),
 ]
 
