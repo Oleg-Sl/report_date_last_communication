@@ -54,11 +54,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'djoser',
-    'rest_framework_simplejwt',
-
     'rest_framework',
     'django_filters',
+
+    'djoser',
+    'rest_framework_simplejwt',
 
     'mainapp',
     'api_v1'
@@ -66,6 +66,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
