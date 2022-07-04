@@ -142,7 +142,7 @@ class IndexApiView(views.APIView):
 class DirectionViewSet(viewsets.ModelViewSet):
     queryset = Direction.objects.filter(new=True)
     serializer_class = DirectionSerializer
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     http_method_names = ['get', 'options']
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     # filterset_class = service.DirectionDataFilter
