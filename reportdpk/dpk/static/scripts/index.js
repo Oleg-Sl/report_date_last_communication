@@ -74,6 +74,8 @@ class App {
     }
 
     async init() {
+        // Объект запросов
+        await this.requests.init();
         
         this.filterCompany.init();
         this.filterResponsible.init();
