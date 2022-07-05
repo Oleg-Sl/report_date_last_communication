@@ -17,7 +17,7 @@ def create_or_update(id_deal):
     )
 
     if not response_deal or "result" not in response_deal:
-        return
+        return response_deal
 
     direction = response_deal["result"]["CATEGORY_ID"]
     if direction in [43, "43"]:
