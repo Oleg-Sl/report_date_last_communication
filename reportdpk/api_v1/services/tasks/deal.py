@@ -61,4 +61,6 @@ def editing_numb(numb):
     numb = numb.split("|")[0] or "0"
     if numb:
         return f"{float(numb):.2f}"
+    else:
+        return None
 

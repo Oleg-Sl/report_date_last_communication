@@ -54,7 +54,7 @@ from .tasks import (
 )
 
 
-# from .services.tasks import directions, stages, company, deal, calls
+from .services.tasks import directions, stages, company, deal, calls
 from .services.filter_queryset import statistic_company
 
 # логгер входные данные событий от Битрикс
@@ -287,7 +287,8 @@ class DealCreateUpdateViewSet(views.APIView):
             result = Deal.objects.filter(id_bx=id_deal).delete()
             return Response(result, status=status.HTTP_200_OK)
 
-        result = deal_create_or_update.delay(id_deal)
+        # result = deal_create_or_update.delay(id_deal)
+        result = deal.create_or_update(id_deal)
         return Response(result, status=status.HTTP_200_OK)
 
 
