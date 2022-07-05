@@ -153,7 +153,7 @@ class App {
             direction: this.filterDirection.getRequestParameters().join(","),
             sector: this.filterSector.getRequestParameters(),
             region: this.filterRegion.getRequestParameters(),
-            source_company: this.filterSource.getRequestParameters(),
+            source: this.filterSource.getRequestParameters(),
             requisite_region: this.filterRequisiteRegion.getRequestParameters(),
             requisites_city: this.filterRequisiteCity.getRequestParameters(),
             revenue_min: this.filterRevenue.getMinValue(),

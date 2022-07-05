@@ -27,7 +27,7 @@ class StatisticCompany(filters.FilterSet):
 
     sector = filters.CharFilter()
     region = filters.CharFilter()
-    source_company = filters.CharFilter()
+    source = filters.CharFilter()
     requisite_region = filters.CharFilter()
     requisites_city = filters.CharFilter()
 
@@ -36,7 +36,7 @@ class StatisticCompany(filters.FilterSet):
 
     class Meta:
         model = Company
-        fields = ["company", "responsible", "sector", "region", "source_company",
+        fields = ["company", "responsible", "sector", "region", "source",
                   "requisite_region", "requisites_city", "number_employees", "revenue", ]
 
 
