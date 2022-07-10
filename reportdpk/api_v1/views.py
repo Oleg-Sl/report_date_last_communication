@@ -444,10 +444,9 @@ class StatisticCompanyNewViewSet(views.APIView):
     filterset_class = statistic_company.StatisticCompany
     ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
 
-    """ Контроллер обработки событий BX24: onVoximplantCallEnd """
-    def get(self, request):
+    def get_queryset(self):
         directions = Direction.direction_actual.all()  # .values('pk')
-        result = Company.statistic.annotate(
+        return Company.statistic.annotate(
             summa_by_company_success=models.functions.Coalesce(
                 models.Subquery(
                     Deal.objects.filter(
@@ -516,4 +515,11 @@ class StatisticCompanyNewViewSet(views.APIView):
         #         date(2000, 1, 1)
         #     )
         # )
-        return Response(result, status=status.HTTP_200_OK)
+
+
+    """ Контроллер обработки событий BX24: onVoximplantCallEnd """
+    # def get(self, request):
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        return Response(queryset, status=status.HTTP_200_OK)
