@@ -400,41 +400,41 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
         response = converting_list_to_dict(queryset, "id_bx")
         return Response(response, status=status.HTTP_200_OK)
 
-
-class StatisticCompanyNew1ViewSet(viewsets.GenericViewSet):
-    queryset = Company.statistic.all()
-    serializer_class = StatisticCompanySerializer
-    pagination_class = CustomPageNumberPagination
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_class = statistic_company.StatisticCompany
-    ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
-    permission_classes = [AllowAny]
-    # permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        duration = self.request.query_params.get("duration", "0")
-        direction = Direction.direction_actual.all() #.values('pk')
-        return super().get_queryset().statistic_company_new(direction, duration)
-
-    def list(self, request, *args, **kwargs):
-        duration = request.query_params.get("duration", "0")
-
-        if not duration.isdigit():
-            return Response('The "duration" value must be an integer', status=status.HTTP_400_BAD_REQUEST)
-
-        queryset = self.filter_queryset(
-            self.get_queryset()
-        ).values()
-            # get_queryset.values("id_bx", "name", "summa_by_company_success", "summa_by_company_work", "dpk")
-
-        # page = self.paginate_queryset(queryset)
-        # if page is not None:
-        #     serializer = self.get_serializer(page, many=True)
-        #     return self.get_paginated_response(serializer.data)
-        #
-        # serializer = self.get_serializer(queryset, many=True)
-
-        return Response(queryset, status=status.HTTP_200_OK)
+#
+# class StatisticCompanyNew1ViewSet(viewsets.GenericViewSet):
+#     queryset = Company.statistic.all()
+#     serializer_class = StatisticCompanySerializer
+#     pagination_class = CustomPageNumberPagination
+#     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+#     filterset_class = statistic_company.StatisticCompany
+#     ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
+#     permission_classes = [AllowAny]
+#     # permission_classes = [IsAuthenticated]
+#
+#     def get_queryset(self):
+#         duration = self.request.query_params.get("duration", "0")
+#         direction = Direction.direction_actual.all() #.values('pk')
+#         return super().get_queryset().statistic_company_new(direction, duration)
+#
+#     def list(self, request, *args, **kwargs):
+#         duration = request.query_params.get("duration", "0")
+#
+#         if not duration.isdigit():
+#             return Response('The "duration" value must be an integer', status=status.HTTP_400_BAD_REQUEST)
+#
+#         queryset = self.filter_queryset(
+#             self.get_queryset()
+#         ).values()
+#             # get_queryset.values("id_bx", "name", "summa_by_company_success", "summa_by_company_work", "dpk")
+#
+#         # page = self.paginate_queryset(queryset)
+#         # if page is not None:
+#         #     serializer = self.get_serializer(page, many=True)
+#         #     return self.get_paginated_response(serializer.data)
+#         #
+#         # serializer = self.get_serializer(queryset, many=True)
+#
+#         return Response(queryset, status=status.HTTP_200_OK)
 
 from django.db import models
 class StatisticCompanyNewViewSet(views.APIView):
