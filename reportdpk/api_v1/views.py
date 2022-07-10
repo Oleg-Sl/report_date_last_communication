@@ -424,7 +424,7 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
 
         queryset = self.filter_queryset(
             self.get_queryset()
-        )
+        ).values("id_bx", "name", "summa_by_company_success", "summa_by_company_work", "dpk")
 
         # page = self.paginate_queryset(queryset)
         # if page is not None:
@@ -433,5 +433,5 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
         #
         # serializer = self.get_serializer(queryset, many=True)
 
-        return queryset.values("id_bx", "name", "summa_by_company_success", "summa_by_company_work", "dpk")
+        return Response(queryset, status=status.HTTP_200_OK)
 
