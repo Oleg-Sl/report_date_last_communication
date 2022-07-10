@@ -13,7 +13,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from django.conf import settings
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 
 import logging
 
@@ -456,7 +456,7 @@ class StatisticCompanyNewViewSet(views.APIView):
                 ),
             dpk=models.functions.Coalesce(
                 models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
-                datetime.date(2000, 1, 1)
+                date(2000, 1, 1)
             )
         ).values()[:50]
         return Response(result, status=status.HTTP_200_OK)
