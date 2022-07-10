@@ -88,6 +88,7 @@ def api_root(request, format=None):
         'requisites_city': reverse('api_v1:requisites_city-list', request=request, format=format),
 
         'statistic-company': reverse('api_v1:statistic-company-list', request=request, format=format),
+        'statistic-company-new': reverse('api_v1:statistic-company-new-list', request=request, format=format),
         'statistic-direction': reverse('api_v1:statistic-direction-list', request=request, format=format),
         'statistic-company-direction': reverse('api_v1:statistic-company-direction-list', request=request, format=format),
 
@@ -399,4 +400,37 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
         response = converting_list_to_dict(queryset, "id_bx")
         return Response(response, status=status.HTTP_200_OK)
 
+
+class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
+    queryset = Company.objects.all()
+    serializer_class = StatisticCompanySerializer
+    pagination_class = CustomPageNumberPagination
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = statistic_company.StatisticCompany
+    ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        duration = self.request.query_params.get("duration", "0")
+        direction = Direction.direction_actual.all() #.values('pk')
+        return super().get_queryset().statistic_company(direction, duration)
+
+    def list(self, request, *args, **kwargs):
+        duration = request.query_params.get("duration", "0")
+
+        if not duration.isdigit():
+            return Response('The "duration" value must be an integer', status=status.HTTP_400_BAD_REQUEST)
+
+        queryset = self.filter_queryset(
+            self.get_queryset()
+        )
+
+        # page = self.paginate_queryset(queryset)
+        # if page is not None:
+        #     serializer = self.get_serializer(page, many=True)
+        #     return self.get_paginated_response(serializer.data)
+        #
+        # serializer = self.get_serializer(queryset, many=True)
+
+        return queryset.values("id_bx", "name", "summa_by_company_success", "summa_by_company_work", "dpk")
 
