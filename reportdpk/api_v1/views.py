@@ -458,7 +458,7 @@ class StatisticCompanyNewViewSet(views.APIView):
                 models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
                 date(2000, 1, 1)
             )
-        ).values()[:50]
+        ).values("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")[:50]
         #     .annotate(
         #     summa_by_company_success=models.Sum(
         #             "deal__opportunity",
