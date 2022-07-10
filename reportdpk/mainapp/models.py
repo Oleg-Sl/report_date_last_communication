@@ -90,7 +90,7 @@ class Company(models.Model):
 
     objects = CompanyManager.from_queryset(CompanyQuerySet)()
     # statistic = CompanyNewManager.from_queryset(CompanyNewQuerySet)()
-    statistic = CompanyNewManager
+    statistic = CompanyNewManager()
 
     def __str__(self):
         return f"{self.id_bx}. {self.name or ' - '}"
