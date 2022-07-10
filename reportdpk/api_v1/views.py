@@ -443,20 +443,21 @@ class StatisticCompanyNewViewSet(views.APIView):
     """ Контроллер обработки событий BX24: onVoximplantCallEnd """
     def post(self, request):
 
-        result = Company.statistic.annotate(
-            summa_by_company_success=models.Sum(
-                    "deal__opportunity",
-                    filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
-                    output_field=models.FloatField()
-                ),
-            summa_by_company_work=models.Sum(
-                    "deal__opportunity",
-                    filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
-                    output_field=models.FloatField()
-                ),
-            dpk=models.functions.Coalesce(
-                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
-                date(2000, 1, 1)
-            )
-        ).values()[:50]
+        result = Company.statistic.values()[:50]
+        #     .annotate(
+        #     summa_by_company_success=models.Sum(
+        #             "deal__opportunity",
+        #             filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+        #             output_field=models.FloatField()
+        #         ),
+        #     summa_by_company_work=models.Sum(
+        #             "deal__opportunity",
+        #             filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+        #             output_field=models.FloatField()
+        #         ),
+        #     dpk=models.functions.Coalesce(
+        #         models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
+        #         date(2000, 1, 1)
+        #     )
+        # )
         return Response(result, status=status.HTTP_200_OK)
