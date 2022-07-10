@@ -445,7 +445,7 @@ class StatisticCompanyNewViewSet(views.APIView):
     ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
 
     """ Контроллер обработки событий BX24: onVoximplantCallEnd """
-    def post(self, request):
+    def get(self, request):
         directions = Direction.direction_actual.all()  # .values('pk')
         result = Company.statistic.annotate(
             summa_by_company_success=models.Sum(
