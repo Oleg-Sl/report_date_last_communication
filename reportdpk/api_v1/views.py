@@ -402,7 +402,7 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
 
 
 class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
-    queryset = Company.objects.all()
+    queryset = Company.statistic.all()
     serializer_class = StatisticCompanySerializer
     pagination_class = CustomPageNumberPagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
@@ -414,7 +414,7 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
         duration = self.request.query_params.get("duration", "0")
         direction = Direction.direction_actual.all() #.values('pk')
-        return super().get_queryset().statistic_company(direction, duration)
+        return super().get_queryset().statistic_company_new(direction, duration)
 
     def list(self, request, *args, **kwargs):
         duration = request.query_params.get("duration", "0")

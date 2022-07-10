@@ -5,7 +5,9 @@ from .managers import (
     DirectionActualManager,
     CompanyManager,
     DealManager,
-    CompanyQuerySet
+    CompanyQuerySet,
+    CompanyNewManager,
+    CompanyNewQuerySet
 )
 
 
@@ -87,6 +89,7 @@ class Company(models.Model):
                                            blank=True, null=True, db_index=True)
 
     objects = CompanyManager.from_queryset(CompanyQuerySet)()
+    statistic = CompanyNewManager.from_queryset(CompanyNewQuerySet)()
 
     def __str__(self):
         return f"{self.id_bx}. {self.name or ' - '}"

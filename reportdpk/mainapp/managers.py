@@ -133,3 +133,29 @@ class DealManager(models.Manager):
             # models.Sum("opportunity", filter=models.Q(stage__status="WORK")),
         )
 
+
+class CompanyNewQuerySet(models.QuerySet):
+    def statistic_company_new(self, directions, duration):
+        return self.annotate(
+            summa_by_company_success=models.Sum(
+                "deal__opportunity",
+                filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+                output_field=models.FloatField()
+            ),
+            summa_by_company_work=models.Sum(
+                "deal__opportunity",
+                filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+                output_field=models.FloatField()
+            ),
+            dpk=models.functions.Coalesce(
+                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration)),
+                datetime.date(2000, 1, 1)
+            )
+        )
+
+
+class CompanyNewManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().exclude(id_bx=0)
+
+
