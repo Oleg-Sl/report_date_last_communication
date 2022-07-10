@@ -436,12 +436,58 @@ class StatisticCompanyNew1ViewSet(viewsets.GenericViewSet):
 
         return Response(queryset, status=status.HTTP_200_OK)
 
-
+from django.db import models
 class StatisticCompanyNewViewSet(views.APIView):
     permission_classes = [AllowAny]
 
     """ Контроллер обработки событий BX24: onVoximplantCallEnd """
     def post(self, request):
 
-        result = Company.statistic.values()[:50]
+        result = Company.statistic.annotate(
+            summa_by_company_success=models.functions.Coalesce(
+                models.Subquery(
+                    Deal.objects.filter(
+                        company=models.OuterRef('pk'),
+                        direction__in=directions,
+                        stage__status="SUCCESSFUL"
+                    ).annotate(
+                        s=models.Sum('opportunity')
+                    ).values('s')[:1]
+                ),
+                # models.Sum(
+                #     "deal__opportunity",
+                #     filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+                #     output_field=models.FloatField()
+                # ),
+                models.Value(0),
+                output_field=models.FloatField()
+            ),
+            summa_by_company_work=models.functions.Coalesce(
+                models.Subquery(
+                    Deal.objects.filter(
+                        company=models.OuterRef('pk'),
+                        direction__in=directions,
+                        stage__status="WORK"
+                    )
+                    # .aggregate(
+                    #     s=models.Sum('opportunity')
+                    # ).values('s')[:1]
+                    # .annotate(
+                    .annotate(
+                        s=models.Sum('opportunity')
+                    ).values('s')[:1]
+                ),
+                models.Value(0),
+                output_field=models.FloatField()
+                # models.Sum(
+                #     "deal__opportunity",
+                #     filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+                #     output_field=models.FloatField()
+                # ),
+                # 0.0
+            ),
+            dpk=models.functions.Coalesce(
+                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration)),
+                datetime.date(2000, 1, 1)
+            ).values()[:50]
         return Response(result, status=status.HTTP_200_OK)
