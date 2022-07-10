@@ -89,7 +89,8 @@ class Company(models.Model):
                                            blank=True, null=True, db_index=True)
 
     objects = CompanyManager.from_queryset(CompanyQuerySet)()
-    statistic = CompanyNewManager.from_queryset(CompanyNewQuerySet)()
+    # statistic = CompanyNewManager.from_queryset(CompanyNewQuerySet)()
+    statistic = CompanyNewManager
 
     def __str__(self):
         return f"{self.id_bx}. {self.name or ' - '}"
