@@ -442,11 +442,11 @@ class StatisticCompanyNewViewSet(views.APIView):
 
     """ Контроллер обработки событий BX24: onVoximplantCallEnd """
     def post(self, request):
-
+        directions = Direction.direction_actual.all()  # .values('pk')
         result = Company.statistic.annotate(
             summa_by_company_success=models.Sum(
                 "deal__opportunity",
-                filter=models.Q(deal__stage__status="SUCCESSFUL"),
+                filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
                 output_field=models.FloatField()
             ),
         ).values()[:50]
