@@ -88,7 +88,7 @@ def api_root(request, format=None):
         'requisites_city': reverse('api_v1:requisites_city-list', request=request, format=format),
 
         'statistic-company': reverse('api_v1:statistic-company-list', request=request, format=format),
-        'statistic-company-new': reverse('api_v1:statistic-company-new-list', request=request, format=format),
+        # 'statistic-company-new': reverse('api_v1:statistic-company-new-list', request=request, format=format),
         'statistic-direction': reverse('api_v1:statistic-direction-list', request=request, format=format),
         'statistic-company-direction': reverse('api_v1:statistic-company-direction-list', request=request, format=format),
 
@@ -401,7 +401,7 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
         return Response(response, status=status.HTTP_200_OK)
 
 
-class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
+class StatisticCompanyNew1ViewSet(viewsets.GenericViewSet):
     queryset = Company.statistic.all()
     serializer_class = StatisticCompanySerializer
     pagination_class = CustomPageNumberPagination
@@ -436,3 +436,12 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
 
         return Response(queryset, status=status.HTTP_200_OK)
 
+
+class StatisticCompanyNewViewSet(views.APIView):
+    permission_classes = [AllowAny]
+
+    """ Контроллер обработки событий BX24: onVoximplantCallEnd """
+    def post(self, request):
+
+        result = Company.statistic.values()[:50]
+        return Response(result, status=status.HTTP_200_OK)
