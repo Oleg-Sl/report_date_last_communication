@@ -18,7 +18,7 @@ router.register(r'requisite_region', RequisitesRegionCompanyViewSet, basename='r
 router.register(r'requisites_city', RequisitesCityCompanyViewSet, basename='requisites_city')
 
 router.register(r'statistic-company', StatisticCompanyViewSet, basename='statistic-company')
-# router.register(r'statistic-company-new', StatisticCompanyNewViewSet, basename='statistic-company-new')
+router.register(r'statistic-company-new', StatisticCompanyNewViewSet, basename='statistic-company-new')
 router.register(r'statistic-company-direction', StatisticCompanyDirectionViewSet, basename='statistic-company-direction')
 router.register(r'statistic-direction', StatisticDirectionViewSet, basename='statistic-direction')
 
@@ -36,7 +36,7 @@ urlpatterns = [
     path(r'create-update-deal/', DealCreateUpdateViewSet.as_view(), name='create_update_deal'),
     path(r'create-update-calls/', CallsCreateUpdateViewSet.as_view(), name='create_update_calls'),
 
-    path(r'statistic-company-new/', StatisticCompanyNewViewSet.as_view(), name='statistic-company-new'),
+    # path(r'statistic-company-new/', StatisticCompanyNewViewSet.as_view(), name='statistic-company-new'),
 
 ]
 
