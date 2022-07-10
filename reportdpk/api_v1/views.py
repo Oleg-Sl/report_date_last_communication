@@ -487,7 +487,8 @@ class StatisticCompanyNewViewSet(views.APIView):
                 # 0.0
             ),
             dpk=models.functions.Coalesce(
-                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration)),
+                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
                 datetime.date(2000, 1, 1)
-            ).values()[:50]
+            )
+        ).values()[:50]
         return Response(result, status=status.HTTP_200_OK)
