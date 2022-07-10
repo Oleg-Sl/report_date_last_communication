@@ -438,11 +438,20 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
 
 from django.db import models
 class StatisticCompanyNewViewSet(views.APIView):
-    permission_classes = [AllowAny]
+    queryset = Company.statistic.all()
+    serializer_class = StatisticCompanySerializer
     pagination_class = CustomPageNumberPagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = statistic_company.StatisticCompany
     ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
+    permission_classes = [AllowAny]
+    # permission_classes = [IsAuthenticated]
+
+    # permission_classes = [AllowAny]
+    # pagination_class = CustomPageNumberPagination
+    # filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    # filterset_class = statistic_company.StatisticCompany
+    # ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
 
     def get_queryset(self):
         directions = Direction.direction_actual.all()  # .values('pk')
