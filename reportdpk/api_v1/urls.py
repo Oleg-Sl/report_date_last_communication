@@ -18,7 +18,7 @@ router.register(r'requisite_region', RequisitesRegionCompanyViewSet, basename='r
 router.register(r'requisites_city', RequisitesCityCompanyViewSet, basename='requisites_city')
 
 router.register(r'statistic-company', StatisticCompanyViewSet, basename='statistic-company')
-router.register(r'statistic-company-new', StatisticCompanyNewViewSet, basename='statistic-company-new')
+# router.register(r'statistic-company-new', StatisticCompanyNewViewSet, basename='statistic-company-new')
 router.register(r'statistic-company-direction', StatisticCompanyDirectionViewSet, basename='statistic-company-direction')
 router.register(r'statistic-direction', StatisticDirectionViewSet, basename='statistic-direction')
 
