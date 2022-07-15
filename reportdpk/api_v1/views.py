@@ -88,7 +88,7 @@ def api_root(request, format=None):
         'requisites_city': reverse('api_v1:requisites_city-list', request=request, format=format),
 
         'statistic-company': reverse('api_v1:statistic-company-list', request=request, format=format),
-        # 'statistic-company-new': reverse('api_v1:statistic-company-new-list', request=request, format=format),
+        'statistic-company-new': reverse('api_v1:statistic-company-new-list', request=request, format=format),
         'statistic-direction': reverse('api_v1:statistic-direction-list', request=request, format=format),
         'statistic-company-direction': reverse('api_v1:statistic-company-direction-list', request=request, format=format),
 
@@ -437,13 +437,14 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
 #         return Response(queryset, status=status.HTTP_200_OK)
 
 from django.db import models
-class StatisticCompanyNewViewSet(views.APIView):
+# class StatisticCompanyNewViewSet(views.APIView):
+class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
     queryset = Company.statistic.all()
     serializer_class = StatisticCompanySerializer
-    # pagination_class = CustomPageNumberPagination
-    # filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    # filterset_class = statistic_company.StatisticCompany
-    # ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
+    pagination_class = CustomPageNumberPagination
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = statistic_company.StatisticCompany
+    ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
     permission_classes = [AllowAny]
     # permission_classes = [IsAuthenticated]
 
