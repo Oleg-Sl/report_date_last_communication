@@ -439,7 +439,7 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
 from django.db import models
 # class StatisticCompanyNewViewSet(views.APIView):
 class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
-    queryset = Company.statistic.all()[:50]
+    queryset = Company.statistic.all()
     serializer_class = StatisticCompanySerializer
     pagination_class = CustomPageNumberPagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
@@ -454,82 +454,82 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
     # filterset_class = statistic_company.StatisticCompany
     # ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
     #
-    # def get_queryset(self):
-    #     directions = Direction.direction_actual.all()  # .values('pk')
-    #     return Company.statistic.annotate(
-    #         summa_by_company_success=models.functions.Coalesce(
-    #             models.Subquery(
-    #                 Deal.objects.filter(
-    #                     company=models.OuterRef('pk'),
-    #                     direction__in=directions,
-    #                     stage__status="SUCCESSFUL"
-    #                 ).annotate(
-    #                     s=models.Sum('opportunity')
-    #                 ).values('s')[:1]
-    #             ),
-    #             models.Value(0),
-    #             output_field=models.FloatField()
-    #         ),
-    #         summa_by_company_work=models.functions.Coalesce(
-    #             models.Subquery(
-    #                 Deal.objects.filter(
-    #                     company=models.OuterRef('pk'),
-    #                     direction__in=directions,
-    #                     stage__status="WORK"
-    #                 )
-    #                 # .aggregate(
-    #                 #     s=models.Sum('opportunity')
-    #                 # ).values('s')[:1]
-    #                 # .annotate(
-    #                 .annotate(
-    #                     s=models.Sum('opportunity')
-    #                 ).values('s')[:1]
-    #             ),
-    #             models.Value(0),
-    #             output_field=models.FloatField()
-    #             # models.Sum(
-    #             #     "deal__opportunity",
-    #             #     filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
-    #             #     output_field=models.FloatField()
-    #             # ),
-    #             # 0.0
-    #         ),
-    #         # summa_by_company_success=models.Sum(
-    #         #     "deal__opportunity",
-    #         #     filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
-    #         #     output_field=models.FloatField()
-    #         # ),
-    #         # summa_by_company_work=models.Sum(
-    #         #     "deal__opportunity",
-    #         #     filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
-    #         #     output_field=models.FloatField()
-    #         # ),
-    #         dpk=models.functions.Coalesce(
-    #             models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
-    #             date(2000, 1, 1)
-    #         )
-    #     ).values("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")[:50]
-    #     #     .annotate(
-    #     #     summa_by_company_success=models.Sum(
-    #     #             "deal__opportunity",
-    #     #             filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
-    #     #             output_field=models.FloatField()
-    #     #         ),
-    #     #     summa_by_company_work=models.Sum(
-    #     #             "deal__opportunity",
-    #     #             filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
-    #     #             output_field=models.FloatField()
-    #     #         ),
-    #     #     dpk=models.functions.Coalesce(
-    #     #         models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
-    #     #         date(2000, 1, 1)
-    #     #     )
-    #     # )
+    def get_queryset(self):
+        directions = Direction.direction_actual.all()  # .values('pk')
+        return Company.statistic.annotate(
+            summa_by_company_success=models.functions.Coalesce(
+                models.Subquery(
+                    Deal.objects.filter(
+                        company=models.OuterRef('pk'),
+                        direction__in=directions,
+                        stage__status="SUCCESSFUL"
+                    ).annotate(
+                        s=models.Sum('opportunity')
+                    ).values('s')[:1]
+                ),
+                models.Value(0),
+                output_field=models.FloatField()
+            ),
+            summa_by_company_work=models.functions.Coalesce(
+                models.Subquery(
+                    Deal.objects.filter(
+                        company=models.OuterRef('pk'),
+                        direction__in=directions,
+                        stage__status="WORK"
+                    )
+                    # .aggregate(
+                    #     s=models.Sum('opportunity')
+                    # ).values('s')[:1]
+                    # .annotate(
+                    .annotate(
+                        s=models.Sum('opportunity')
+                    ).values('s')[:1]
+                ),
+                models.Value(0),
+                output_field=models.FloatField()
+                # models.Sum(
+                #     "deal__opportunity",
+                #     filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+                #     output_field=models.FloatField()
+                # ),
+                # 0.0
+            ),
+            # summa_by_company_success=models.Sum(
+            #     "deal__opportunity",
+            #     filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+            #     output_field=models.FloatField()
+            # ),
+            # summa_by_company_work=models.Sum(
+            #     "deal__opportunity",
+            #     filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+            #     output_field=models.FloatField()
+            # ),
+            dpk=models.functions.Coalesce(
+                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
+                date(2000, 1, 1)
+            )
+        ).values("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")[:50]
+        #     .annotate(
+        #     summa_by_company_success=models.Sum(
+        #             "deal__opportunity",
+        #             filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+        #             output_field=models.FloatField()
+        #         ),
+        #     summa_by_company_work=models.Sum(
+        #             "deal__opportunity",
+        #             filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+        #             output_field=models.FloatField()
+        #         ),
+        #     dpk=models.functions.Coalesce(
+        #         models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
+        #         date(2000, 1, 1)
+        #     )
+        # )
 
 
     """ Контроллер обработки событий BX24: onVoximplantCallEnd """
     # def get(self, request):
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset()).values()
+        queryset = self.filter_queryset(self.get_queryset())
 
         return Response(queryset, status=status.HTTP_200_OK)
