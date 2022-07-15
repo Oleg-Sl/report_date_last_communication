@@ -439,7 +439,7 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
 from django.db import models
 # class StatisticCompanyNewViewSet(views.APIView):
 class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
-    queryset = Company.statistic.all()
+    queryset = Company.statistic.all()[:50]
     serializer_class = StatisticCompanySerializer
     pagination_class = CustomPageNumberPagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
