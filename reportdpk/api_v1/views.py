@@ -338,7 +338,7 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
             summa_by_company_work=models.functions.Coalesce(
                 models.Sum(
                     "deal__opportunity",
-                    filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+                    filter=models.Q(deal__stage__status="WORK"),
                     output_field=models.FloatField()
                 ),
                 models.Value(0),
