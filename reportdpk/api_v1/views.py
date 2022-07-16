@@ -543,4 +543,12 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
         queryset = self.filter_queryset(self.get_queryset()).values("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")
         # [:50]
 
-        return Response(queryset, status=status.HTTP_200_OK)
+        page = self.paginate_queryset(queryset)
+        # if page is not None:
+        #     serializer = self.get_serializer(page, many=True)
+            # return self.get_paginated_response(serializer.data)
+
+        # serializer = self.get_serializer(queryset, many=True)
+
+        return Response(page, status=status.HTTP_200_OK)
+        # return Response(queryset, status=status.HTTP_200_OK)
