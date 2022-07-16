@@ -462,6 +462,7 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
             #             s=models.Sum('opportunity')
             #         ).values('s')[:1]
             #     ),
+                1,
                 models.Value(0),
                 output_field=models.FloatField()
             ),
