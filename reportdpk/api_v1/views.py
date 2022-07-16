@@ -325,14 +325,22 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
         directions = Direction.direction_actual.all()  # .values('pk')
         return Company.statistic.annotate(
-            summa_by_company_success=models.Sum(
-                "deal__opportunity",
-                filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+            summa_by_company_success=models.functions.Coalesce(
+                models.Sum(
+                    "deal__opportunity",
+                    filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+                    output_field=models.FloatField()
+                ),
+                models.Value(0),
                 output_field=models.FloatField()
             ),
-            summa_by_company_work=models.Sum(
-                "deal__opportunity",
-                filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+            summa_by_company_work=models.functions.Coalesce(
+                models.Sum(
+                    "deal__opportunity",
+                    filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+                    output_field=models.FloatField()
+                ),
+                models.Value(0),
                 output_field=models.FloatField()
             ),
             dpk=models.functions.Coalesce(
