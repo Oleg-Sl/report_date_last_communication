@@ -540,6 +540,7 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
     """ Контроллер обработки событий BX24: onVoximplantCallEnd """
     # def get(self, request):
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset()).values("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")[:50]
+        queryset = self.filter_queryset(self.get_queryset()).values("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")
+        # [:50]
 
         return Response(queryset, status=status.HTTP_200_OK)
