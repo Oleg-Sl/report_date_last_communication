@@ -532,11 +532,12 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
         # [:50]
 
         page = self.paginate_queryset(queryset)
-        # if page is not None:
-        #     serializer = self.get_serializer(page, many=True)
-            # return self.get_paginated_response(serializer.data)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
-        # serializer = self.get_serializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True)
 
-        return Response(page, status=status.HTTP_200_OK)
+        # return Response(page, status=status.HTTP_200_OK)
+        return Response(serializer.data)
         # return Response(queryset, status=status.HTTP_200_OK)

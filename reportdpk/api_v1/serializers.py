@@ -87,5 +87,6 @@ class StatisticCompanySerializer(serializers.ModelSerializer):
         # fields = ("dpk", "summa_by_company_success", "summa_by_company_work", "deal")
         # fields = ("dpk", "summa_by_company_success", "summa_by_company_work",)
         # fields = ("name",)
-        fields = '__all__'
+        fields = ("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")
+        # fields = '__all__'
 
