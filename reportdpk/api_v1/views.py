@@ -517,7 +517,8 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
                 models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
                 date(2000, 1, 1)
             )
-        ).values("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")[:50]
+        )
+        # .values("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")[:50]
         #     .annotate(
         #     summa_by_company_success=models.Sum(
         #             "deal__opportunity",
@@ -539,6 +540,6 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
     """ Контроллер обработки событий BX24: onVoximplantCallEnd """
     # def get(self, request):
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.filter_queryset(self.get_queryset()).values("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")[:50]
 
         return Response(queryset, status=status.HTTP_200_OK)
