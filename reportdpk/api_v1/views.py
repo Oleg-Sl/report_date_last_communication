@@ -452,16 +452,16 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
         directions = Direction.direction_actual.all()  # .values('pk')
         return Company.statistic.annotate(
-            summa_by_company_success=models.functions.Coalesce(
-                models.Subquery(
-                    Deal.objects.filter(
-                        company=models.OuterRef('pk'),
-                        direction__in=directions,
-                        stage__status="SUCCESSFUL"
-                    ).annotate(
-                        s=models.Sum('opportunity')
-                    ).values('s')[:1]
-                ),
+            # summa_by_company_success=models.functions.Coalesce(
+            #     models.Subquery(
+            #         Deal.objects.filter(
+            #             company=models.OuterRef('pk'),
+            #             direction__in=directions,
+            #             stage__status="SUCCESSFUL"
+            #         ).annotate(
+            #             s=models.Sum('opportunity')
+            #         ).values('s')[:1]
+            #     ),
                 models.Value(0),
                 output_field=models.FloatField()
             ),
