@@ -447,22 +447,8 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
     filterset_class = statistic_company.StatisticCompany
     ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
     # permission_classes = [IsAuthenticated]
-
-    # queryset = Company.statistic.all()
-    # # serializer_class = StatisticCompanySerializer
-    # pagination_class = CustomPageNumberPagination
-    # filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    # # filterset_class = statistic_company.StatisticCompany
-    # ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
     permission_classes = [AllowAny]
-    # # permission_classes = [IsAuthenticated]
 
-    # permission_classes = [AllowAny]
-    # pagination_class = CustomPageNumberPagination
-    # filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    # filterset_class = statistic_company.StatisticCompany
-    # ordering_fields = ["id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work"]
-    #
     def get_queryset(self):
         directions = Direction.direction_actual.all()  # .values('pk')
         return Company.statistic.annotate(
@@ -480,20 +466,21 @@ class StatisticCompanyNewViewSet(viewsets.GenericViewSet):
                 output_field=models.FloatField()
             ),
             summa_by_company_work=models.functions.Coalesce(
-                models.Subquery(
-                    Deal.objects.filter(
-                        company=models.OuterRef('pk'),
-                        direction__in=directions,
-                        stage__status="WORK"
-                    )
-                    # .aggregate(
-                    #     s=models.Sum('opportunity')
-                    # ).values('s')[:1]
-                    # .annotate(
-                    .annotate(
-                        s=models.Sum('opportunity')
-                    ).values('s')[:1]
-                ),
+                # models.Subquery(
+                #     Deal.objects.filter(
+                #         company=models.OuterRef('pk'),
+                #         direction__in=directions,
+                #         stage__status="WORK"
+                #     )
+                #     # .aggregate(
+                #     #     s=models.Sum('opportunity')
+                #     # ).values('s')[:1]
+                #     # .annotate(
+                #     .annotate(
+                #         s=models.Sum('opportunity')
+                #     ).values('s')[:1]
+                # ),
+                1,
                 models.Value(0),
                 output_field=models.FloatField()
                 # models.Sum(
