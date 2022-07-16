@@ -133,6 +133,7 @@ class DealManager(models.Manager):
             summa_by_company_success=models.Subquery(
                 Deal.objects.filter(
                     company=models.OuterRef('company__pk'),
+                    direction_new=True
                     # stage__status="SUCCESSFUL"
                 ).annotate(
                     s=models.Sum('opportunity')
@@ -141,6 +142,7 @@ class DealManager(models.Manager):
             summa_by_company_work=models.Subquery(
                 Deal.objects.filter(
                     company=models.OuterRef('company__pk'),
+                    direction_new=True
                     # stage__status="WORK"
                 ).annotate(
                     s=models.Sum('opportunity')
