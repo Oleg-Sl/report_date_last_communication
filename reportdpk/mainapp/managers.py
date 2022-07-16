@@ -136,15 +136,15 @@ class DealManager(models.Manager):
                     stage__status="SUCCESSFUL"
                 ).aggregate(
                     s=models.Sum('opportunity')
-                ).values('s')[:1]
+                )['s']
             ),
             summa_by_company_work=models.Subquery(
                 Deal.objects.filter(
                     company=models.OuterRef('company__pk'),
                     stage__status="WORK"
-                ).aggregate(
+                ).annotate(
                     s=models.Sum('opportunity')
-                ).values('s')[:1]
+                ).values('s')
             ),
             # models.Sum("opportunity", filter=models.Q(stage__status="WORK")),
         )
