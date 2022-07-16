@@ -134,7 +134,7 @@ class DealManager(models.Manager):
                 Deal.objects.filter(
                     company=models.OuterRef('company__pk'),
                     stage__status="SUCCESSFUL"
-                ).annotate(
+                ).aggregate(
                     s=models.Sum('opportunity')
                 ).values('s')[:1]
             ),
@@ -142,7 +142,7 @@ class DealManager(models.Manager):
                 Deal.objects.filter(
                     company=models.OuterRef('company__pk'),
                     stage__status="WORK"
-                ).annotate(
+                ).aggregate(
                     s=models.Sum('opportunity')
                 ).values('s')[:1]
             ),
