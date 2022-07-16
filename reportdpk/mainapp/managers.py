@@ -130,14 +130,14 @@ class DealManager(models.Manager):
                         s=models.Sum('opportunity')
                     ).values('s')[:1]
                 ),
-            summa_by_company_success=models.Subquery(
-                Deal.objects.filter(
-                    company=models.OuterRef('company__pk'),
-                    stage__status="SUCCESSFUL"
-                ).aggregate(
-                    s=models.Sum('opportunity')
-                )['s']
-            ),
+            # summa_by_company_success=models.Subquery(
+            #     Deal.objects.filter(
+            #         company=models.OuterRef('company__pk'),
+            #         stage__status="SUCCESSFUL"
+            #     ).aggregate(
+            #         s=models.Sum('opportunity')
+            #     )['s']
+            # ),
             summa_by_company_work=models.Subquery(
                 Deal.objects.filter(
                     company=models.OuterRef('company__pk'),
