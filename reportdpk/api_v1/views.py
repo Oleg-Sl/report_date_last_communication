@@ -309,7 +309,7 @@ class CallsCreateUpdateViewSet(views.APIView):
             return Response("Not transferred ID call", status=status.HTTP_400_BAD_REQUEST)
 
         result = calls_create_or_update.delay(id_call)
-        return Response(result, status=status.HTTP_200_OK)
+        return Response(id_call, status=status.HTTP_200_OK)
 
 
 class StatisticCompanyViewSet(viewsets.GenericViewSet):
