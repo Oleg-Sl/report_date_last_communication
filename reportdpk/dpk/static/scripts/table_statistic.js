@@ -58,10 +58,8 @@ export default class TableStatistic {
                 data.stageId = e.target.dataset.stageIdBx;
                 data.directionCommaId = e.target.dataset.directionIdBx;
                 data.responsibleId = this.userCurrent.ID;
-
                 data.nameCompany = e.target.dataset.nameCompany;
                 data.nameDirection = e.target.dataset.nameDirection;
-                
                 data.target1 = e.target;
                 data.elementSumOWork = data.target1;
 
@@ -78,7 +76,9 @@ export default class TableStatistic {
                 const status = e.target.dataset.allowed_add_deals;
                 if (status === 0 || status === "0") {
                     let res = this.createDeal.create(data);
+                    console.log("Result create deal = ", res);
                     if (res) {
+                        console.log("Result create deal = TRUE");
                         data['target1'].dataset.allowed_add_deals = 1;
                         data['target2'].dataset.allowed_add_deals = 1;
                         data['elementSumOWork'].innerHTML = "1";
