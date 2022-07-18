@@ -33,11 +33,12 @@ class StatisticCompany(filters.FilterSet):
 
     revenue = filters.RangeFilter()
     number_employees = filters.RangeFilter()
+    date_created = filters.DateFromToRangeFilter()
 
     class Meta:
         model = Company
         fields = ["company", "responsible", "sector", "region", "source",
-                  "requisite_region", "requisites_city", "number_employees", "revenue", ]
+                  "requisite_region", "requisites_city", "number_employees", "revenue", "date_created"]
 
 
 class StatisticCompanyByDirection(filters.FilterSet):
