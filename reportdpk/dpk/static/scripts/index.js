@@ -164,7 +164,7 @@ class App {
             revenue_max: this.filterRevenue.getMaxValue(),
             number_employees_min: this.filterEmployees.getMinValue(),
             number_employees_max: this.filterEmployees.getMaxValue(),
-            date_created_after: this.filterCompanyCreated.getMaxValue(),
+            date_created_after: this.filterCompanyCreated.getMinValue(),
             date_created_before: this.filterCompanyCreated.getMaxValue(),
         }
     }
