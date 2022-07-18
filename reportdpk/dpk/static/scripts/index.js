@@ -48,6 +48,9 @@ class App {
         // фильтр - КОЛИЧЕСТВО СОТРУДНИКОВ
         this.elementFilterEmployees = document.querySelector('#filterEmployees');
         this.filterEmployees = new FilterRange(this.elementFilterEmployees);
+        // фильтр - ПЕРИОД СОЗДАНИЯ КОМПАНИИ
+        this.elementFilterCompanyCreated = document.querySelector('#filterDateCreatedCompany');
+        this.filterCompanyCreated = new FilterRange(this.elementFilterCompanyCreated);
 
         // таблица - с статистикой по компаниям
         this.elementTableStatistic = document.querySelector('#tableStatisticData');
@@ -87,6 +90,7 @@ class App {
         this.filterRequisiteCity.init();
         this.filterRevenue.init();
         this.filterEmployees.init();
+        this.filterCompanyCreated.init();
         
         this.userCurrent = await this.getCurrentUser();
         this.users = await this.getActiveUsers();
@@ -160,6 +164,8 @@ class App {
             revenue_max: this.filterRevenue.getMaxValue(),
             number_employees_min: this.filterEmployees.getMinValue(),
             number_employees_max: this.filterEmployees.getMaxValue(),
+            date_created_after: this.filterCompanyCreated.getMaxValue(),
+            date_created_before: this.filterCompanyCreated.getMaxValue(),
         }
     }
 
