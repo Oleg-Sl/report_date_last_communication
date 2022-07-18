@@ -75,7 +75,7 @@ export default class TableStatistic {
 
                 const status = e.target.dataset.allowed_add_deals;
                 if (status === 0 || status === "0") {
-                    let res = this.createDeal.create(data);
+                    let res = await this.createDeal.create(data);
                     console.log("Result create deal = ", res);
                     if (res) {
                         console.log("Result create deal = TRUE");
