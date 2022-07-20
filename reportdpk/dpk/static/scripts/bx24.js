@@ -35,7 +35,7 @@ export default  class BX {
         return new Promise((resolve, reject) => {
             let callback = result => {
                 if (result.status != 200 || result.error()) {
-                    console.log(`${result.error()} (callMethod ${method}: ${JSON.stringify(params)})`);
+                    console.log(`${result}`);
                     return reject("");
                 }
                 return resolve(result.data());

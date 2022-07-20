@@ -18,22 +18,28 @@ export default class CreateDeal {
         let isCreateDeal = confirm(`Создать сделку в компании ${nameCompany} по направлению ${nameDirection}?`);
         if (!isCreateDeal) return;
 
+        console.log("Создание сделки");
         // создание сделки в BX24
         let dealId = await this.creatDeal(companyId, categoryId, stageId, directionCommaId, responsibleId);
+        console.log(`Создана сделка с ID = ${dealId}`);
         if (!dealId) {
             console.error(`Не удалось создать сделку для компании - ${companyId}, направления - ${directionCommaId}`);
             return;
         }
-
+        console.log(`Получение контактов компании`);
         // получение контактов компании
         let contactsList = await this.getCompanyContactsList(companyId);
+        console.log(`Контакты компании: ${JSON.stringify(contactsList)}`);
         if (contactsList) {
+            console.log(`Добавление контактов к компании ${dealId}`);
             // добавленеи контактов к сделке
             let resultAddContacts = await this.addContactsToDeal(dealId, contactsList);
+            console.log(`Контакты компании получены`);
         }
-
+        console.log(`Открытие сделки ${dealId} во вкладке`);
         // открытие сделки во вкладке
         let res = await this.openDeal(dealId);
+        console.log(`Вкладка сделки открыта = ${JSON.stringify(res)}`);
         return true;
     }
 
@@ -74,6 +80,7 @@ export default class CreateDeal {
                 items: contacts
             }
         )
+        console.log(`Результат добавления контактов к компании: ${JSON.stringify(response)}`);
         if (response) return true;
     }
 
