@@ -481,8 +481,8 @@ export default class TableStatistic {
                     data-category-id-bx='43'
                     data-stage-id-bx='C43:NEW'
                     data-allowed_add_deals=${isAllowedToCreateDeals}
-                    data-name-company=${companyName}
-                    data-name-direction=${dirName}
+                    data-name-company=${companyName.replace(/\"/g, '\'')}
+                    data-name-direction=${dirName.replace(/\"/g, '\'')}
                 >
                     ${valueCellAmountDealsInWork}
                 </td>
@@ -492,8 +492,8 @@ export default class TableStatistic {
                     data-category-id-bx='43'
                     data-stage-id-bx='C43:NEW'
                     data-allowed_add_deals=${isAllowedToCreateDeals}
-                    data-name-company=${companyName}
-                    data-name-direction=${dirName}
+                    data-name-company=${companyName.replace(/\"/g, '\'')}
+                    data-name-direction=${dirName.replace(/\"/g, '\'')}
                 >
                     ${amountOfSuccessfulDeals.toLocaleString()}
                 </td>
