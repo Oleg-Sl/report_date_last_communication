@@ -34,11 +34,12 @@ export default  class BX {
     async openPath(path) {
         return new Promise((resolve, reject) => {
             let callback = result => {
-                if (result.status != 200 || result.error()) {
-                    console.log(`${result}`);
-                    return reject("");
-                }
-                return resolve(result.data());
+                // if (result.status != 200 || result.error()) {
+                //     // console.log(`${result}`);
+                //     return reject("");
+                // }
+                // return resolve(result.data());
+                return resolve();
             };
             BX24.openPath(path, callback);
         });
