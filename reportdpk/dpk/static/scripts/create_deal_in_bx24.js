@@ -15,7 +15,7 @@ export default class CreateDeal {
         let nameCompany = data.nameCompany;
         let nameDirection = data.nameDirection;
 
-        let isCreateDeal = confirm(`Создать сделку в компании <strong>\"${nameCompany}\"</strong> по направлению \"${nameDirection}\"?`);
+        let isCreateDeal = confirm(`Создать сделку в компании \"${nameCompany}\" по направлению \"${nameDirection}\"?`);
         if (!isCreateDeal) return;
 
         console.log("Создание сделки");
