@@ -30,7 +30,8 @@ export default class CreateDeal {
         // получение контактов компании
         let contactsList = await this.getCompanyContactsList(companyId);
         console.log(`Контакты компании: ${JSON.stringify(contactsList)}`);
-        if (contactsList) {
+        
+        if (Array.isArray(contactsList) && contactsList.length != 0) {
             console.log(`Добавление контактов к компании ${dealId}`);
             // добавленеи контактов к сделке
             let resultAddContacts = await this.addContactsToDeal(dealId, contactsList);

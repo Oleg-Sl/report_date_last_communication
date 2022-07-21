@@ -84,7 +84,6 @@ export default class TableStatistic {
                         data['elementSumOWork'].innerHTML = "1";
                     }
                 }
-
             }
         })
     }
