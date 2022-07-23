@@ -41,8 +41,8 @@ from api_v1.serializers import (
     RequisitesRegionCompanySerializer,
     RequisitesCityCompanySerializer,
 
-    StatisticCompanySerializer
-
+    StatisticCompanySerializer,
+    CompanyOpportunitySerializer
 )
 
 from .tasks import (
@@ -423,7 +423,7 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
         return Response(response, status=status.HTTP_200_OK)
 
 
-class StatisticCompanyOpportunityViewSet(viewsets.GenericViewSet):
+class StatisticCompanyOpportunityViewSet1(viewsets.GenericViewSet):
     # permission_classes = [IsAuthenticated]
     permission_classes = [AllowAny]
 
@@ -442,6 +442,20 @@ class StatisticCompanyOpportunityViewSet(viewsets.GenericViewSet):
         # response = converting_list_to_dict(queryset, "company__pk")
         return Response(response, status=status.HTTP_200_OK)
         # return JsonResponse(queryset)
+
+
+class StatisticCompanyOpportunityViewSet(viewsets.ModelViewSet):
+    # queryset = Company.objects.all()
+    serializer_class = CompanyOpportunitySerializer
+    permission_classes = [AllowAny]
+    http_method_names = ['get', 'options']
+
+    def get_queryset(self, companies_ids):
+        # return Company.statistic.filter(pk__in=companies_ids)
+        return Company.statistic.statistic_company_summary(companies_ids)
+
+
+
 
 
 

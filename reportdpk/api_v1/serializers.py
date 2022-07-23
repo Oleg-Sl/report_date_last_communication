@@ -90,3 +90,11 @@ class StatisticCompanySerializer(serializers.ModelSerializer):
         fields = ("id_bx", "name", "responsible", "dpk", "summa_by_company_success", "summa_by_company_work")
         # fields = '__all__'
 
+
+class CompanyOpportunitySerializer(serializers.ModelSerializer):
+    summa_by_company_success = serializers.FloatField()
+    summa_by_company_work = serializers.FloatField()
+
+    class Meta:
+        model = Company
+        fields = ("pk", "summa_by_company_success", "summa_by_company_work")
