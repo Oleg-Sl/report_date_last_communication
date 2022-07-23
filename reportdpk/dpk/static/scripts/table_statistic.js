@@ -400,7 +400,7 @@ export default class TableStatistic {
     renderTableBodyToHTML() {
         let contentHTML = "";
         let companies = this.companySummary;
-
+        console.log("companySummaryOpportunity = ", this.companySummaryOpportunity);
         for (let company of companies) {
             
             
