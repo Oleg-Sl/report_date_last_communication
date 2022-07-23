@@ -269,11 +269,12 @@ export default class TableStatistic {
         });
     }
 
-    renderTable(companySummary, directionSummary, companySummaryByDirection) {
+    renderTable(companySummary, directionSummary, companySummaryByDirection, companySummaryOpportunity) {
         this.companySummary = companySummary; 
         this.directionSummary = directionSummary;
         this.companySummaryByDirection = companySummaryByDirection;
-
+        this.companySummaryOpportunity = companySummaryOpportunity;
+        
         let contentHeadHTML = this.renderTableHeaderToHTML();
         this.tableHeader.innerHTML = contentHeadHTML;
 
@@ -401,8 +402,10 @@ export default class TableStatistic {
         let companies = this.companySummary;
 
         for (let company of companies) {
-            let summaByCompanySuccess = company.summa_by_company_success || 0;
-            let summaByCompanyWork = company.summa_by_company_work || 0;
+            
+            
+            // let summaByCompanySuccess = company.summa_by_company_success || 0;
+            // let summaByCompanyWork = company.summa_by_company_work || 0;
             let companyIdBx = company.id_bx;
             let companyName = company.name || "&ndash;";
             let companyInn = company.inn || "&ndash;";
@@ -410,7 +413,9 @@ export default class TableStatistic {
             let companyResponsibleTitle = this.getUserTitleByIBx(companyResponsibleId);
             let companyDpkDatetimeStr = company.dpk;
             let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetimeStr);
-            
+            let summaByCompanySuccess = this.companySummaryOpportunity[companyIdBx].summa_by_company_success || 0;
+            let summaByCompanyWork = this.companySummaryOpportunity[companyIdBx].summa_by_company_work  || 0;
+
             let dpkCellStyle = "";
             if (!companyDpkDatetimeStr || new Date(companyDpkDatetimeStr) < this.dateTransitionDealToInactive) {
                 dpkCellStyle = "dpk-more-six-months";

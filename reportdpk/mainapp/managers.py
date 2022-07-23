@@ -177,6 +177,13 @@ class DealManager(models.Manager):
 
     def statistic_company_summary(self, companies):
         from .models import Deal
+
+        # models.functions.Coalesce(
+        #     1,
+        #     models.Value(0),
+        #     output_field=models.FloatField()
+        # ),
+
         return self.filter(
             company__pk__in=companies,
         ).values(
