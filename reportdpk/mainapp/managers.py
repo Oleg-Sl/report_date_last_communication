@@ -203,10 +203,9 @@ class CompanyNewManager(models.Manager):
                     s=models.Sum('opportunity')
                 ).values('s')[:1]
             ),
+        ).values(
+            "pk", "summa_by_company_success", "summa_by_company_work"
         )
-            # .values(
-            # "pk", "summa_by_company_success", "summa_by_company_work"
-        # )
 
 
 
