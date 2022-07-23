@@ -175,6 +175,33 @@ class DealManager(models.Manager):
             # models.Sum("opportunity", filter=models.Q(stage__status="WORK")),
         )
 
+    def statistic_company_summary(self, companies):
+        from .models import Deal
+        return self.filter(
+            company__pk__in=companies,
+        ).values(
+            "company__pk"
+        ).annotate(
+            summa_by_company_success=models.Subquery(
+                Deal.objects.filter(
+                    # company=models.OuterRef('company__pk'),
+                    direction__new=True,
+                    stage__status="SUCCESSFUL"
+                ).annotate(
+                    s=models.Sum('opportunity')
+                ).values('s')[:1]
+            ),
+            summa_by_company_work=models.Subquery(
+                Deal.objects.filter(
+                    # company=models.OuterRef('company__pk'),
+                    direction__new=True,
+                    stage__status="WORK"
+                ).annotate(
+                    s=models.Sum('opportunity')
+                ).values('s')[:1]
+            ),
+        )
+
 
 class CompanyNewQuerySet(models.QuerySet):
     def statistic_company_new(self, directions, duration):

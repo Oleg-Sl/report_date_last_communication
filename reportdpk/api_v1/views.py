@@ -429,7 +429,7 @@ class StatisticCompanyOpportunityViewSet(viewsets.GenericViewSet):
 
     def get_queryset(self, companies_ids):
         # return Company.statistic.filter(pk__in=companies_ids)
-        return Company.statistic.statistic_company_summary(companies_ids)
+        return Deal.objects.statistic_company_summary(companies_ids)
 
     def list(self, request, *args, **kwargs):
         companies_str = request.query_params.get("companies", "")
@@ -437,7 +437,7 @@ class StatisticCompanyOpportunityViewSet(viewsets.GenericViewSet):
 
         queryset = self.filter_queryset(self.get_queryset(companies_ids))
 
-        response = converting_list_to_dict(queryset, "pk")
+        response = converting_list_to_dict(queryset, "company__pk")
         return Response(response, status=status.HTTP_200_OK)
         # return JsonResponse(queryset)
 
