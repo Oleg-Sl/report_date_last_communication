@@ -40,7 +40,7 @@ class CompanyQuerySet(models.QuerySet):
                 output_field=models.FloatField()
             ),
             dpk=models.functions.Coalesce(
-                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
+                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration)),
                 datetime.date(2000, 1, 1)
             )
         )
