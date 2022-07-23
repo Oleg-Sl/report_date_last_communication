@@ -45,59 +45,6 @@ class CompanyQuerySet(models.QuerySet):
             )
         )
 
-#
-# class CompanyQuerySetOld(models.QuerySet):
-#     def statistic_company(self, directions, duration):
-#         from .models import Deal
-#         return self.annotate(
-#             summa_by_company_success=models.functions.Coalesce(
-#                 models.Subquery(
-#                     Deal.objects.filter(
-#                         company=models.OuterRef('pk'),
-#                         direction__in=directions,
-#                         stage__status="SUCCESSFUL"
-#                     ).annotate(
-#                         s=models.Sum('opportunity')
-#                     ).values('s')[:1]
-#                 ),
-#                 # models.Sum(
-#                 #     "deal__opportunity",
-#                 #     filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
-#                 #     output_field=models.FloatField()
-#                 # ),
-#                 models.Value(0),
-#                 output_field=models.FloatField()
-#             ),
-#             summa_by_company_work=models.functions.Coalesce(
-#                 models.Subquery(
-#                     Deal.objects.filter(
-#                         company=models.OuterRef('pk'),
-#                         direction__in=directions,
-#                         stage__status="WORK"
-#                     )
-#                     # .aggregate(
-#                     #     s=models.Sum('opportunity')
-#                     # ).values('s')[:1]
-#                     # .annotate(
-#                     .annotate(
-#                         s=models.Sum('opportunity')
-#                     ).values('s')[:1]
-#                 ),
-#                 models.Value(0),
-#                 output_field=models.FloatField()
-#                 # models.Sum(
-#                 #     "deal__opportunity",
-#                 #     filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
-#                 #     output_field=models.FloatField()
-#                 # ),
-#                 # 0.0
-#             ),
-#             dpk=models.functions.Coalesce(
-#                 models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration)),
-#                 datetime.date(2000, 1, 1)
-#             )
-#         )
-#
 
 class CompanyManager(models.Manager):
     def get_queryset(self):
@@ -177,27 +124,21 @@ class DealManager(models.Manager):
 
     def statistic_company_summary(self, companies):
         from .models import Deal
-
-        # models.functions.Coalesce(
-        #     1,
-        #     models.Value(0),
-        #     output_field=models.FloatField()
-        # ),
-
         return self.filter(
             company__pk__in=companies,
         ).values(
             "company__pk"
         ).annotate(
-            summa_by_company_success=models.Subquery(
-                Deal.objects.filter(
-                    company=models.OuterRef('company__pk'),
-                    direction__new=True,
-                    stage__status="SUCCESSFUL"
-                ).annotate(
-                    s=models.Sum('opportunity')
-                ).values('s')[:1]
-            ),
+            summa_by_company_success=models.Sum("opportunity", filter=models.Q(direction__new=True, stage__status="SUCCESSFUL")),
+            # summa_by_company_success=models.Subquery(
+            #     Deal.objects.filter(
+            #         company=models.OuterRef('company__pk'),
+            #         direction__new=True,
+            #         stage__status="SUCCESSFUL"
+            #     ).annotate(
+            #         s=models.Sum('opportunity')
+            #     ).values('s')[:1]
+            # ),
             summa_by_company_work=models.Subquery(
                 Deal.objects.filter(
                     company=models.OuterRef('company__pk'),
@@ -264,3 +205,56 @@ class CompanyNewManager(models.Manager):
 
 
 
+#
+# class CompanyQuerySetOld(models.QuerySet):
+#     def statistic_company(self, directions, duration):
+#         from .models import Deal
+#         return self.annotate(
+#             summa_by_company_success=models.functions.Coalesce(
+#                 models.Subquery(
+#                     Deal.objects.filter(
+#                         company=models.OuterRef('pk'),
+#                         direction__in=directions,
+#                         stage__status="SUCCESSFUL"
+#                     ).annotate(
+#                         s=models.Sum('opportunity')
+#                     ).values('s')[:1]
+#                 ),
+#                 # models.Sum(
+#                 #     "deal__opportunity",
+#                 #     filter=models.Q(deal__direction__in=directions, deal__stage__status="SUCCESSFUL"),
+#                 #     output_field=models.FloatField()
+#                 # ),
+#                 models.Value(0),
+#                 output_field=models.FloatField()
+#             ),
+#             summa_by_company_work=models.functions.Coalesce(
+#                 models.Subquery(
+#                     Deal.objects.filter(
+#                         company=models.OuterRef('pk'),
+#                         direction__in=directions,
+#                         stage__status="WORK"
+#                     )
+#                     # .aggregate(
+#                     #     s=models.Sum('opportunity')
+#                     # ).values('s')[:1]
+#                     # .annotate(
+#                     .annotate(
+#                         s=models.Sum('opportunity')
+#                     ).values('s')[:1]
+#                 ),
+#                 models.Value(0),
+#                 output_field=models.FloatField()
+#                 # models.Sum(
+#                 #     "deal__opportunity",
+#                 #     filter=models.Q(deal__direction__in=directions, deal__stage__status="WORK"),
+#                 #     output_field=models.FloatField()
+#                 # ),
+#                 # 0.0
+#             ),
+#             dpk=models.functions.Coalesce(
+#                 models.Max("calls__start_date", filter=models.Q(calls__duration__gte=duration)),
+#                 datetime.date(2000, 1, 1)
+#             )
+#         )
+#
