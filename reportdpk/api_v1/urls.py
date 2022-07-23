@@ -17,10 +17,13 @@ router.register(r'source_companies', SourceCompanyViewSet, basename='source_comp
 router.register(r'requisite_region', RequisitesRegionCompanyViewSet, basename='requisite_region')
 router.register(r'requisites_city', RequisitesCityCompanyViewSet, basename='requisites_city')
 
+
 router.register(r'statistic-company', StatisticCompanyViewSet, basename='statistic-company')
 # router.register(r'statistic-company-new', StatisticCompanyNewViewSet, basename='statistic-company-new')
 router.register(r'statistic-company-direction', StatisticCompanyDirectionViewSet, basename='statistic-company-direction')
 router.register(r'statistic-direction', StatisticDirectionViewSet, basename='statistic-direction')
+# сумма по успешных и текущих сделок по компании
+router.register(r'statistic-company-opportunity', StatisticCompanyOpportunityViewSet, basename='statistic-direction')
 
 
 urlpatterns = [

@@ -423,6 +423,22 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
         return Response(response, status=status.HTTP_200_OK)
 
 
+class StatisticCompanyOpportunityViewSet(viewsets.GenericViewSet):
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+
+    def get_queryset(self, companies_ids, directions_ids, limit_date_suspended_deals, limit_date_failed_deals):
+        return Company.statistic.statistic_company_summary(companies_ids)
+
+    def list(self, request, *args, **kwargs):
+        companies_str = request.query_params.get("companies", "")
+        companies_ids = [int(el) for el in companies_str.split(",") if isinstance(el, str) and el.isdigit()]
+
+        queryset = self.filter_queryset(self.get_queryset(companies_ids))
+
+        response = converting_list_to_dict(queryset, "company__pk")
+        return Response(response, status=status.HTTP_200_OK)
+
 #
 # class StatisticCompanyNew1ViewSet(viewsets.GenericViewSet):
 #     queryset = Company.statistic.all()
