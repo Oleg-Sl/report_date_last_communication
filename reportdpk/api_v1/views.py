@@ -323,33 +323,33 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
     # permission_classes = [AllowAny]
 
-    def get_queryset(self):
-        directions = Direction.direction_actual.all()  # .values('pk')
-        return Company.statistic.annotate(
-            summa_by_company_success=models.functions.Coalesce(
-                1,
-                models.Value(0),
-                output_field=models.FloatField()
-            ),
-            summa_by_company_work=models.functions.Coalesce(
-                models.Sum(
-                    "deal__opportunity",
-                    filter=models.Q(deal__stage__status="WORK"),
-                    output_field=models.FloatField()
-                ),
-                models.Value(0),
-                output_field=models.FloatField()
-            ),
-            dpk=models.functions.Coalesce(
-                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
-                date(2000, 1, 1)
-            )
-        )
-
     # def get_queryset(self):
-    #     # duration = self.request.query_params.get("duration", "0")
-    #     # direction = Direction.direction_actual.all() #.values('pk')
-    #     # return super().get_queryset().statistic_company(direction, duration)
+    #     directions = Direction.direction_actual.all()  # .values('pk')
+    #     return Company.statistic.annotate(
+    #         summa_by_company_success=models.functions.Coalesce(
+    #             1,
+    #             models.Value(0),
+    #             output_field=models.FloatField()
+    #         ),
+    #         summa_by_company_work=models.functions.Coalesce(
+    #             models.Sum(
+    #                 "deal__opportunity",
+    #                 filter=models.Q(deal__stage__status="WORK"),
+    #                 output_field=models.FloatField()
+    #             ),
+    #             models.Value(0),
+    #             output_field=models.FloatField()
+    #         ),
+    #         dpk=models.functions.Coalesce(
+    #             models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
+    #             date(2000, 1, 1)
+    #         )
+    #     )
+
+    def get_queryset(self):
+        duration = self.request.query_params.get("duration", "0")
+        # direction = Direction.direction_actual.all() #.values('pk')
+        return super().get_queryset().statistic_company(duration)
     #     return super().get_queryset().statistic_company()
 
     def list(self, request, *args, **kwargs):

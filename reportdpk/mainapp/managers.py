@@ -22,7 +22,31 @@ class DirectionActualManager(models.Manager):
             # annotate(direction=models.F("id_bx"))
 
 
-class CompanyQuerySet(models.QuerySet):
+class CompanyQuerySetOld(models.QuerySet):
+    def statistic_company(self, duration):
+        return self.annotate(
+            summa_by_company_success=models.functions.Coalesce(
+                1,
+                models.Value(0),
+                output_field=models.FloatField()
+            ),
+            summa_by_company_work=models.functions.Coalesce(
+                models.Sum(
+                    "deal__opportunity",
+                    filter=models.Q(deal__stage__status="WORK"),
+                    output_field=models.FloatField()
+                ),
+                models.Value(0),
+                output_field=models.FloatField()
+            ),
+            dpk=models.functions.Coalesce(
+                models.Max("calls__start_date", filter=models.Q(calls__duration__gte=0)),
+                datetime.date(2000, 1, 1)
+            )
+        )
+
+
+class CompanyQuerySetOld(models.QuerySet):
     def statistic_company(self, directions, duration):
         from .models import Deal
         return self.annotate(
