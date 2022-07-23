@@ -413,6 +413,8 @@ export default class TableStatistic {
             let companyResponsibleTitle = this.getUserTitleByIBx(companyResponsibleId);
             let companyDpkDatetimeStr = company.dpk;
             let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetimeStr);
+
+            console.log("summaByCompanySuccess = ", this.companySummaryOpportunity[companyIdBx]);
             let summaByCompanySuccess = this.companySummaryOpportunity[companyIdBx].summa_by_company_success || 0;
             let summaByCompanyWork = this.companySummaryOpportunity[companyIdBx].summa_by_company_work  || 0;
 
