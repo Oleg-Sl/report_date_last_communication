@@ -437,8 +437,8 @@ class StatisticCompanyOpportunityViewSet(viewsets.GenericViewSet):
         queryset = self.filter_queryset(self.get_queryset(companies_ids))
 
         # response = converting_list_to_dict(queryset, "pk")
-        return Response(queryset, status=status.HTTP_200_OK)
-
+        # return Response(queryset, status=status.HTTP_200_OK)
+        return JsonResponse(queryset)
 #
 # class StatisticCompanyNew1ViewSet(viewsets.GenericViewSet):
 #     queryset = Company.statistic.all()
