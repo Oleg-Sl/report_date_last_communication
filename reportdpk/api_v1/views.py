@@ -312,7 +312,7 @@ class CallsCreateUpdateViewSet(views.APIView):
         return Response(id_call, status=status.HTTP_200_OK)
 
 
-from django.db import models
+# from django.db import models
 class StatisticCompanyViewSet(viewsets.GenericViewSet):
     queryset = Company.objects.all()
     serializer_class = StatisticCompanySerializer
@@ -421,6 +421,7 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
         queryset = self.filter_queryset(self.get_queryset())
         response = converting_list_to_dict(queryset, "id_bx")
         return Response(response, status=status.HTTP_200_OK)
+
 
 #
 # class StatisticCompanyNew1ViewSet(viewsets.GenericViewSet):
