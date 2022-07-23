@@ -312,6 +312,7 @@ class CallsCreateUpdateViewSet(views.APIView):
         return Response(id_call, status=status.HTTP_200_OK)
 
 
+from django.db import models
 class StatisticCompanyViewSet(viewsets.GenericViewSet):
     queryset = Company.objects.all()
     serializer_class = StatisticCompanySerializer
@@ -345,11 +346,11 @@ class StatisticCompanyViewSet(viewsets.GenericViewSet):
             )
         )
 
-    def get_queryset(self):
-        # duration = self.request.query_params.get("duration", "0")
-        # direction = Direction.direction_actual.all() #.values('pk')
-        # return super().get_queryset().statistic_company(direction, duration)
-        return super().get_queryset().statistic_company()
+    # def get_queryset(self):
+    #     # duration = self.request.query_params.get("duration", "0")
+    #     # direction = Direction.direction_actual.all() #.values('pk')
+    #     # return super().get_queryset().statistic_company(direction, duration)
+    #     return super().get_queryset().statistic_company()
 
     def list(self, request, *args, **kwargs):
         duration = request.query_params.get("duration", "0")
