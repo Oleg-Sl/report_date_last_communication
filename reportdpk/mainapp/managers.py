@@ -22,7 +22,7 @@ class DirectionActualManager(models.Manager):
             # annotate(direction=models.F("id_bx"))
 
 
-class CompanyQuerySetOld(models.QuerySet):
+class CompanyQuerySet(models.QuerySet):
     def statistic_company(self, duration):
         return self.annotate(
             summa_by_company_success=models.functions.Coalesce(
