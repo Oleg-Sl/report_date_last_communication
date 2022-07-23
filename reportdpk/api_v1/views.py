@@ -450,7 +450,9 @@ class StatisticCompanyOpportunityViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     http_method_names = ['get', 'options']
 
-    def get_queryset(self, companies_ids):
+    def get_queryset(self):
+        companies_str = self.request.query_params.get("companies", "")
+        companies_ids = [int(el) for el in companies_str.split(",") if isinstance(el, str) and el.isdigit()]
         # return Company.statistic.filter(pk__in=companies_ids)
         return Company.statistic.statistic_company_summary(companies_ids)
 
