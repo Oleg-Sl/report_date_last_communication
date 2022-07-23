@@ -97,9 +97,10 @@ class DealManager(models.Manager):
                     #     s=models.Sum('opportunity')
                     # ).values('s')[:1]
                     # .annotate(
-                    .annotate(
+                    .aggregate(
                         s=models.Sum('opportunity')
-                    ).values('s')[:1]
+                    )["s"]
+                    # .values('s')[:1]
                 ),
             summa_by_company_success=models.Subquery(
                 Deal.objects.filter(
