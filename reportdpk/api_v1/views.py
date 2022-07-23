@@ -427,7 +427,7 @@ class StatisticCompanyOpportunityViewSet(viewsets.GenericViewSet):
     # permission_classes = [IsAuthenticated]
     permission_classes = [AllowAny]
 
-    def get_queryset(self, companies_ids, directions_ids, limit_date_suspended_deals, limit_date_failed_deals):
+    def get_queryset(self, companies_ids):
         return Company.statistic.statistic_company_summary(companies_ids)
 
     def list(self, request, *args, **kwargs):
