@@ -415,8 +415,12 @@ export default class TableStatistic {
             let companyDpkDateStr = this.convertsDatetimeToString(companyDpkDatetimeStr);
 
             console.log("summaByCompanySuccess = ", this.companySummaryOpportunity[companyIdBx]);
-            let summaByCompanySuccess = this.companySummaryOpportunity[companyIdBx].summa_by_company_success || 0;
-            let summaByCompanyWork = this.companySummaryOpportunity[companyIdBx].summa_by_company_work  || 0;
+            let summaByCompanySuccess = 0;
+            let summaByCompanyWork = 0;
+            if (this.companySummaryOpportunity[companyIdBx]) {
+                summaByCompanySuccess = this.companySummaryOpportunity[companyIdBx].summa_by_company_success || 0;
+                summaByCompanyWork = this.companySummaryOpportunity[companyIdBx].summa_by_company_work  || 0;
+            }
 
             let dpkCellStyle = "";
             if (!companyDpkDatetimeStr || new Date(companyDpkDatetimeStr) < this.dateTransitionDealToInactive) {
