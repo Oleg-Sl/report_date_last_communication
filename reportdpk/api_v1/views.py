@@ -423,7 +423,7 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
         return Response(response, status=status.HTTP_200_OK)
 
 
-class StatisticCompanyOpportunityViewSet1(viewsets.GenericViewSet):
+class StatisticCompanyOpportunityViewSet(viewsets.GenericViewSet):
     # permission_classes = [IsAuthenticated]
     permission_classes = [AllowAny]
 
@@ -444,17 +444,17 @@ class StatisticCompanyOpportunityViewSet1(viewsets.GenericViewSet):
         # return JsonResponse(queryset)
 
 
-class StatisticCompanyOpportunityViewSet(viewsets.ModelViewSet):
-    # queryset = Company.objects.all()
-    serializer_class = CompanyOpportunitySerializer
-    permission_classes = [AllowAny]
-    http_method_names = ['get', 'options']
-
-    def get_queryset(self):
-        companies_str = self.request.query_params.get("companies", "")
-        companies_ids = [int(el) for el in companies_str.split(",") if isinstance(el, str) and el.isdigit()]
-        # return Company.statistic.filter(pk__in=companies_ids)
-        return Company.statistic.statistic_company_summary(companies_ids)
+# class StatisticCompanyOpportunityViewSet(viewsets.ModelViewSet):
+#     # queryset = Company.objects.all()
+#     serializer_class = CompanyOpportunitySerializer
+#     permission_classes = [AllowAny]
+#     http_method_names = ['get', 'options']
+#
+#     def get_queryset(self):
+#         companies_str = self.request.query_params.get("companies", "")
+#         companies_ids = [int(el) for el in companies_str.split(",") if isinstance(el, str) and el.isdigit()]
+#         # return Company.statistic.filter(pk__in=companies_ids)
+#         return Company.statistic.statistic_company_summary(companies_ids)
 
 
 
