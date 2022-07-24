@@ -255,7 +255,7 @@ class CompanyNewManager(models.Manager):
             # ),
             summa_by_company_success=models.Subquery(
                 Company.statistic.filter(
-                    company=models.OuterRef('pk'),
+                    pk=models.OuterRef('pk'),
                     deal__direction__new=True,
                     deal__stage__status="SUCCESSFUL"
                 ).annotate(
@@ -264,7 +264,7 @@ class CompanyNewManager(models.Manager):
             ),
             summa_by_company_work=models.Subquery(
                 Company.statistic.filter(
-                    company=models.OuterRef('pk'),
+                    pk=models.OuterRef('pk'),
                     deal__direction__new=True,
                     deal__stage__status="WORK"
                 ).annotate(
