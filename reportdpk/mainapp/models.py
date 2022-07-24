@@ -36,7 +36,7 @@ class Direction(models.Model):
 STATUS_DEAL_CHOICES = [
     ("PREPARATION", 'Подготовка к работе'),
     ("WORK", 'В работе'),
-    ("SUCCESSFUL", 'Успешна'),
+    ("d5", 'Успешна'),
     ("FAILURE", 'Провалена'),
 ]
 

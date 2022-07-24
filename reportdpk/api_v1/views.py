@@ -424,8 +424,8 @@ class StatisticDirectionViewSet(viewsets.GenericViewSet):
 
 
 class StatisticCompanyOpportunityViewSet(viewsets.GenericViewSet):
-    # permission_classes = [IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
+    # permission_classes = [AllowAny]
 
     def get_queryset(self, companies_ids):
         # return Company.statistic.filter(pk__in=companies_ids)
